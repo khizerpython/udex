@@ -1,0 +1,19 @@
+{% load static %}
+
+
+<div class="modal fade" id="generic-display-modal" tabindex="-1" aria-hidden="true" style="display: none;" data-bs-backdrop="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="white-cross" data-bs-dismiss="modal" aria-label="Close" onclick="cleanGenericModal()"></button>
+            </div>
+            <div class="modal-body" id="generic-display-modal-body-id"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cleanGenericModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal-backdrop fade show"></div> -->
+<script src="{% static 'js/generic-modal-script.js' %}"></script>

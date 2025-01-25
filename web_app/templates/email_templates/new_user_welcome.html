@@ -1,0 +1,200 @@
+{% load static %}
+{% load get_url %}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>business process management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+
+  <style type="text/css" rel="stylesheet">
+    @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+    /* Take care of image borders and formatting */
+
+    img {
+      max-width: 600px;
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    a {
+      text-decoration: none;
+      border: 0;
+      outline: none;
+      color: #bbbbbb;
+    }
+
+    a img {
+      border: none;
+    }
+
+    /* General styling */
+
+    td,
+    h1,
+    h2,
+    h3 {
+      font-family: Helvetica, Arial, sans-serif;
+      /* font-weight: 400; */
+    }
+
+    /* table {
+      border-collapse: collapse !important;
+    } */
+
+    .logo-image-class {
+      content: url("{% email_page_domain %}/static/email/images/header-1-logo.png");
+    }
+
+    .element_center {
+      text-align: center;
+    }
+
+    .border_bottom {
+      border-bottom: 2px solid;
+      border-bottom-color: #c80000;
+    }
+
+    .margin {
+      margin: 12px 12px;
+    }
+
+
+    @media screen {
+
+      td,
+      h1,
+      h2,
+      h3 {
+        font-family: 'Oswald', sans-serif !important;
+      }
+    }
+
+    @media only screen and (max-width: 480px) {
+      table[class="w400"] {
+        width: 400px !important;
+      }
+    }
+  </style>
+</head>
+
+<body style="-webkit-font-smoothing: antialiased;
+-webkit-text-size-adjust: none;
+width: 100%;
+height: 100%;
+color: #37302d;
+background: #ffffff;
+font-size: 16px; padding:0; display:block;">
+  <style type="text/css" rel="stylesheet">
+    @import url('{% email_page_domain %}/static/email/css/fonts.css?family=Oswald&display=swap');
+  </style>
+  <table align="center">
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td>
+              <table style="margin: 0 auto; width: 600px !important; border: 2px solid #c80000">
+                <tr class="element_center border_bottom">
+                  <td valign="center">
+                    <img class="margin"
+                      style="content: url('{% email_page_domain %}/static/email/images/header-1-logo.png');"
+                      src="{% email_page_domain %}/static/email/images/header-1-logo.png" alt="RapidCompute">
+                  </td>
+                </tr>
+                <tr class="element_center">
+                  <td style="color: #000; font-size: 28px; padding-top: 4%; text-decoration: underline;">
+                    Account Activation
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table style="margin: 10px;">
+                      <tr>
+                        <td style="
+                          /* color:#000; */
+                           /* font-size: 20px;  */
+                           width: 100%; 
+                           text-align: start;
+                           font-family: 'Calibri', sans-serif;
+                           ">
+                          <br>
+                          Dear <strong>{{full_name}}</strong>,
+                          <br>
+                          <br>
+                          We are thrilled to welcome you to RapidCompute New BPM Portal and excited to have you as part
+                          of our growing organization.
+                          <br>
+                          <br>
+                          Your account has been created and require activation before you can fully access the features
+                          & services of BPM Portal and to ensure the safety and privacy of your personal Information.
+                          <br>
+                          <br>
+                          Please note that Account Activation is a two step process:
+                          <br>
+                          <ol type="1">
+                            <li>Activate your account.</li>
+                            <li>Set password of your account. Your password must have uppercase, lowercase, numbers and
+                              special characters. These special characters are allowed (!@#$%^&*()-+{}[]())</li>
+                            <li>Please use this username <b>"{{username}}"</b>  to access your account</li>
+                          </ol>
+                          <br>
+                          Keep your password secure & confidential and do not share it with anyone within the
+                          organization by Email / Mattermost or any other means.
+                          <br>
+                          <br>
+                          <center>
+                            <a href="{{activation_link}}" style="background-color:#c80000;
+                              border-radius:4px;
+                              color:#ffffff;
+                              display:inline-block;
+                              font-family: 'Oswald', sans-serif;
+                              font-size:16px;
+                              font-weight:bold;
+                              line-height:50px;
+                              text-align:center;
+                              text-decoration:none;
+                              width:220px;
+                              -webkit-text-size-adjust:none;">
+                              Activate Account & Set Password
+                            </a>
+                          </center>
+                          <br>
+                          If you encounter any problems during your Account Activation process, Please contact
+                          Information Security Team of RapidCompute.
+                          <br>
+                          <br>
+                          <br>
+                          <b>Best regards</b>,
+                          <br>
+                          Information Security
+                          <br>
+                          <br>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr class="element_center">
+                  <td style="padding: 0px 35px 0px 35px; color:#000; font-size: 12px;">
+                    <!-- <br>© 2023 RapidCompute.<br><br> -->
+                    <br>
+                    <div class="copyright">
+                      © {% now "Y" %} <strong><span>RapidCompute</span></strong>.
+                      </div>
+                      <br><br>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

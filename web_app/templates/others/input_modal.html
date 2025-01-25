@@ -1,0 +1,20 @@
+{% load static %}
+
+
+<div class="modal fade" id="input-generic-modal" tabindex="-1" aria-hidden="true" style="display: none;" data-bs-backdrop="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="white-cross" data-bs-dismiss="modal" aria-label="Close" onclick="cleanInputModal()"></button>
+            </div>
+            <div class="modal-body" id="input_body_id"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cleanInputModal()">Close</button>
+                <button type="button" id="input-modal-confirmation" class="btn btn-primary"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal-backdrop fade show"></div> -->
+<script src="{% static 'js/input-modal-script.js' %}"></script>

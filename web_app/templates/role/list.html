@@ -1,0 +1,264 @@
+{% extends 'default/index.html' %}
+{% load static %}
+{% load query_filter %}
+{% block "extra_css" %}
+<link rel="stylesheet" href="{% static '/css/multiselect/multi-select.css' %}">
+{% endblock %}
+
+{% block main_body %}
+
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title-sm">Create Right</h5>
+            <form class="row mb-3 needs-validation" id="create_role_form_id" data-method="POST" data-url="{% url 'create_role' %}" novalidate>
+                {% csrf_token %}
+                <div class="col-sm-6 mb-3">
+                    <div class="form-group form-floating">
+                        <input type="text" name="name" class="form-control" id="create_id_name" data-url="{% url 'check_role_name' %}"
+                            placeholder="name" minlength="3" maxlength="30">
+                        <label for="name">Name</label>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <div class="row">
+                        <div class="col-11">
+                                <div class="form-group form-floating">
+                                    <input type="number" name="order" class="form-control" id="create_id_order" min="0", max="100"
+                                        placeholder="100">
+                                    <label for="order">Order</label>
+                                    <div></div>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div style="padding: 15px 0px 0px 0px">
+                                    <i class="bi bi-question-circle" style="font-size: 26px;" id="role_creation_order_help_id"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    
+                </div>
+                
+
+                <div class="col-sm-12">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" name="menu_ids" id="create_id_menu_ids" multiple aria-label="Select Menus" style="width: 100%; left: 0px !important;">
+                            <option value="" disabled>Select Menus</option>
+                            {% regroup menus by parent_id__name as parents_menu %}
+                        
+                            
+                            {% for parent in parents_menu %}
+                            {% if parent.grouper %}
+                                <optgroup label='{{ parent.grouper }}'>
+                                    {% for child in parent.list %}
+                                        <option value="{{child.id}}">{{child.name}}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% else %}
+                                {% for child in parent.list %}
+                                    <option value="{{child.id}}">{{child.name}}</option>
+                                {% endfor %}  
+                            {% endif %}
+                            {% endfor %}
+                        
+                        </select>
+                        
+                        <div></div>
+                    </div>
+                </div>
+
+                <!-- HOD bits -->
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="create_id_is_right_hod" name="is_hod_right" ria-label="Floating label select example">
+                          <option value="">Select Right Category</option>
+                          {% for key, value in rights_categories.items %}
+                        <option name="right_option"  value="{{value}}">{{key}}</option>
+                        {% endfor %}
+                        </select>
+                        <label for="floatingSelect">Rights Category</label>
+                        <div></div>
+                      </div>
+                </div>
+
+
+
+                <div class="col-sm-12">
+                    <div class="float-end mt-4">
+                        <button type="submit" class="btn btn-primary" id="create_role_button">Create Right</button>
+                        <button type="reset" class="btn btn-secondary" id="create_reset_button">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Edit ROle -->
+<div class="col-lg-12 d-none" id="edit_role_id">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title-sm">Edit Right</h5>
+            <form class="row mb-3" id="edit_role_form_id" data-method="POST" data-url="{% url 'update_specific_role' %}">
+                {% csrf_token %}
+                <input type="hidden" name="hidden_id" id="hidden_id_id">
+                <div class="col-sm-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="name" required class="form-control" id="edit_id_name" minlength="3" maxlength="30" data-url="{% url 'check_role_name' %}">
+                        <label for="name">Name</label>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <div class="form-floating">
+                        <input type="number" name="order" required class="form-control" id="edit_id_order" min="0" max="100"
+                            placeholder="100">
+                        <label for="order">Order</label>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <fieldset class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">Status</legend>
+                        <div class="col-sm-12"></div>
+                        <div class="col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="is_active" id="edit_id_is_active"
+                                    value="true">
+                                <label class="form-check-label" for="edit_id_is_active">
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="is_active" id="edit_id_is_active"
+                                    value="false">
+                                <label class="form-check-label" for="edit_id_is_active">
+                                    Inactive
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div></div>
+                </div>
+                <div class="col-sm-12 mb-3">
+                    
+                    <select class="form-select" name="menu_ids" required id="edit_id_menu_ids" multiple aria-label="Select Menus" style="width: 100%; left: 0px !important;">
+                            <option value="" disabled>Select Menus</option>
+                            {% regroup menus by parent_id__name as parents_menu %}
+                            
+                            {% for parent in parents_menu %}
+                            {% if parent.grouper %}
+                                <optgroup label='{{ parent.grouper }}'>
+                                    {% for child in parent.list %}
+                                        <option value="{{child.id}}">{{child.name}}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% else %}
+                                {% for child in parent.list %}
+                                    <option value="{{child.id}}">{{child.name}}</option>
+                                {% endfor %}  
+                            {% endif %}
+                            {% endfor %}
+                           
+                        </select>
+                    <div></div>
+                </div>
+
+                <!-- HOD bits -->
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="edit_id_is_right_hod" name="is_hod_right" ria-label="Floating label select example">
+                          <option value="">Select Right Category</option>
+                          {% for key, value in rights_categories.items %}
+                        <option name="right_option"  value={{value}}>{{key}}</option>
+                        {% endfor %}
+                        </select>
+                        <label for="floatingSelect">Rights Category</label>
+                        <div></div>
+                      </div>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="float-end">
+                        <button type="submit" class="btn btn-primary" id="edit_role_button">Edit Right</button>
+                        <button type="reset" class="btn btn-secondary hide-current-display-another-role" id="edit_reset_button" data-div-id="edit_role_id">Back</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title-sm">Rights Listing</h5>
+            <div class="table-responsive">
+                <table id="roles_datatable_id" class="table table-striped datatable display" data-url="{% url 'list_roles_json' %}">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                            <th>Last Updated</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                            <th>Menus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for role in object_list %}
+                            <tr>
+                                <td>{{role.name}}</td>
+                                <td>{{role.order}}</td>
+                                <td>{% if role.is_active%}<span><i class="bi-check-circle" style="color: green;"></i></span>{% else %}<span><i class="bi-x-circle" style="color: red;"></i></span>{% endif %}</td>
+                                <td>{{role.updated_at|date:"Y-m-d G:i"}}</td>
+                                <td><div class="edit-icon-class separate-edit-click-class" data-create-form-id="create_role_form_id" data-div-id="edit_role_id" data-method="POST"  data-detail-url="{% url 'get_specific_role' %}" data-object-uuid="{{role.id}}"><i class="bi bi-pencil-square"></i></div></td>
+                                <td><div class="delete-icon-class delete-click-class" data-delete-url="{% url 'delete_specific_role' %}" data-delete-id="{{role.id}}" data-delete-method="POST" data-body-text="{{role.name}}" data-heading-text="Delete Right" data-button-text="Delete Right"><i class="bi bi-trash"></i></div></td>
+                                <td><div style="cursor: pointer;" class="show-menus-of-roles" data-menus="{% for menu in role.menu_ids.all %}{{menu.name}}|{% endfor %}" data-role-name="{{role.name}}" onclick="displayMenusHandler(this)"><i class="bi bi-eye"></i></div></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+{% block "extra_scripts" %}
+
+<script>
+    let menus = "{{ menus|get_value_list_in_qs:'id'|safe }}"
+    const _menus = JSON.parse(menus.replaceAll("'", '"'));
+
+    let _rights_list = "{{rights_authentication_frontend | safe }}"
+    const _rights_list_json = JSON.parse(_rights_list.replaceAll("'", '"'));
+
+</script>
+<script src="{% static '/js/multiselect/jquery.multi-select.js' %}"></script>
+<script>
+    $('#create_id_menu_ids').multiSelect({ selectableOptgroup: true });
+    $('#edit_id_menu_ids').multiSelect({ selectableOptgroup: true });
+</script>
+
+<script src="{% static '/tipsy_tooltip/application_plugin/role.js' %}"></script>
+<script src="{% static '/validators/custom_validator_function.js' %}"></script>
+<script src="{% static '/validators/role.js' %}"></script>
+<script src="{% static '/custom-js/role.js' %}"></script>
+
+{% endblock %}

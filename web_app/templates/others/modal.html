@@ -1,0 +1,22 @@
+{% load static %}
+
+
+<div class="modal fade" id="generic-modal" tabindex="-1" aria-hidden="true" style="display: none;" data-bs-backdrop="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="white-cross" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete <em><strong id="sub_body_id"></strong></em>? <br/>
+                This operation can't be irreversable.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="modal-confirmation" class="btn btn-primary"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/modal-script.js' %}"></script>

@@ -1,0 +1,266 @@
+{% extends 'default/index.html' %}
+{% load static %}
+{% load query_filter %}
+{% block main_body %}
+
+<!-- CREATE Menu FORM -->
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title-sm">Create Menus</h5>
+            <form class="row mb-3" id="create_menu_form_id" data-method="POST" data-url="{% url 'menu' %}">
+                {% csrf_token %}
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" name="name" class="form-control" id="create_id_name" minlength="3"
+                            maxlength="30" placeholder="Name" required>
+                        <label for="name" class="form-label"> Name</label>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <input minlength="1" maxlength="255" name="url" class="form-control" id="create_id_url" placeholder="url"
+                            required>
+                        <label for="url" class="form-label">URL</label>
+                        <div></div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <input type="number" name="order" class="form-control" id="create_id_order" placeholder="order" min="0" max="100"
+                            required>
+                        <label for="order" class="form-label">Order</label>
+                        <div></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="create_id_parent_id" name="parent_id" ria-label="Floating label select example">
+                          <option value="">Select Parent Menu</option>
+                          {% for menu in menus %}
+                        <option name="menus_option"  value="{{menu.id}}">{{menu}}</option>
+                        {% endfor %}
+                        </select>
+                        <label for="floatingSelect">Parent Menus</label>
+                      </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="create_id_inner_menu_of" name="inner_menu_of" ria-label="Floating label select example">
+                          <option value="">Select Inner Menu Of</option>
+                          {% for menu in all_menus %}
+                        <option name="menus_option"  value="{{menu.id}}">{{menu}}</option>
+                        {% endfor %}
+                        </select>
+                        <label for="floatingSelect">Inner Menu Of</label>
+                      </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="float-end">
+                        <button type="submit" id="createMenuButton" class="btn btn-primary">Create
+                            Menu</button>
+                        <button type="reset" id="createMenuResetButton" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- END CREATE MENU FORM -->
+
+
+<!-- UPDATE MENU -->
+<div class="col-lg-12 d-none" id="edit_menu_id">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title-sm">Edit Menu</h5>
+
+            <form class="row mb-3" id="edit_menu_form_id" data-method="POST" data-url="{% url 'update_specific_menu' %}">
+                {% csrf_token %}
+                <input type="hidden" name="hidden_id" id="hidden_id_id">
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" name="name" class="form-control" id="edit_id_name" minlength="3"
+                            maxlength="30" placeholder="Name" required>
+                        <label for="name">Name</label>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <input minlength="1" maxlength="255" name="url" class="form-control" id="edit_id_url" placeholder="url"
+                            required>
+                        <label for="url" class="form-label">URL</label>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <input type="number" name="order" class="form-control" id="edit_id_order" placeholder="order" min="0" max="100"
+                            required>
+                        <label for="order" class="form-label">Order</label>
+                        <div></div>
+                    </div>
+                </div>
+                <!-- ddd -->
+
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="edit_id_parent_id" name="parent_id" ria-label="Floating label select example">
+                          <option value="">Select Menu</option>
+                          {% for menu in menus %}
+                        <option name="menus_option"  value="{{menu.id}}">{{menu}}</option>
+                        {% endfor %}
+                        </select>
+                        <label for="floatingSelect">Parent Menus</label>
+                      </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="edit_id_inner_menu_of" name="inner_menu_of" ria-label="Floating label select example">
+                          <option value="">Select Menu</option>
+                          {% for menu in all_menus %}
+                        <option name="menus_option"  value="{{menu.id}}">{{menu}}</option>
+                        {% endfor %}
+                        </select>
+                        <label for="floatingSelect">Inner Menu Of</label>
+                      </div>
+                </div>
+
+                
+                <div class="col-sm-6 mt-2">
+                    <fieldset class="row mb-3">
+                        <legend class="col-form-label col-sm-2 pt-0">Status</legend>
+                        <div class="col-sm-12"></div>
+                        <div class="col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="is_active" id="edit_id_is_active"
+                                    value="true">
+                                <label class="form-check-label" for="active_id">
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="is_active" id="edit_id_is_active"
+                                    value="false">
+                                <label class="form-check-label" for="inactive_id">
+                                    Inactive
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="float-end">
+                        <button type="submit" id="updateMenuButton" class="btn btn-primary">Edit
+                            Menu</button>
+                        <button type="reset" id="backToOriginalView"
+                            class="btn btn-secondary hide-current-display-another"
+                            data-div-id="edit_menu_id">Back</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- END UPDATE Menu FORM -->
+
+<!-- DATATABLE -->
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title-sm">Menus Listing</h5>
+            <div class="table-responsive">
+                <table id="menu_datatable_id" class="table table-striped datatable display" data-url="{% url 'list_menu_json' %}">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>URL</th>
+                            <th>Status</th>
+                            <th>Updated At</th>
+                            
+                            <th>Edit</th>
+                            <th>Delete</th>
+                            <th>Children</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for menu in all_menus %}
+                        <tr>
+                            <td>{{menu.name}}</td>
+                            <td>{{menu.url}}</td>
+                            <td>{% if menu.is_active%}<span><i class="bi-check-circle" id="active-menu-id"
+                                        style="color: green;"></i></span>{% else %}<span><i class="bi-x-circle"
+                                        style="color: red;"></i></span>{% endif %}</td>
+                            <td>{{menu.updated_at|date:"Y-m-d G:i"}}</td>
+                            
+                            <td>
+                                <div class="edit-icon-class separate-edit-click-class" data-create-form-id="create_menu_form_id" data-detail-url="{% url 'get_specific_menu' %}"
+                                     data-div-id="edit_menu_id" data-method="POST" data-object-uuid="{{menu.id}}"><i
+                                        class="bi bi-pencil-square"></i></div>
+                            </td>
+                            <td>
+                                <div class="delete-icon-class delete-click-class" data-delete-id="{{menu.id}}"
+                                data-delete-url="{% url 'delete_specific_menu' %}"
+                                    data-delete-method="POST" data-body-text="{{menu.name}}"
+                                    data-heading-text="Delete menu" data-button-text="Delete menu"
+                                    ><i class="bi bi-trash"></i></div>
+                            </td>
+
+                            <td>
+                                <div style="cursor: pointer;"
+                                    data-menus="{{menu.parent_id.name}}"
+                                    data-id="{{menu.id}}" data-child-method="POST" 
+                                    data-menu-name="{{menu.name}}" onclick="displayMenusHandler(this)"><i
+                                        class="bi bi-eye-fill"></i></div>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- END DATATABLE -->
+
+
+{% endblock %}
+
+{% block "extra_scripts" %}
+
+<script>
+    let inner_menus = "{{ all_menus|get_value_list_in_qs:'id'|safe }}"
+    const _all_menus = JSON.parse(inner_menus.replaceAll("'", '"'));
+    
+    let parent_menus = "{{ menus|get_value_list_in_qs:'id'|safe }}"
+    const _parent_menus = JSON.parse(parent_menus.replaceAll("'", '"'));
+    
+    var checkmenuname = "{% url 'check_menu_name' %}";
+    var checkupdatemenuname = "{% url 'check_update_menu_name' %}";
+    var datachildmenus = "{% url 'get_child_menus' %}";
+</script>
+
+<script src="{% static '/tipsy_tooltip/application_plugin/menus_tipsy.js' %}"></script>
+<script src="{% static '/validators/custom_validator_function.js' %}"></script>
+<script src="{% static '/validators/menus.js' %}"></script>
+<script src="{% static '/custom-js/menus.js' %}"></script>
+
+
+{% endblock %}
