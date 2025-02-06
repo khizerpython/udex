@@ -69,11 +69,17 @@ function refresh_datatable(datatable_id, data) {
 $("#create_authuser_form_id").on("submit",async function (e) {
     e.preventDefault();
     e.stopPropagation()
+    console.log("here");
+    
     if ($("#create_authuser_form_id").valid()) {
+        console.log("ÿes it is");
+        
         const button = hideSubmitButton($(this).attr("id"));
         var formData = $(this).serializeArray();
-        const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ["deparment_id"]);
+        const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ["department_id"]);
         const submit_url = $(this).data("url");
+        console.log(submit_url);
+        
         const submit_method = $(this).data("method");
         var { status, data } =await sendRequestPromise(submit_method, submit_url, json_obj);
         
@@ -246,7 +252,7 @@ function createDesignationOption(data,designationDiv) {
 
 
 // After click on department get the designations related to that department
-$(document).on('change', 'select[name=deparment_id]', function (e) {
+$(document).on('change', 'select[name=department_id]', function (e) {
     e.preventDefault()
     var mythis = $(this)
     designationOfDepartment(mythis)

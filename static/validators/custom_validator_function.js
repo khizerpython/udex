@@ -76,3 +76,20 @@ $.validator.addMethod(
         return status
     }
 );
+
+// CHECK USERNAME
+$.validator.addMethod(
+    "checkusername",
+    function (value, element) {
+
+        var name = value
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        const json_obj = { 'name': name, csrfmiddlewaretoken: csr }
+        var submit_method = 'POST'
+        submit_url = checkusername
+
+        var { status, data } = sendRequest(submit_method, submit_url, json_obj);
+        return status
+
+    }
+);

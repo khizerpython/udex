@@ -139,7 +139,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Karachi'
 
 USE_I18N = True
 
@@ -156,3 +157,11 @@ STATICFILES_DIRS = [STATIC_CUSTOM_DIR]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "web_app.AuthUser"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
+EMAIL_PORT = 587  # Port for TLS (starttls)
+EMAIL_USE_TLS = True  # Use TLS (Transport Layer Security)
+EMAIL_HOST_USER = 'khizerkhan0326@gmail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD = 'Khanbroker69'  # Your Gmail app password (or regular password if less secure apps are allowed)
+DEFAULT_FROM_EMAIL = 'khizerkhan0326@gmail.com'  # The "from" email address for sent emails

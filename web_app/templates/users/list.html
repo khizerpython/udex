@@ -1,5 +1,6 @@
 {% extends 'default/index.html' %}
 {% load static %}
+{% load query_filter %}
 {% block "extra_css" %}
 <!-- <link rel="stylesheet" href="{% static '/css/department/department.css' %}"> -->
 {% endblock %}
@@ -11,7 +12,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title-sm">Create User</h5>
-            <form class="row mb-3" id="create_authuser_form_id" data-method="POST" data-url="">
+            <form class="row mb-3" id="create_authuser_form_id" data-method="POST" data-url="{% url 'authuser' %}">
                 {% csrf_token %}
                 <!-- FIRST NAME -->
                 <div class="col-sm-6">
@@ -99,7 +100,7 @@
 
 
                 <!-- EMPLOYEE ID -->
-                <div class="col-sm-6">
+                <!-- <div class="col-sm-6">
                     <div class="form-floating mb-3">
                         <input type="text" name="employee_id" class="form-control" id="create_id_employee_id" minlength="5" maxlength="10"
                             placeholder="EMPLOYEE ID">
@@ -107,7 +108,7 @@
                         <div></div>
                     </div>
 
-                </div>
+                </div> -->
                 
                 
 
@@ -126,26 +127,13 @@
                     </div>
                 </div>
                 
-                <!--Original Role -->
-                <div class="col-sm-6">
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="create_id_original_role_id" name="original_role_id"
-                            ria-label="Floating label select example">
-                            <option value="">Select Role</option>
-                            {% for role in original_roles %}
-                            <option name="original_role_option" value="{{role.id}}" data-role-name="{{role.name}}">{{role}}</option>
-                            {% endfor %}
-                        </select>
-                        <label for="create_id_original_role_id">Select Role</label>
-                        <div></div>
-                    </div>
-                </div>
+               
 
                 <!-- Department -->
                 <div class="col-sm-6">
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="create_id_deparment_id" name="deparment_id"
-                            ria-label="Floating label select example" data-url="" data-append-div="create_id_designation_id">
+                        <select class="form-select" id="create_id_deparment_id" name="department_id"
+                            ria-label="Floating label select example" data-url="{% url 'get_designation_of_departments' %}" data-append-div="create_id_designation_id">
                             <option value="" disabled selected>Select Department</option>
                             {% for department in departments %}
                             <option name="department_option" value="{{department.id}}">{{department}}</option>
@@ -211,7 +199,7 @@
         <div class="card-body">
             <h5 class="card-title-sm">Edit User</h5>
 
-            <form class="row mb-3" id="edit_authuser_form_id" data-method="POST" data-url="">
+            <form class="row mb-3" id="edit_authuser_form_id" data-method="POST" data-url="{% url 'authuser' %}">
                 {% csrf_token %}
                 <input type="hidden" name="hidden_id" id="hidden_id_id">
                 <!-- FIRST NAME -->
@@ -290,7 +278,7 @@
                     <div class="form-floating mb-3">
                         <select class="form-select" id="edit_id_role_id" name="role_id"
                             ria-label="Floating label select example">
-                            <option disabled>Select Right</option>
+                            <option disabled>Select Role</option>
                             {% for role in roles %}
                             <option name="role_option" value="{{role.id}}" data-hod-right = {{role.is_hod_right}} data-role-name="{{role.name}}">{{role}}</option>
                             {% endfor %}
@@ -300,25 +288,12 @@
                     </div>
                 </div>
                 
-                <!--Original Role -->
-                <div class="col-sm-6">
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="edit_id_original_role_id" name="original_role_id"
-                            ria-label="Floating label select example">
-                            <option disabled>Select Role</option>
-                            {% for role in original_roles %}
-                            <option name="role_option" value="{{role.id}}">{{role}}</option>
-                            {% endfor %}
-                        </select>
-                        <label for="floatingSelect" disabled>Select Role</label>
-                        <div></div>
-                    </div>
-                </div>
+               
 
                 <!-- Department -->
                 <div class="col-sm-6">
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="edit_id_deparment" name="deparment_id" data-url="" data-append-div="edit_id_designation_id"
+                        <select class="form-select" id="edit_id_deparment" name="department_id" data-url="{% url 'get_designation_of_departments' %}" data-append-div="edit_id_designation_id"
                             ria-label="Floating label select example" >
                             <option value disabled>Select Department</option>
                             {% for department in departments %}
@@ -433,7 +408,7 @@
                             </td>
                             <td>
                                 <div class="delete-icon-class delete-click-class"
-                                    data-delete-url=""
+                                    data-delete-url="{% url 'delete_specific_user' %}"
                                     data-delete-id="{{user.id}}" data-delete-method="POST"
                                     data-body-text="{{user.username}}" data-heading-text="Delete User"
                                     data-button-text="Delete User"
@@ -468,13 +443,33 @@
 {% endblock %}
 
 {% block "extra_scripts" %}
+<script>
+
+    let _designations = "{{ designations|get_value_list_in_qs:'id'|safe }}"
+    const _all_designations = JSON.parse(_designations.replaceAll("'", '"'));
+
+    let _departments = "{{ departments|get_value_list_in_qs:'id'|safe }}"
+    const _all_departments = JSON.parse(_departments.replaceAll("'", '"'));
+
+    let _roles = "{{ roles|get_value_list_in_qs:'id'|safe }}"
+    const _all_roles = JSON.parse(_roles.replaceAll("'", '"'));
+
+    let _cities = "{{ cities|get_value_list_in_qs:'id'|safe }}"
+    const _all_cities = JSON.parse(_cities.replaceAll("'", '"'));
+
+    var checkusername = "{% url 'check_authuser_name' %}";
+    var check_update_emailaddress = "{% url 'check_update_emailaddress' %}";
+
+    var check_email_address = "{% url 'check_emailaddress' %}";
+    
+</script>
 
 
 
 <script src="{% static '/tipsy_tooltip/application_plugin/authusers_tipsy.js' %}"></script>
 <script src="{% static '/validators/custom_validator_function.js' %}"></script>
-<!-- <script src="{% static '/validators/auth.js' %}"></script> -->
-<!-- <script src="{% static '/custom-js/authuser.js' %}"></script> -->
+<script src="{% static '/validators/auth.js' %}"></script>
+<script src="{% static '/custom-js/authuser.js' %}"></script>
 
 
 {% endblock %}

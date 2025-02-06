@@ -177,9 +177,13 @@ class AuthUser(AbstractBaseUser, ModelUUIDField, CreatedAndUpdatedModelFields,Is
         """
         if self.is_first_login: # If is_first_login is False, then the user is already using portal because this field was set to False on first login. We handle this field manually
             if self.last_login is None: # Means that the user hasn't logged-in to the portal. Just an extra sub-check of above condition. (Both current and above condition of above same nature). Framework automatically handle this field 
-                
+                self.created_at_naive = self.created_at.replace(tzinfo=None)
+
+                # Now subtract the naive datetime
+                difference = datetime.now() - self.created_at_naive
+
                 # difference: timedelta = datetime.now(tz=ZoneInfo("UTC")) - self.created_at # calculating the difference of time from created_at to current in `UTC`
-                difference: timedelta = datetime.now() - self.created_at # calculating the difference of time from created_at to current in `UTC`
+                # difference: timedelta = datetime.now() - self.created_at # calculating the difference of time from created_at to current in `UTC`
                 # if difference.days >= 1: # If the difference is greater than 1 in terms of days then proceed because the link generated on the time user creation has 1 day expiry
 
                 #     if self.is_lock and not self.is_active: # Make sure the user is locked (True) and not active (False). These values were set on time of user creation

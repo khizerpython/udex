@@ -54,6 +54,7 @@ class ListAuthUserView(ListView):
         roles = Role.objects.filter(is_active=True, is_hidden=False).order_by('-created_at')
         # original_roles = OriginalRole.objects.filter(is_active=True,is_deleted=False).order_by('order')
         cities = City.objects.all()
+        print("the designations are :",designations)
         extra_context: dict = {
             "departments": departments,
             "designations": designations,
@@ -64,6 +65,7 @@ class ListAuthUserView(ListView):
         return extra_context
     def get_queryset(self):
         qs = super().get_queryset()
+        print("the query set is :",qs)
         user= self.request.user
         username = user.username
         return qs.filter(is_admin=False,is_superuser=False).exclude(is_active=False,is_lock=False).exclude(username=username)
@@ -98,6 +100,7 @@ class CreateAuthUser(View):
         return protocol + "://" + site_name + str(reverse("activate_and_reset_password", kwargs=context))
 
     def post(self, request, *args, **kwargs):
+        print("here ")
         form_validation =  CreateAuthUserForm(data=request.POST)
 
         if form_validation.is_valid():
@@ -130,4 +133,121 @@ class CreateAuthUser(View):
         
         self._generate_event_data_and_insert(line_num=frameinfo.lineno, success=False, errors=form_validation.errors)
         self._generate_log_data_and_insert(success=False)
-        return JsonResponse(data={"detail": "Unable to create AuthUser", "errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=400)    
+        return JsonResponse(data={"detail": "Unable to create AuthUser", "errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=400)   
+
+# class DeleteAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
+class DeleteAuthUserView(View):
+
+     
+
+    def all_unexpired_sessions_for_user(self, user):
+        user_sessions = []
+        all_sessions  = Session.objects.all()
+        for session in all_sessions:
+            session_data = session.get_decoded()
+            if user.pk == session_data.get('_auth_user_id'):
+                user_sessions.append(session.pk)
+        return Session.objects.filter(pk__in=user_sessions)
+
+    def delete_all_unexpired_sessions_for_user(self, user, session_to_omit=None):
+        session_list = self.all_unexpired_sessions_for_user(user)
+        if session_to_omit is not None:
+            session_list.exclude(session_key=session_to_omit.session_key)
+        session_list.delete()
+
+    def post(self, request, *args, **kwargs):
+        try:
+            inst = AuthUser.objects.get(id=request.POST.get("id", None))
+        except AuthUser.DoesNotExist:
+            
+            return JsonResponse({"detail": "Invalid object ID"}, status=400)
+        inst.is_active = False
+        inst.is_lock = False
+        inst.last_login = timezone.now()
+        inst.save()
+        self.delete_all_unexpired_sessions_for_user(inst) # Deleting user session
+
+        return JsonResponse({"detail": f"{inst.username} has been deleted successfully"}, status=200)
+
+
+# class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class=CustomSetPasswordAndActivateForm
+    title = "Account Activation"
+    post_reset_login = False
+    template_name='users/user_activation_and_reset_password.html'
+
+    def form_valid(self, form):
+        _ = form.save()
+        del self.request.session[INTERNAL_RESET_SESSION_TOKEN]
+        return render(self.request, self.template_name, {"reset_done": True, "title": "Account Activated"})
+
+
+# class CheckAuthUserNameView(BaseViewForAuthenticatedClassForJsonResponse):
+class CheckAuthUserNameView(View):
+
+
+    def _get(self, request , *args, **kwargs):
+        name = request.POST.get('name')
+       
+        try:
+            AuthUser.objects.get(username=name)
+            return JsonResponse({"exists": True},status=400)
+        except AuthUser.DoesNotExist:
+            return JsonResponse({"exists": False},status=200)
+
+    
+    def post(self, request, *args, **kwargs):
+        return self._get(request, *args, **kwargs)     
+    
+# class CheckUpdatEmailView(BaseViewForAuthenticatedClassForJsonResponse):
+class CheckUpdatEmailView(View):
+
+
+    def _get(self, request , *args, **kwargs):
+        email = request.POST.get('email')
+        id = request.POST.get('id')
+        try:
+            AuthUser.objects.exclude(id=id).get(email=email)
+            return JsonResponse({"exists": True},status=400)
+        except AuthUser.DoesNotExist:
+            return JsonResponse({"exists": False},status=200)
+
+    def post(self, request, *args, **kwargs):
+        return self._get(request, *args, **kwargs)   
+
+
+# class CheckEmailAddress(BaseViewForAuthenticatedClassForJsonResponse):
+class CheckEmailAddress(View):
+
+    def _get(self, request , *args, **kwargs):
+        email = request.POST.get('email')
+        try:
+            AuthUser.objects.get(email=email)
+            return JsonResponse({"exists": True},status=400)
+        except AuthUser.DoesNotExist:
+            return JsonResponse({"exists": False},status=200)
+
+    
+    def post(self, request, *args, **kwargs):
+        return self._get(request, *args, **kwargs)  
+
+
+# class GetDesignationOfDepartment(BaseViewForAuthenticatedClassForJsonResponse):
+class GetDesignationOfDepartment(View):
+
+
+    def _get(self, request , *args, **kwargs):
+        depart_id = request.POST.get('depart_id')
+        try:
+            designations_of_departs = Designation.objects.filter(is_active=True,department_id__in=depart_id)
+
+            serialized_obj: dict = json.loads(serializers.serialize(format="json", queryset=designations_of_departs))
+            return JsonResponse(data=serialized_obj,status=200,safe=False)
+        except Designation.DoesNotExist:
+            return JsonResponse({"exists": False},status=400)
+
+
+
+    def post(self, request, *args, **kwargs):
+        return self._get(request, *args, **kwargs)       
