@@ -54,7 +54,6 @@ class ListAuthUserView(ListView):
         roles = Role.objects.filter(is_active=True, is_hidden=False).order_by('-created_at')
         # original_roles = OriginalRole.objects.filter(is_active=True,is_deleted=False).order_by('order')
         cities = City.objects.all()
-        print("the designations are :",designations)
         extra_context: dict = {
             "departments": departments,
             "designations": designations,
@@ -65,7 +64,6 @@ class ListAuthUserView(ListView):
         return extra_context
     def get_queryset(self):
         qs = super().get_queryset()
-        print("the query set is :",qs)
         user= self.request.user
         username = user.username
         return qs.filter(is_admin=False,is_superuser=False).exclude(is_active=False,is_lock=False).exclude(username=username)
@@ -100,7 +98,6 @@ class CreateAuthUser(View):
         return protocol + "://" + site_name + str(reverse("activate_and_reset_password", kwargs=context))
 
     def post(self, request, *args, **kwargs):
-        print("here ")
         form_validation =  CreateAuthUserForm(data=request.POST)
 
         if form_validation.is_valid():
@@ -116,8 +113,6 @@ class CreateAuthUser(View):
             prunctuations = string.punctuation
             result_prunctuations = ''.join(random.choice(prunctuations) for i in range(3))
 
-
-
             password = result_lower_letter+result_digits+result_prunctuations+result_uppercase_letters
             inst = form_validation.save(commit=True)
             inst.set_password(password)
@@ -125,14 +120,11 @@ class CreateAuthUser(View):
             inst.is_lock = True
             inst.save()
             activation_link:str = self._generate_activation_link(inst)
+
             global_methods.send_new_user_welcome_email(subject=NEW_USER_WELCOME_EMAIL_SUBJECT, to_email = inst.email , data={"full_name": inst.get_fullname, "username": inst.username, "activation_link": activation_link})
 
-            self._generate_event_data_and_insert(line_num=frameinfo.lineno, password=password, inst=inst, success=True)
-            self._generate_log_data_and_insert(inst=inst, success=True)
             return JsonResponse({"detail": f"AuthUser '{inst.username}' has been created successfully"}, status=200)
         
-        self._generate_event_data_and_insert(line_num=frameinfo.lineno, success=False, errors=form_validation.errors)
-        self._generate_log_data_and_insert(success=False)
         return JsonResponse(data={"detail": "Unable to create AuthUser", "errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=400)   
 
 # class DeleteAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
@@ -170,7 +162,6 @@ class DeleteAuthUserView(View):
         return JsonResponse({"detail": f"{inst.username} has been deleted successfully"}, status=200)
 
 
-# class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     form_class=CustomSetPasswordAndActivateForm
     title = "Account Activation"
@@ -250,4 +241,137 @@ class GetDesignationOfDepartment(View):
 
 
     def post(self, request, *args, **kwargs):
-        return self._get(request, *args, **kwargs)       
+        return self._get(request, *args, **kwargs)     
+
+class GenerateUserActivationLinkAgainJsonView(CreateAuthUser):
+
+    def post(self, request, *args, **kwargs):
+        
+        form_validation =  GenerateUserActivationLinkAgainForm(data=request.POST)
+
+        if form_validation.is_valid():
+            inst = form_validation.cleaned_data.get("inst_id")
+            activation_link:str = self._generate_activation_link(inst)
+            global_methods.send_new_user_welcome_email(subject=NEW_USER_WELCOME_EMAIL_SUBJECT, to_email = inst.email , data={"full_name": inst.get_fullname, "username": inst.username, "activation_link": activation_link})
+
+            return JsonResponse({"detail": "Activation link sent sucessfully"}, status=200)
+        
+        return JsonResponse(data={"detail": "Unable to generate link. Invalid object ID", "redirect_url": reverse("logout_url")}, status=401)
+
+
+# class ListAuthUserInJsonFormat(BaseViewForAuthenticatedClassForJsonResponse):
+class ListAuthUserInJsonFormat(View):
+
+    def _merge_objects(self, data: list, authusers_querset) -> dict:
+        return_data: dict = {}
+
+        def iterate_object(obj_id: str):
+            queryset_inst = authusers_querset.get(id=obj_id)
+            for key, value in return_data.get(obj_id, {}).items():
+                if key == "created_at":
+                    # return_data[obj_id][key] = timezone.localtime(queryset_inst.created_at, timezone.get_default_timezone()).strftime(DATE_TIME_FORMAT)
+                    obj_date_time = queryset_inst.created_at
+                    return_data[obj_id][key] = obj_date_time.strftime(DATE_TIME_FORMAT)
+                if key == "designation_id":
+                    if value is not None:
+                        designation = Designation.objects.get(id = value)
+                        return_data[obj_id][key] = designation.name
+                    else:
+                        return_data[obj_id][key] = None
+
+
+            return_data[obj_id]["show_resend_activation_link_button"] = queryset_inst.show_resend_activation_link_button
+            return_data[obj_id]["specific_url"] = reverse("get_specific_user")
+            return_data[obj_id]["delete_url"] = reverse("delete_specific_user")
+            return_data[obj_id]["regenerate_url"] = reverse("generate_new_activiation_link")           
+
+        for obj_from_list in data:
+            obj_id: str = obj_from_list.get("pk", "")
+            if obj_id not in return_data:
+                return_data[obj_id] = obj_from_list.get("fields", {})
+                iterate_object(obj_id)
+
+        return return_data
+
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        username = user.username
+        authusers = AuthUser.objects.select_related().filter(is_admin=False,is_superuser=False).exclude(is_active=False,is_lock=False).exclude(username=username).order_by("-created_at").only("id", "username","email", "designation_id", "is_active","is_lock", "created_at", "updated_at")
+        serialize_authusers: list = json.loads(serializers.serialize("json", queryset=authusers, fields=("id", "username","email", "designation_id", "is_active","is_lock", "created_at", "updated_at")))
+        authusers_dict: dict = self._merge_objects(serialize_authusers, authusers)
+        return JsonResponse(data=authusers_dict, status=200)   
+
+# class GetSpecificAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
+class GetSpecificAuthUserView(View):
+
+    def _get(self, request, *args, **kwargs):
+        authuser_id: str = request.POST.get("object_uuid")
+        try:
+            authuser_obj = AuthUser.objects.filter(id=authuser_id)   
+        except ValidationError:
+            return JsonResponse({"detail": "Invalid object ID"}, status=400)
+
+        if not authuser_obj.first():
+            return JsonResponse({"detail": "Invalid object ID"}, status=400)
+        serialized_obj: dict = json.loads(serializers.serialize(format="json", queryset=authuser_obj))
+        for roles in authuser_obj:
+            role_id = roles.role_id
+        
+        data={
+            'obj': serialized_obj[0].get("fields", {}),
+            'id': serialized_obj[0].get("pk", {}),
+            'name':role_id.name,
+            'is_hod_right':role_id.is_hod_right
+            
+        }
+        return JsonResponse(data=data, status=200, safe=False)
+
+    
+    def post(self, request, *args, **kwargs):
+        return self._get(request, *args, **kwargs)  
+
+
+# class UpdateAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
+class UpdateAuthUserView(View):
+
+    def all_unexpired_sessions_for_user(self, user):
+        user_sessions = []
+        all_sessions  = Session.objects.all()
+        for session in all_sessions:
+            session_data = session.get_decoded()
+            if user.pk == session_data.get('_auth_user_id'):
+                user_sessions.append(session.pk)
+        return Session.objects.filter(pk__in=user_sessions)
+
+    def delete_all_unexpired_sessions_for_user(self, user, session_to_omit=None):
+        session_list = self.all_unexpired_sessions_for_user(user)
+        if session_to_omit is not None:
+            session_list.exclude(session_key=session_to_omit.session_key)
+        session_list.delete()
+
+    def post(self, request, *args, **kwargs):
+        user_obj_here = self.request.user
+        try:
+            inst = AuthUser.objects.get(id=request.POST.get("hidden_id", None))
+        except AuthUser.DoesNotExist:
+            self._generate_event_data_and_insert(frameinfo.lineno, inst=inst, success=False, errors={"detail": "Invalid object ID"})
+            return JsonResponse({"detail": "Invalid object ID"}, status=400)
+
+        validation_form = UpdateAuthUserForm(data=request.POST, instance=inst)
+
+        if validation_form.is_valid(): 
+            id = request.POST.get('hidden_id')
+            is_lock = validation_form.cleaned_data.get('is_lock')
+            inst = validation_form.save()
+            user = AuthUser.objects.get(id=id)
+            if user.is_lock == True:
+                user.is_active = False
+                self.delete_all_unexpired_sessions_for_user(user)
+            else:
+                user.is_active = True
+            user.save()        
+
+            return JsonResponse({"detail": f"{inst.username} has been updated successfully"}, status=200)
+        
+        return JsonResponse({"detail": f"Unable to perform update operation on {inst.username}", "errors": dict(validation_form.errors.items()), "errors_div": "edit_"}, status=400)

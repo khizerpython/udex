@@ -59,8 +59,10 @@ function reconstruct_authuser_table(datatable_id, obj) {
 }
 
 function refresh_datatable(datatable_id, data) {
+    
     var datatable_inst = $("#" + datatable_id);
     var datatable_url = datatable_inst.data("url");
+    
     var { status, data } = sendRequest("GET", datatable_url, data);
     datatable_inst.DataTable().clear().draw();
     reconstruct_authuser_table(datatable_id, data)
@@ -69,23 +71,19 @@ function refresh_datatable(datatable_id, data) {
 $("#create_authuser_form_id").on("submit",async function (e) {
     e.preventDefault();
     e.stopPropagation()
-    console.log("here");
     
     if ($("#create_authuser_form_id").valid()) {
-        console.log("ÿes it is");
-        
         const button = hideSubmitButton($(this).attr("id"));
         var formData = $(this).serializeArray();
         const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ["department_id"]);
         const submit_url = $(this).data("url");
-        console.log(submit_url);
         
         const submit_method = $(this).data("method");
         var { status, data } =await sendRequestPromise(submit_method, submit_url, json_obj);
         
         if (status) {
             remove_custom_error_classes();
-            $(this).find("select[name=deparment_id]").attr("multiple",false)
+            $(this).find("select[name=department_id]").attr("multiple",false)
             $(this).find("select[name=department_id] option:first").prop("selected", true);
             $(this).find("#department_label").removeAttr("style");
             $("#create_authuser_form_id").trigger("reset");
@@ -111,8 +109,8 @@ $(document).on("click", ".seperate-edit-click-class", function () {
     var { status, data } = sendRequest(submit_method, fetch_url, { "object_uuid": object_uuid, "csrfmiddlewaretoken": global_csrf_token });
     if (data.is_hod_right == true) {
         var form = $("#edit_authuser_form_id")
-        $(form).children().find("select[name=deparment_id]").attr('multiple', true)
-        $(form).children().find("#department_label").hide()
+        // $(form).children().find("select[name=deparment_id]").attr('multiple', true)
+        // $(form).children().find("#department_label").hide()
     }
     if (status) {
         for (const [key, value] of Object.entries(data.obj)) {
@@ -122,7 +120,7 @@ $(document).on("click", ".seperate-edit-click-class", function () {
             if (obj_inst.length > 1) {
                 $("#" + edit_div_id).children().find("input[value='" + value + "']").prop("checked", true);
             }
-            else if(obj_inst.attr('name')=='deparment_id'){
+            else if(obj_inst.attr('name')=='department_id'){
                 obj_inst.val(value);
                 var mythis = $(obj_inst)
                 designationOfDepartment(mythis)
@@ -152,7 +150,7 @@ $("#edit_authuser_form_id").on("submit",async function (e) {
     if ($("#edit_authuser_form_id").valid()) {
         const button = hideSubmitButton($(this).attr("id"));
         const formData = $(this).serializeArray();
-        const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ["deparment_id"]);
+        const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ["department_id"]);
         const submit_url = $(this).data("url");
         const submit_method = $(this).data("method");
         
@@ -160,7 +158,7 @@ $("#edit_authuser_form_id").on("submit",async function (e) {
         var { status, data } =await sendRequestPromise(submit_method, submit_url, json_obj);
         if (status) {
             remove_custom_error_classes();
-            var department = $(this).find("select[name=deparment_id]")
+            var department = $(this).find("select[name=department_id]")
             department.attr("multiple",false)
             department.find("option:first").prop("selected", true)
             // $(this).find("select[name=department_id] option:first").prop("selected", true);
@@ -200,7 +198,7 @@ $("body").on("keypress", "input[type=date]", function (e) { e.preventDefault(); 
 
 $(document).on('click change', 'select[name=role_id]', function () {
 
-    $("#create_authuser_form_id").children().find("select[name=deparment_id]").attr('multiple', false)
+    $("#create_authuser_form_id").children().find("select[name=department_id]").attr('multiple', false)
 
     var form = $(this).parents('form:first');
 
@@ -209,15 +207,14 @@ $(document).on('click change', 'select[name=role_id]', function () {
     // var lowercase_role = rolename? rolename.toLowerCase():"";
 
     if (righType == "True") {
-        $('select[name=deparment_id] option:eq(1)').attr('selected', 'selected');
-        // $(form).children().find("#selectdepartmentoption").attr('disabled',true)
-        // $(form).children().find("#selectdepartmentoption").removeAttr('selected')
-        $(form).children().find("select[name=deparment_id]").attr('multiple', true)
-        $(form).children().find("#department_label").hide()
+        $('select[name=department_id] option:eq(1)').attr('selected', 'selected');
+
+        // $(form).children().find("select[name=deparment_id]").attr('multiple', true)
+        // $(form).children().find("#department_label").hide()
 
     } else {
-        $('select[name=deparment_id] option:eq(0)').attr('selected', 'selected');
-        $(form).children().find("select[name=deparment_id]").attr('multiple', false)
+        $('select[name=department_id] option:eq(0)').attr('selected', 'selected');
+        $(form).children().find("select[name=department_id]").attr('multiple', false)
         $(form).children().find("#department_label").show()
     }
 
@@ -264,6 +261,8 @@ $(document).on('change', 'select[name=department_id]', function (e) {
 })
 
 function designationOfDepartment(mythis){
+    console.log("geo g");
+    
     let csr = $("input[name=csrfmiddlewaretoken]").val();
     const submit_method = "POST"
     const submit_url = $(mythis).attr('data-url')

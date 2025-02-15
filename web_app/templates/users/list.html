@@ -199,7 +199,7 @@
         <div class="card-body">
             <h5 class="card-title-sm">Edit User</h5>
 
-            <form class="row mb-3" id="edit_authuser_form_id" data-method="POST" data-url="{% url 'authuser' %}">
+            <form class="row mb-3" id="edit_authuser_form_id" data-method="POST" data-url="{% url 'update_specific_user' %}">
                 {% csrf_token %}
                 <input type="hidden" name="hidden_id" id="hidden_id_id">
                 <!-- FIRST NAME -->
@@ -370,7 +370,7 @@
         <div class="card-body">
             <h5 class="card-title-sm">User Listing</h5>
             <div class="table-responsive">
-                <table id="authuser_datatable_id" class="table table-striped datatable display" data-url="">
+                <table id="authuser_datatable_id" class="table table-striped datatable display" data-url="{% url 'list_authuser_json' %}">
                     <thead>
                         <tr>
                             <th>User Name</th>
@@ -402,7 +402,7 @@
                          
                             <td>
                                 <div class="edit-icon-class seperate-edit-click-class" data-create-form-id="create_authuser_form_id"
-                                    data-detail-url=""
+                                    data-detail-url="{% url 'get_specific_user' %}"
                                     data-div-id="edit_authuser_id" data-method="POST"
                                     data-object-uuid="{{user.id}}"><i class="bi bi-pencil-square"></i></div>
                             </td>
@@ -418,7 +418,7 @@
                             <td>
                                 {% if user.show_resend_activation_link_button %}
                                     <div class="edit-icon-class h4 re-generate-activation-link-click-class"
-                                        data-generate-url=""
+                                        data-generate-url="{% url 'generate_new_activiation_link' %}"
                                         data-object-id="{{user.id}}" data-object-method="POST"
                                         id="id_{{user.id}}">
                                         <i class="bi bi-arrow-clockwise"></i>
