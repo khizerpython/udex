@@ -1,0 +1,47 @@
+{% load static %}
+
+<head>
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta Http-Equiv="Cache-Control" Content="no-cache"/>
+    <meta Http-Equiv="Pragma" Content="no-cache"/>
+    <meta Http-Equiv="Expires" Content="0"/>
+    <link href="{% static 'image/favicon.png' %}" rel="icon">
+    <link href="{% static 'image/favicon.png' %}" rel="apple-touch-icon">
+    <link href="{% static '/non_auth/css/font.google.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/non_auth/css/font-awesome.css' %}" crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static '/non_auth/css/style.css' %}">
+</head>
+
+<body class="img js-fullheight login-body">
+    <section class="ftco-section">
+        <div class="container w-50">
+            <div class="overlay">
+                <div class="row justify-content-center">
+                    <div class="col-md-12 text-center mb-5">
+                        <h2 class="heading-section d-none d-sm-block d-sm-none d-md-block">UNIVERSAL DELIVERY EXPRESS</h2>
+                        <h2 class="heading-section d-block d-sm-none d-none d-sm-block d-md-none">UDEX</h2>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 col-lg-8">
+                        <div class="login-wrap p-0">
+                            <h3 class="mb-4 text-center small_text">An email to reset your password has been sent to your registered email address. Please check your inbox and reset your password.</h3>
+                            <div class="container form-group d-md-flex">
+                                <div class="w-100 text-md-center">
+                                    <a href="{% url 'login_url' %}" style="color: #fff">Back to login?</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static '/non_auth/js/jquery-3.6.3.js' %}"></script>
+    <script src="{% static '/non_auth/js/popper.min.js' %}"></script>
+    <script src="{% static '/non_auth/js/bootstrap.min.js' %}"></script>
+</body>

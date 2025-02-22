@@ -26,3 +26,20 @@ def send_new_user_welcome_email(subject, to_email, data, request=None) -> int:
         email_sent = 0
     
     return email_sent
+
+
+def send_generic_email(subject, to_email, data, request=None) -> int:
+    if subject is None: 
+        return 0
+    
+    html_message = render_to_string(template_name=f"email_templates/generic_notification.html", context=data, request=request)
+
+    try:
+        email_sent = EmailMultiAlternatives(subject=subject, body="UDEX Email Notification", to=[to_email] if isinstance(to_email, str) else to_email)
+        email_sent.attach_alternative(html_message, 'text/html')
+        email_sent = email_sent.send()
+    except Exception as e:
+        email_sent = 0
+    
+    
+    return email_sent

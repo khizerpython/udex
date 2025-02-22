@@ -1,0 +1,146 @@
+{% load static %}
+{% load get_url %}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{page_title}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+
+  <style type="text/css" rel="stylesheet">
+    @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+    /* Take care of image borders and formatting */
+
+    img {
+      max-width: 600px;
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    a {
+      text-decoration: none;
+      border: 0;
+      outline: none;
+      color: #bbbbbb;
+    }
+
+    a img {
+      border: none;
+    }
+
+    /* General styling */
+
+    td,
+    h1,
+    h2,
+    h3 {
+      font-family: Helvetica, Arial, sans-serif;
+      /* font-weight: 400; */
+    }
+
+    /* table {
+      border-collapse: collapse !important;
+    } */
+
+    .logo-image-class {
+      content: url("{% email_page_domain %}/static/email/images/header-1-logo.png");
+    }
+
+    .element_center {
+      text-align: center;
+    }
+
+    .border_bottom {
+      border-bottom: 2px solid;
+      border-bottom-color: #c80000;
+    }
+
+    .margin {
+      margin: 12px 12px;
+    }
+
+
+    @media screen {
+
+      td,
+      h1,
+      h2,
+      h3 {
+        font-family: 'Oswald', sans-serif !important;
+      }
+    }
+
+    @media only screen and (max-width: 480px) {
+      table[class="w400"] {
+        width: 400px !important;
+      }
+    }
+  </style>
+</head>
+
+<body style="-webkit-font-smoothing: antialiased;
+-webkit-text-size-adjust: none;
+width: 100%;
+height: 100%;
+color: #37302d;
+background: #ffffff;
+font-size: 16px; padding:0; display:block;">
+  <style type="text/css" rel="stylesheet">
+    @import url('{% email_page_domain %}/static/email/css/fonts.css?family=Oswald&display=swap');
+  </style>
+  <table align="center">
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td>
+              <table style="margin: 0 auto; width: 600px !important; border: 2px solid #c80000">
+                <tr class="element_center border_bottom">
+                  <td valign="center">
+                    <img class="margin" style="content: url('{% email_page_domain %}/static/email/images/header-1-logo.png');"
+                        src="{% email_page_domain %}/static/email/images/header-1-logo.png" alt="RapidCompute">
+                  </td>
+                </tr>
+                <tr class="element_center">
+                  <td style="color: #000; font-size: 28px; padding-top: 4%; text-decoration: underline;">
+                    {{notification_title}}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table style="margin: 10px;">
+                      <tr>
+                        <td style="
+                           width: 100%; 
+                           text-align: start;
+                           font-family: 'Calibri', sans-serif;
+                           ">
+                          {{msg |safe}}
+                          <br>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr class="element_center">
+                  <td style="padding: 0px 35px 0px 35px; color:#000; font-size: 12px;">
+                    <br>
+                    <div class="copyright">
+                      © {% now "Y" %} <strong><span>Universal Delivery Express</span></strong>.
+                      </div>
+                      <br><br>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
