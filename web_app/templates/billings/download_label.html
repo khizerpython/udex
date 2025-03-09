@@ -1,0 +1,402 @@
+{% load query_filter %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Libre Barcode 39' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+EAN13+Text&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
+
+    <style>
+        ol {
+            list-style-type: none;
+            counter-reset: item;
+            padding: 0;
+        }
+
+        .custom-start {
+            counter-reset: item 8;
+            /* Set the starting value for the second column */
+        }
+
+        li {
+            counter-increment: item;
+            margin-bottom: 10px;
+        }
+
+        li::before {
+            content: counter(item);
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .noselect {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: 'Libre Barcode 39 Text', cursive;
+            font-size: 40px;
+            background: none;
+            border: none;
+        }
+
+        button:before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 5px;
+            transform: translateX(-3px) translateY(-5px);
+            background: rgba(255, 0, 0, 0.0);
+            transition: 500ms;
+        }
+
+        button:hover:before {
+            animation: line 500ms forwards;
+        }
+
+        button:hover {
+            animation: blink 500ms 300ms;
+        }
+
+        @keyframes line {
+            from {
+                background: rgba(255, 0, 0, 0.8);
+            }
+
+            to {
+                background: rgba(255, 0, 0, 0.8);
+                transform: translateX(-3px) translateY(38px);
+            }
+        }
+
+        @keyframes blink {
+            from {
+                color: #eee;
+            }
+
+            to {
+                color: black;
+            }
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
+
+    <title>skylift courier</title>
+</head>
+
+<body>
+    <br><br>
+    <div id="download_invoice">
+        <br><br>
+        <div style="border: 2px solid black; margin: 2%;">
+            <h4><b>&nbsp;Invoice</b></h4>
+        </div>
+
+        <!-- DATE AND BARCODE -->
+        <div class="row" style="margin: 2%;">
+            <!-- Left col -->
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Date: &nbsp;&nbsp;&nbsp; </b></div>
+                    <div class="col-8">
+                        <p>{{bill.created_at |date:"M d, Y"}}</p>
+                        <hr>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Right col -->
+            <div class="col-6">
+                <button class="noselect">{{bill.tracking_number}}</button>
+            </div>
+        </div>
+        <!-- SHIPPER AND CONSINEE DETAILS -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6"><b>SHIPPER</b></div>
+            <div class="col-6"><b>CONSIGNEE</b></div>
+        </div>
+        <!-- COMPANY NAME -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Company Name</b></div>
+                    <div class="col-8">
+                        <p>{{bill.shipper_company_name}}</p>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Company Name</b></div>
+                    <div class="col-8">{{bill.reciever_company_name}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Address -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Address</b></div>
+                    <div class="col-8">{{bill.shipper_address}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Address</b></div>
+                    <div class="col-8">{{bill.reciever_address}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Town/Area Code -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Town/Area Code</b></div>
+                    <div class="col-8">{{bill.shipper_post_code}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Town/Area Code</b></div>
+                    <div class="col-8">{{bill.reciever_post_code}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- State/Country -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>State/Country</b></div>
+                    <div class="col-8">Pakistan
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>State/Country</b></div>
+                    <div class="col-8">{{bill.reciever_country}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Contact Name -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Contact Name</b></div>
+                    <div class="col-8">{{bill.shipper_contact_person}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Contact Name</b></div>
+                    <div class="col-8">{{bill.reciever_contact_person}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Phone/Mobile No -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Phone/Mobile No</b></div>
+                    <div class="col-8">{{bill.shipper_phone_number}} | {{bill.shipper_mobile_number}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Phone/Mobile No</b></div>
+                    <div class="col-8">{{bill.reciever_phone_number}} | {{bill.reciever_mobile_number}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Email -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6">
+                <!-- <div class="row">
+                <div class="col-4"><b>Email</b></div>
+                <div class="col-8"></div>
+            </div> -->
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Email</b></div>
+                    <div class="col-8">{{bill.reciever_email}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <!-- No of Items -->
+        <div class="row" style="margin: 2%;">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>No of Items</b></div>
+                    <div class="col-8">{{bill.pieces}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                
+                    <div class="row">
+                        <div class="col-4"><b>Total Weight</b></div>
+                        <div class="col-8">{{bill.weight}}
+                            <hr>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+        
+        <!-- dimensions -->
+        <div class="row" style="margin: 2%;">
+
+
+
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><b>Dimensions</b></div>
+                    <div class="col-8">{{volumetric_dimension | floatformat:-2}}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+            </div>
+        </div>
+
+
+        <!-- Dimensions -->
+        <div class="row" style="margin: 2%;">
+            <h4><b>Dimensions</b></h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Serial #</th>
+                        <th scope="col">Item Desc</th>
+                        <th scope="col">Country of origin</th>
+                        <th scope="col">quantity</th>
+                        <th scope="col">Unit Value</th>
+                        <th scope="col">Line total</th>
+                        <th scope="col">Hs code</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for dimension_key, dimension_value in bill.data.invoice_details.items %}
+                    <tr>
+                        <th scope="row">{{dimension_key}}</th>
+                        <td>{{dimension_value.hs_title}}</td>
+                        <td>Pakistan</td>
+                        <td>{{dimension_value.quantity}}</td>
+                        <td>{{dimension_value.price}}</td>
+                        <td>{{dimension_value.total}}</td>
+                        <td>{{dimension_value.hs_code}}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <hr style="margin: 2%;">
+
+        <div class="row" style="margin: 2%;">
+            <p>I declare that the information is true and the best of my knowledge and the goods are of <b>Pakistan</b>
+                origin.</p>
+            <p>We <b>{{bill.shipper_company_name}}</b> certify the particulars and quantity of the goods specified in
+                this document are the goods which are submitted for clearance for export out of <b>Pakistan</b></p>
+            <br>
+            <div class="col-3">
+                <hr>
+            </div>
+            <p>Designation of Authorised Signatory</p>
+            <br><br><br>
+            <div class="col-3">
+                <hr>
+                <p>Signature/Stamp</p>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <script src="{% static '/js/file-downloads/jspdf.umd.min.js' %}"></script>
+    <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/js/file-downloads/html2canvas.min.js' %}"></script>
+    <script src="{% static '/js/file-downloads/purify.min.js' %}"></script>
+
+
+    <script>
+        function downloadPDF() {
+            window.jsPDF = window.jspdf.jsPDF;
+            var pdf = new jsPDF();
+            // var pdf = new jsPDF('p', 'mm', 'a4');
+            
+
+            // Render HTML to canvas and then add to PDF
+            html2canvas(document.querySelector("#download_invoice"), {
+                scale: 2 // Adjust the scale factor here (e.g., 2 for double the resolution)
+            }).then(canvas => {
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+                pdf.save("invoice.pdf");
+            });
+
+        }
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                downloadPDF();
+            }, 1000);
+        });
+    </script>
+
+</body>
+
+</html>

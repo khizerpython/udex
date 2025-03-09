@@ -7,3 +7,4 @@ from web_app.models.failed_login import *
 from web_app.models.menus import *
 from web_app.models.status import *
 from web_app.models.failed_reset_password import *
+from web_app.models.billings import *

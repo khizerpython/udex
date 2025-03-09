@@ -1,0 +1,400 @@
+{% load static %}
+
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <style>
+        ol {
+            list-style-type: none;
+            counter-reset: item;
+            padding: 0;
+        }
+
+        .custom-start {
+            counter-reset: item 8;
+            /* Set the starting value for the second column */
+        }
+
+        li {
+            counter-increment: item;
+            margin-bottom: 10px;
+        }
+
+        li::before {
+            content: counter(item);
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .billing_p {
+            font-size: x-large;
+            margin-bottom: auto;
+        }
+    </style>
+
+    <title>skylift courier</title>
+</head>
+
+<body>
+    <!-- header div -->
+    <div style="margin: 110px;" id="download_bill">
+        <br>
+        <div class="row">
+            <div class="col-8">
+                <img src="{% static '/logo/skyliftcourierlogo.png' %}" alt="Skylift Courier"
+                    class="brand-image img-circle  elevation-3" style="height: 152px;margin-left: 82px;">
+            </div>
+            <div class="col-4" style="text-align:center;margin-top: 87px; background-color: black; color: white;">
+                <h4 style="margin-top: 27px;"><b>
+                        {% if bill.shipment_id.name == 'Document'%} DOX {% else %} WPX{% endif%}</b></h4>
+            </div>
+        </div>
+
+        <div class="row" style="border: 2px solid black;">
+            <!-- First col -->
+
+            <div class="col-4" style="border: 2px solid black;">
+                <div class="row">
+                    <div class="col-1" style="background-color: darkblue; color: white; text-align: center;"><b>1</b>
+                    </div>
+                    <div class="col-7" style="border: 2px solid black;">
+                        <div class="row">
+                            <div class="col-12"><b>CUSTOMER REFERENCE</b></div>
+                            <div class="col-12">{{bill.shipper_reference}}</div>
+                            <!-- <div class="col-12">Airway bill number</div>
+                            <div class="col-12"><b>{{bill.tracking_number}}</b></div> -->
+                        </div>
+                    </div>
+                    <div class="col-4" style="border: 2px solid black;">
+                        <h3><b>{{bill.payment_id}}</b></h3>
+                    </div>
+                </div>
+                <div class="row" style="letter-spacing:1.27px">
+                    <div class="col-1"
+                        style="border: 2px solid black; overflow: hidden;word-wrap: break-word;display: flex; flex-direction: column;width: 40px; background-color: darkgray;">
+                        <b>SHIPPER</b>
+                    </div>
+                    <div class="col-11">
+                        <p class="billing_p">{{bill.shipper_contact_person}}</p>
+                        <p class="billing_p">{{bill.shipper_address}}</p>
+                        <p class="billing_p">{{bill.shipper_post_code}}</p>
+                        <p class="billing_p">{{bill.shipper_state}}</p>
+                        <p class="billing_p">{{bill.shipper_city}}</p>
+                        <p class="billing_p">{{bill.shipper_ntn_cnic}}</p>
+                        <p class="billing_p"><b>Tel: </b>{{bill.shipper_phone_number}}</p>
+                        <p class="billing_p"><b>Mob: </b>{{bill.shipper_mobile_number}}</p>
+
+                    </div>
+                </div>
+                <div class="row" style="background-color: darkgray; letter-spacing:1.27px">
+                    <div class="col-1"><b>3</b></div>
+                    <div class="col-11"><b>SENDER'S AUTHORIZATION AND SIGNATURES</b></div>
+                </div>
+                <div class="row" style="letter-spacing:1.27px">
+                    <p>I/WE AGREE THAT THE CARRIER STANDARD TERMS AND CONDITIONS APPLY TO THIS SHIPMENT AND LIMITS THE
+                        CARRIER LIABILITY.
+                        THE WARSAW CONVENTION MAY ALSO APPLY . TERMS AND CONDITIONS AVAILABLE ON REQUEST
+                    </p>
+                </div>
+                <div class="row" style="margin-top: 80px; letter-spacing:1.27px">
+                    <div class="col-6"><b>SENDER'S SIGNATURE</b></div>
+                    <div class="col-6"><b>Date :</b>{{bill.created_at}}</div>
+                </div>
+                <div class="row" style="background-color: darkgray; letter-spacing:1.27px">
+                    <b>PROOF OF DELIVERY (POD)</b>
+                </div>
+                <div class="row" style="margin-bottom: 40px; letter-spacing:1.27px">
+                    <div class="col-6"><b>RECIEVER'S SIGNATURE</b></div>
+                    <div class="col-6"><b>DATE</b></div>
+
+                </div>
+
+                <div class="row" style="margin-top: 40px; letter-spacing:1.27px">
+                    <div class="col-6"><b>PRINT NAME(CAPITALS LETTERS)</b></div>
+                    <div class="col-6"><b>TIME</b></div>
+
+                </div>
+            </div>
+            <!-- Second Col -->
+            <div class="col-4" style="border: 2px solid black;">
+                <div class="row" style="text-align: center;">
+                    <div class="col-4" style="border: 2px solid black;">
+                        <h3><b>KHI</b></h3>
+                    </div>
+                    <div class="col-8" style="border: 2px solid black;">
+                        <h3><b>{{bill.tracking_number}}</b></h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1"
+                        style="border: 2px solid black; overflow: hidden;word-wrap: break-word;display: flex; flex-direction: column;width: 39px;">
+                        <div class="row">
+
+                            <h3 style="margin-bottom: revert-layer;background-color: darkblue; color: white; ">2</h3>
+                            <br>
+                        </div>
+                        <div class="row">
+
+                            <b style="margin-top:-8px; background-color: darkgray;">CONSIGNEE</b>
+                        </div>
+                    </div>
+                    <div class="col-11" style="letter-spacing:2.27px">
+                        <p class="billing_p">{{bill.reciever_contact_person}}</p>
+                        <p class="billing_p">{{bill.reciever_address}}</p>
+                        <p class="billing_p">{{bill.reciever_city}}</p>
+                        <p class="billing_p">{{bill.reciever_state}}</p>
+                        <p class="billing_p">{{bill.reciever_country}}</p>
+                        <p class="billing_p"><b>{{bill.reciever_post_code}}</b></p>
+                        <p class="billing_p"><b>{{bill.reciever_email}}</b></p>
+                        <p class="billing_p"><b>Tel: </b>{{bill.reciever_phone_number}}</p>
+                        <p class="billing_p"><b>Mob: </b>{{bill.reciever_mobile_number}}</p>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3" style="border: 2px darkgray; background-color: darkgray;">
+                        <h4><b>*DAP*</b></h4>
+                    </div>
+                    <div class="col-9"
+                        style="border-bottom: 3px solid darkgray;border-top: 3px solid darkgray; letter-spacing: 2.27px;">
+                        <div class="row">
+                            <strong>DECLARED VALUE FOR CUSTOMS</strong>
+                        </div>
+                        <div class="row" style="margin-left: 2%;">
+                            <p class="billing_p"><b>{{total_price}}</b></p>
+                            <!-- {% for key, invoice_detail in bill.data.invoice_details.items %}
+                            <b>{{ invoice_detail.price }} $</b><br>
+                            {% endfor %} -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px; text-align: center;">
+                    <div class="row" style="font-size: 35px; margin-top: 50px;">
+                        <b>Tracking Number</b>
+                    </div>
+                    <div class="row" style="font-size: 35px; margin-top: 10px; margin-left: 27%;">
+                        {{bill.tracking_number}}
+                    </div>
+                    <!-- <h4 style="font-size: 35px; margin-top: 50px;">Thank You For working with us</h4> -->
+
+                </div>
+            </div>
+            <!-- Third Col -->
+            <div class="col-4" style="border: 2px solid black;letter-spacing:1.27px">
+                <div class="row" style="background-color: darkgray; text-align: center;"><b>CUSTOMER REFERRENCE</b>
+                </div>
+                <div class="row" style="margin-left: 0px;"><b>{{bill.shipper_contact_person}}</b></div>
+
+                <div class="row" style="background-color: darkgray;">
+                    <div class="col-1" style="background-color: darkblue; color: white;"><b>4</b></div>
+                    <div class="col-11" style="background-color: darkgray; text-align: center;"><b>SERVICE TYPE</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <b>{{bill.service_id}}</b>
+                </div>
+                <div class="row"><b>Full Description of Contents</b></div>
+                <div class="row" style="margin-bottom:30px;">
+                    {% for key, invoice_detail in bill.data.invoice_details.items %}
+                    <p>{{ invoice_detail.hs_title }}</p><br>
+                    {% endfor %}
+
+
+                </div>
+                <div class="row" style="margin-bottom:30px;">
+                    <hr>
+                    <b>Special Instructions</b>
+                </div>
+                <div class="row" style="border-bottom: 2px solid darkgray;">
+                    <div class="col-1" style="background-color: darkblue; color: white;"><b>5</b></div>
+                    <div class="col-11" style="background-color: darkgray; text-align: center;"><b>SIZE & WEIGHT</b>
+                    </div>
+                </div>
+                <div class="row" style="border-bottom: 2px solid darkgray;">
+                    <div class="col-8">NO. OF PIECES : <b>{{bill.pieces}}</b></div>
+                </div>
+                <div class="row" style="border-bottom: 2px solid darkgray; margin-bottom: 100px;">
+                    <div class="col-8">WEIGHT : <b>{{bill.weight}}</b></div>
+                </div>
+
+                <div class="row" style="border-bottom: 2px solid darkgray;">
+                    <div class="col-1" style="background-color: darkblue; color: white;"><b>6</b></div>
+                    <div class="col-11" style="background-color: darkgray; text-align: center"><b>THIRD PARTY NUMBER</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="letter-spacing: 2px;"><b>SENDER COPY</b></div>
+        <div class="row" style="text-align: center;">
+            <h4><b>STANDARD TRADING CONDITIONS</b></h4>
+        </div>
+        <div class="row" style="letter-spacing: 2px;">
+            <p>By tendering goods for transport by <b>SKYLIFT COURIER</b> the consignor agrees to the following
+                conditions :</p>
+        </div>
+        <div class="row" style="letter-spacing: 2px;">
+            <div class="col-6">
+                <ol>
+                    <li>
+
+                        <b>Definition : </b>
+                        <p style="margin-left: 23px;">"SkyLiftCourier" refers to SKYLIFTCOURIER (whether acting directly
+                            or through agents).
+                            "Consignor" or "Shipper" is the sender of goods for transport. "Consignment" includes goods,
+                            parcels,
+                            or packages tendered by the Consignor to SkyliftCourier.</p>
+                    </li>
+                    <li>
+
+                        <b>Consignment Note :</b>
+                        <p style="margin-left: 23px;">Each Consignment must be properly addressed, accompanied by
+                            SkyliftCourier's Consignment Note, completed and
+                            signed by the Consignor.The Consignor is responsible for the accuracy of information and is
+                            liable for consequences of false declarations.</p>
+                    </li>
+                    <li>
+
+                        <b>Parties and Sub-contracting</b>
+                        <p style="margin-left: 23px;">Consignor, even if not the owner, is deemed the authorized agent.
+                            SkyliftCourier may sub-contract and engage agents for fulfilling the contract.</p>
+                    </li>
+                    <li>
+
+                        <b>Common Carrier :</b>
+                        <p style="margin-left: 23px;">SkyliftCourier is not a common carrier; it accepts goods under
+                            specific conditions.</p>
+                    </li>
+                    <li>
+
+                        <b>Variations :</b>
+                        <p style="margin-left: 23px;">No waiver or alteration of conditions is allowed.SkyliftCourier's
+                            agents cannot alter or waive conditions; these conditions prevail over conflicting
+                            instructions.</p>
+                    </li>
+                    <li>
+
+                        <b>Liabilities Not Assumed:</b>
+                        <p style="margin-left: 23px;">SkyliftCourier is not liable for loss, costs, or expenses, except
+                            for willful acts, up to US$100 or the cost of reshipping.
+                            Shipper must declare value if limits are deemed insufficient. No liability for special or
+                            consequential damages.</p>
+                    </li>
+                    <li>
+
+                        <b>Consignment Acceptable for Transport:</b>
+                        <p style="margin-left: 23px;">SkyliftCourier reserves the right to inspect, refuse, reject, or
+                            deal with any goods at its discretion.Hazardous
+                            or prohibited materials won't be accepted without special arrangements.</p>
+                    </li>
+
+                    <li>
+                        <b>Unacceptable Goods:</b>
+                        <p style="margin-left: 23px;">SkyliftCourier may return or deal with goods improperly consigned
+                            or undervalued by the Consignor.</p>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-6">
+                <ol class="custom-start">
+                    <li>
+                        <b>Warranties by the Consignor:</b>
+                        <p style="margin-left: 23px;">The Consignor warrants information accuracy, legality, proper
+                            packaging, labeling, and that transport is not illegal.</p>
+                    </li>
+                    <li>
+                        <b>Customs Clearance:</b>
+                        <p style="margin-left: 23px;">SkyliftCourier will make reasonable efforts for customs clearance
+                            but is not liable for penalties due to delays.</p>
+                    </li>
+                    <li>
+                        <b>Charges:</b>
+                        <p style="margin-left: 23px;">Consignor is responsible for all transport, customs, and related
+                            charges.</p>
+                    </li>
+                    <li>
+                        <b>Methods of Transport:</b>
+                        <p style="margin-left: 23px;">SkyliftCourier reserves the right to choose routes and procedures
+                            for transport.</p>
+                    </li>
+                    <li>
+                        <b>Insurance:</b>
+                        <p style="margin-left: 23px;">Insurance is only effected upon express written instructions from
+                            the Consignor.</p>
+                    </li>
+                    <li>
+                        <b>Delivery:</b>
+                        <p style="margin-left: 23px;">Delivery is authorized to the address on the Consignment Note.</p>
+                    </li>
+                    <li>
+                        <b>Lien:</b>
+                        <p style="margin-left: 23px;">SkyliftCourier has the right of detention on goods for sums due.
+                        </p>
+                    </li>
+                    <li>
+                        <b>Claim :</b>
+                        <p style="margin-left: 23px;">Claims must be made in writing within 7 days, contingent on
+                            payment of transport charges.</p>
+                    </li>
+                </ol>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <script src="{% static '/js/file-downloads/jspdf.umd.min.js' %}"></script>
+    <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/js/file-downloads/html2canvas.min.js' %}"></script>
+    <script src="{% static '/js/file-downloads/purify.min.js' %}"></script>
+    <script> 
+ $(document).ready(function() {
+    setTimeout(function() {
+    var html = $("#download_bill");
+
+    var carouselItemsArray = html
+
+    window.jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF(
+        {
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'letter',
+                lineHeight: 2.0,
+                // putOnlyUsedFonts:false
+               }
+    );
+    var totalstr = "";
+    for (var i = 0; i < carouselItemsArray.length; i++) {
+        totalstr += carouselItemsArray[i].innerHTML ;
+        // totalstr += "<br><br><br>" + carouselItemsArray[i].innerHTML + "<br><br><br>";
+    }
+    doc.html(totalstr, {
+        callback: () => {
+            doc.save("Air way bill" + '.pdf');
+        },
+        
+        margin: [5, 0, 5, 10],
+        padding:[10,0,10,10],
+        width: 180,
+        // autoPaging: 'text',
+        windowWidth: 1500,
+        
+    });
+    
+    // $(this).show();
+}, 1000);
+});
+</script>
+
+</body>
+
+</html>

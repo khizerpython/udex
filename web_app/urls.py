@@ -8,6 +8,8 @@ urlpatterns = [
         path("password/", include("web_app.views.reset_password.urls")),
         # path("dashboard/", include("bpm_webapp.views.dashboard.urls")),
         path("auth/", include("web_app.views.auth.urls")),
+        path("", include("web_app.views.billings.urls")),
+        path("", include("web_app.views.locations.urls")),
         # path("department/", include("bpm_webapp.views.department.urls")),
         # path("designation/", include("bpm_webapp.views.designation.urls")),
         # path("docs/", include("bpm_webapp.views.docs.urls")),

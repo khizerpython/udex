@@ -1,0 +1,155 @@
+{% extends 'default/index.html' %}
+{% load static %}
+
+{% block main_body %}
+
+
+<!-- <div class="row"> -->
+<div class="col-lg-12 ">
+
+  <div class="card m-4 skylift-background-color" style="font-family: serif;">
+    <div class="card-body">
+      <button class="btn btn-primary skylift-button-color" id="display-form-id" data-display-form-id="create_billings_form_id" 
+        data-hidden-table-id="bordered-pending" data-hidden-update-form-id="update_billings_form_id"
+        style="font-size: large;">
+        <a id="back-link" style="color: #f9fbd7;" href="{% url 'airway_bill' %}">
+          Back
+        </a>
+      </button>
+      
+
+      
+
+      <!-- Data table -->
+
+      <div class="tab-pane fade show active" id="bordered-pending" role="tabpanel" aria-labelledby="pending-tab" data-url="{% url 'list_airway_bills_json' %}">
+        <div class="table-responsive" style="margin-top: 4%;">
+          <table id="airway_bill_datatable_id" class="table table-striped datatable display" data-url="{% url 'list_airway_bills_json' %}">
+            <thead>
+              <tr>
+                <th>Tracking Number</th>
+                <th>Service</th>
+                <th>Shipper Name</th>
+                <th>Reciever Name</th>
+                <th>Payment</th>
+                <!-- <th>Shipment Type</th> -->
+                <th>Details</th>
+                <th>Locations</th>
+                <th>Add Location</th>
+                <th>Download</th>
+                
+                
+
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for bill in airway_bills %}
+              <tr>
+                <td>{{bill.tracking_number}}</td>
+                <td>{{bill.service_id}}</td>
+                <td>{{bill.shipper_contact_person}}</td>
+                <td>{{bill.reciever_contact_person}}</td>
+                <td>{{bill.payment_id}}</td>
+                <!-- <td>{{bill.shipment_id}}</td> -->
+                <td>
+                  <button class="btn btn-primary skylift-button-color" id="get_billing_details_button" data-get-detail-id="{{bill.id}}"
+                    data-url="{% url 'airway_bill_detail' %}"
+                    style="font-size: large;">Details</button>
+                </td>
+                <td>
+                  <button class="btn btn-primary skylift-button-color" id="airway_bill_location_details_button" data-bill-id="{{bill.id}}" data-method="POST"
+                    data-url="{% url 'airway_bill_locations_details' %}" data-tracking-number="{{bill.tracking_number}}"
+                    style="background: #7a3a05; border-color:#7f3f0b;font-size: large;">Locations</button>
+                </td>
+                <td>
+                  <button class="btn btn-primary skylift-button-color " id="add_airway_bill_location_button" data-bill-id="{{bill.id}}"
+                    data-url="{% url 'airway_bill_locations' %}" data-tracking-number="{{bill.tracking_number}}"
+                    style="font-size: large;">Add Location</button>
+                </td>
+                <td>
+                  <!-- <li><a href="{% url 'download_airway_bill' bill.id %}">Download</a></li> -->
+                  <!-- <button class="btn btn-primary" id="download_billing_details_button" data-get-detail-id="{{bill.id}}" data-tracking-id="{{bill.tracking_number}}"
+                    data-url="{% url 'download_airway_bill' bill.id %}"
+                    style="background: #fd7e14; border-color:#fd790e;font-size: large;">Download</button> -->
+                  <button class="btn btn-primary skylift-button-color" 
+                    style="background: #7a3a05; border-color:#7f3f0b;font-size: large;"><a href="{% url 'download_airway_bill' bill.id %}" target="_blank" style="color: white;">Download</a></button>
+                </td>
+                
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+    </div>
+    <!-- End Div card body -->
+
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<!-- /.card-body -->
+<!-- <div class="card-footer" cont>
+  <button class="btn btn-primary" style="background: #fd7e14; border-color:#7f3f0b;font-size: large;">Create Air Way bill</button>
+  <button class="btn btn-primary" style="background: #7a3a05; border-color:#7f3f0b;font-size: large;">Reset</button>
+</div> -->
+
+</div>
+</div>
+
+</div>
+
+
+
+<!-- </div> -->
+{% endblock %}
+
+{% block "extra_scripts" %}
+
+<script>
+  // Find the button and link elements
+  var button = document.getElementById("display-form-id");
+  var link = document.getElementById("back-link");
+
+  // Add an event listener to the button to redirect when clicked
+  button.addEventListener("click", function() {
+      // Simulate the click event on the link when the button is clicked
+      link.click();
+  });
+</script>
+
+<script src="{% static '/js/file-downloads/html2canvas.min.js' %}"></script>
+
+<script src="{% static '/js/file-downloads/purify.min.js' %}"></script>
+
+<script src="{% static '/js/file-downloads/jspdf.umd.min.js' %}"></script>
+
+<script src="{% static '/validators/billings_location.js' %}"></script>
+
+<script src="{% static '/custom-js/billingslocations/billingslocation.js' %}"></script>
+<script src="{% static '/custom-js/billings/billings.js' %}"></script>
+
+
+{% endblock %}

@@ -1,0 +1,1001 @@
+{% extends 'default/index.html' %}
+{% load static %}
+{% load query_filter %}
+
+{% block main_body %}
+
+
+<!-- <div class="row"> -->
+<div class="col-lg-12 ">
+
+  <div class="card m-4 skylift-background-color" style="font-family: serif;">
+    <div class="card-body mt-4">
+      <button class="btn btn-primary skylift-button-color" id="display-form-id" data-display-form-id="create_billings_form_id"
+        data-hidden-table-id="bordered-pending" data-hidden-update-form-id="update_billings_form_id"
+        style="font-size: large;">Create AirWay Bill</button>
+
+      <button class="btn btn-primary skylift-button-color" id="display-table-id" data-display-table-id="bordered-pending"
+        data-hidden-form-id="create_billings_form_id" data-hidden-update-form-id="update_billings_form_id"
+        style="font-size: large;">Show Data Table</button>
+      
+        <button class="btn btn-primary skylift-button-color" id="location-page" href="{% url 'airway_bill_locations' %}"
+        style="font-size: large;"><a style="color: #FFFFFF;" href="{% url 'airway_bill_locations' %}">Air Way Bill Locations</a></button>
+
+
+      <!-- Create AirWay Bill -->
+      <form class="row mb-3 needs-validation d-none" id="create_billings_form_id" data-method="POST" data-url="{% url 'airway_bill' %}">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-3">
+              <!-- Select Service -->
+              <div class="form-group">
+                <label>Select Service</label>
+                <select name="service_id" class="form-control">
+                  <option>Select Service</option>
+                  {% for service in services%}
+                  <option value={{service.id}}>{{service.name}}</option>
+                  {% endfor %}
+                </select>
+                <div></div>
+              </div>
+            </div>
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Shipper Details</h3>
+            </div>
+            
+
+            <!-- Shipper Company Name -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_company_name">Company Name</label>
+                <input type="text" name="shipper_company_name" class="form-control" id="create_id_shipper_company_name"
+                  placeholder="Enter Company Name">
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Shipper Contant Person -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_contact_person_name">Contact Person Name</label>
+                <input type="text" name="shipper_contact_person" class="form-control"
+                  id="create_id_shipper_contact_person_name" placeholder="Enter Contact Person Name">
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Shipper Refrence -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_reference">Reference</label>
+                <input type="text" name="shipper_reference" class="form-control" id="create_id_shipper_reference"
+                  placeholder="Enter Reference">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person Address -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_address">Address</label>
+                <!-- <input type="text" name="shipper_address" class="form-control" id="create_id_shipper_address"
+                  placeholder="Enter Shipper Address"> -->
+                <textarea class="form-control" name="shipper_address" rows="1" id="create_id_shipper_address"
+                  placeholder="Enter Shipper Address"></textarea>
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person State -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_state">State</label>
+                <input type="text" name="shipper_state" class="form-control" id="create_id_shipper_state"
+                  placeholder="Enter Shipper State">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person City -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_city">City</label>
+                <input type="text" name="shipper_city" class="form-control" id="create_id_shipper_city"
+                  placeholder="Enter Shipper City">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person State Post Code -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_post_code">Postal Code</label>
+                <input type="text" name="shipper_post_code" class="form-control" id="create_id_shipper_post_code"
+                  placeholder="Enter Shipper State Postal Code">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person Mobile Number -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_mobile_number">Mobile Number</label>
+                <input type="number" name="shipper_mobile_number" class="form-control"
+                  id="create_id_shipper_mobile_number" placeholder="Enter Shipper Mobile Number">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person Contact Number -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_shipper_phone_number">Phone Number</label>
+                <input type="number" name="shipper_phone_number" class="form-control"
+                  id="create_id_shipper_phone_number" placeholder="Enter Shipper Phone Number">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person NTN/CNIC -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_ntn_cnic">NTN/CNIC</label>
+                <input type="text" name="shipper_ntn_cnic" class="form-control" id="create_id_shipper_ntn_cnic"
+                  placeholder="Enter Shipper NTN/CNIC">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person Email Address -->
+            <!-- <div class="col-12">
+              <div class="form-group">
+                <label for="create_id_shipper_email_address">Email Address</label>
+                <input type="text" name="shipper_email_address" class="form-control"
+                  id="create_id_shipper_email_address" placeholder="Enter Email Address">
+                <div></div>
+              </div>
+            </div> -->
+
+
+          </div>
+
+          <!-- ====================================== RECIEVER DETAILS ================================================-->
+
+          <div class="row">
+
+            <div class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Reciever Details</h3>
+            </div>
+
+            <!--Reciever Email Address -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_company_name">Company</label>
+                <input type="text" name="reciever_company_name" class="form-control"
+                  id="create_id_reciever_company_name" placeholder="Enter Company Name">
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Reciever Contant Person -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_contact_person_name">Contact Person Name</label>
+                <input type="text" name="reciever_contact_person" class="form-control"
+                  id="create_id_reciever_contact_person_name" placeholder="Enter Contact Person Name">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Address -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_address">Address</label>
+                <!-- <input type="text" name="reciever_address" class="form-control" id="create_id_reciever_address"
+                  placeholder="Enter reciever Address"> -->
+                <textarea class="form-control" name="reciever_address" rows="1" id="create_id_reciever_address"
+                  placeholder="Enter Reciever Address"></textarea>
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Country -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_country">Country</label>
+                <input type="text" name="reciever_country" class="form-control" id="create_id_reciever_country"
+                  placeholder="Enter Reciever Country">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person State-->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_state">State</label>
+                <input type="text" name="reciever_state" class="form-control" id="create_id_reciever_state"
+                  placeholder="Enter Reciever State">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person City-->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_city">City</label>
+                <input type="text" name="reciever_city" class="form-control" id="create_id_reciever_city"
+                  placeholder="Enter Reciever City">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person State Post Code -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_post_code">Postal Code</label>
+                <input type="text" name="reciever_post_code" class="form-control" id="create_id_reciever_post_code"
+                  placeholder="Enter Reciever State Postal Code">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Mobile Number -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_mobile_number">Mobile Number</label>
+                <input type="number" name="reciever_mobile_number" class="form-control"
+                  id="create_id_reciever_mobile_number" placeholder="Enter Reciever Mobile Number">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Contact Number -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_phone_number">Phone Number</label>
+                <input type="number" name="reciever_phone_number" class="form-control"
+                  id="create_id_reciever_phone_number" placeholder="Enter Reciever Phone Number">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Email -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_email">Email</label>
+                <input type="email" name="reciever_email" class="form-control" id="create_id_reciever_email"
+                  placeholder="Enter Reciever Email">
+                <div></div>
+              </div>
+            </div>
+
+
+            <!--Reciever Person EORI NUMBER -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_eori_number">EORI Number</label>
+                <input type="text" name="eori_number" class="form-control" id="create_id_eori_number"
+                  placeholder="Enter EORI Number">
+                <div></div>
+              </div>
+            </div>
+            <!--Reciever Person Fax -->
+            <!-- <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_reciever_fax">Fax</label>
+                <input type="fax" name="reciever_fax" class="form-control" id="create_id_reciever_fax"
+                  placeholder="Enter Reciever Fax">
+                <div></div>
+              </div>
+            </div> -->
+
+
+
+          </div>
+
+          <!-- Shipment Details -->
+
+          <div class="row">
+
+            <div class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Shipment Details</h3>
+            </div>
+
+            <!-- Payment Types -->
+            <div class="col-3">
+              <div class="form-group">
+                <label>Select Payment</label>
+                <select name="payment_id" class="form-control">
+                  <option>Select Payment</option>
+                  {% for payment in payments %}
+                  <option value={{payment.id}}>{{payment.name}}</option>
+                  {% endfor %}
+
+                </select>
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Shipment Type -->
+            <div class="col-3">
+              <div class="form-group">
+                <label>Select Shipment Type</label>
+                <select name="shipment_id" class="form-control">
+                  <option>Select Shipment Type</option>
+                  {% for shipment in shipments %}
+                  <option value={{shipment.id}}>{{shipment.name}}</option>
+                  {% endfor %}
+
+                </select>
+                <div></div>
+              </div>
+            </div>
+
+            <!-- FEDEX number -->
+            <!-- <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_fedex_number">FedEx No</label>
+                <input type="text" name="fedex_number" class="form-control" id="create_id_fedex_number"
+                  placeholder="Enter FedEx Number">
+                <div></div>
+              </div>
+            </div> -->
+
+            <!-- Weight -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_weight">Weight</label>
+                <input type="number" name="weight" class="form-control" id="create_id_weight"
+                  placeholder="Enter Weight">
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Pieces -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_pieces">Peices</label>
+                <input type="number" name="pieces" class="form-control" id="create_id_pieces"
+                  placeholder="Enter Pieces Amount">
+                <div></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Dimensions</h3>
+            </div>
+            <!-- Pieces -->
+
+
+            <div class="col-3">
+              <div class="form-group">
+                <label for="create_id_pieces">Length</label>
+                <input type="number" name="length" class="form-control" id="create_id_length"
+                  placeholder="Enter length">
+                <div></div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="create_id_pieces">Width</label>
+                <input type="number" name="width" class="form-control" id="create_id_width" placeholder="Enter width">
+                <div></div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="create_id_pieces">Height</label>
+                <input type="number" name="height" class="form-control" id="create_id_height"
+                  placeholder="Enter height">
+                <div></div>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="mt-4 text-center">
+                <i class="bi bi-plus-circle-fill" data-include-id="false" data-invoice-details="false"
+                  style="font-size: 35px;"></i>
+              </div>
+            </div>
+
+
+
+
+
+
+          </div>
+
+          <div class="row" id="invoice_details">
+
+            <div class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Invoice Details</h3>
+            </div>
+
+            <!-- First Invoice Detail -->
+
+            <div class="col-3">
+              <div class="form-group">
+                <label for="create_id_hs_title">HS Title</label>
+                <input type="text" name="hs_title" class="form-control" id="create_id_hs_title"
+                  placeholder="Enter HS title">
+                <div></div>
+              </div>
+            </div>
+            
+            <div class="col-2">
+              <div class="form-group">
+                <label for="create_id_hs_code">HS code</label>
+                <input type="text" name="hs_code" class="form-control" id="create_id_hs_code"
+                  placeholder="Enter HS code">
+                <div></div>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-group">
+                <label for="create_id_quantity">Quantity</label>
+                <input type="number" name="quantity" class="form-control" id="create_id_quantity"
+                  placeholder="Enter Quantity">
+                <div></div>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-group">
+                <label for="create_id_price">Price</label>
+                <input type="number" name="price" class="form-control" id="create_id_price" placeholder="Enter Price">
+                <div></div>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-group">
+                <label for="create_id_total">Total</label>
+                <input type="number" name="total" class="form-control" id="create_id_total" placeholder="Enter Price">
+                <div></div>
+              </div>
+            </div>
+
+            <div class="col-1">
+              <div class="mt-4 text-center">
+                <i class="bi bi-plus-circle-fill" data-include-id="false" data-invoice-details="true"
+                  style="font-size: 35px;"></i>
+              </div>
+            </div>
+
+
+
+          </div>
+
+          <div class="card-footer" style="text-align-last: end">
+            <button class="btn btn-primary skylift-button-color" style="font-size: large;">Create
+              Air Way bill</button>
+            <button class="btn btn-primary" id="reset_create_billing_form_id" type="reset"
+              style="background: #7a3a05; border-color:#7f3f0b;font-size: large;">Reset</button>
+          </div>
+
+
+
+
+
+
+        </div>
+        <!--  -->
+
+      </form>
+      <!-- End create Airway Bill -->
+
+
+
+      <!-- Data table -->
+
+      <div class="tab-pane fade show active d-none" id="bordered-pending" role="tabpanel" aria-labelledby="pending-tab" data-url="{% url 'list_airway_bills_json' %}">
+        <div class="table-responsive" style="margin-top: 4%;">
+          <table id="airway_bill_datatable_id" class="table table-striped datatable display" data-url="{% url 'list_airway_bills_json' %}">
+            <thead>
+              <tr>
+                <th>Tracking Number</th>
+                <th>Service</th>
+                <th>Shipper Name</th>
+                <th>Reciever Name</th>
+                <th>Payment</th>
+                <th>Shipment Type</th>
+                <th>Details</th>
+                <th>Update</th>
+                <th>Label</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for bill in airway_bills %}
+              <tr>
+                <td>{{bill.tracking_number}}</td>
+                <td>{{bill.service_id}}</td>
+                <td>{{bill.shipper_contact_person}}</td>
+                <td>{{bill.reciever_contact_person}}</td>
+                <td>{{bill.payment_id}}</td>
+                <td>{{bill.shipment_id}}</td>
+                <td>
+                  <button class="btn btn-primary skylift-button-color" id="get_billing_details_button" data-get-detail-id="{{bill.id}}"
+                    data-url="{% url 'airway_bill_detail' %}"
+                    style="font-size: large;">Details</button>
+                </td>
+                <td>
+                  <button class="btn btn-primary" id="update_airway_bill_button" data-get-update-bill-id="{{bill.id}}"
+                    data-url="{% url 'get_specific_bill_to_update' %}" data-update-form-id="update_billings_form_id"
+                    style="background: #7a3a05; border-color:#7f3f0b;font-size: large;">Update</button>
+                </td>
+                <!-- <td>
+                  <button class="btn btn-primary skylift-button-color" id="update_airway_bill_button" data-get-update-bill-id="{{bill.id}}"
+                    data-url="{% url 'get_specific_bill_to_update' %}" data-update-form-id="update_billings_form_id"
+                    style="font-size: large;">Create Label</button>
+                </td> -->
+                <td>
+                  <button class="btn btn-primary skylift-button-color" 
+                    style="font-size: large;"><a href="{% url 'create_airway_bill_label' bill.id %}" target="_blank" style="color: white;">Create Invoice</a></button>
+                </td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Update AirWay bill form -->
+      <form class="d-none" id="update_billings_form_id" data-method="POST" data-url="{% url 'update_airway_bill' %}">
+        <div class="card-body">
+          <div class="row">
+            <input type="hidden" name="id" class="form-control" 
+                  placeholder="Billing ID">
+            <div class="col-3">
+              <!-- Select Service -->
+              <div class="form-group">
+                <label>Select Service</label>
+                <select name="service_id" class="form-control", name="update_service_id">
+                  <option>Select Service</option>
+                  {% for service in services%}
+                  <option value={{service.id}}>{{service.name}}</option>
+                  {% endfor %}
+                </select>
+                <div></div>
+              </div>
+            </div>
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Shipper Details</h3>
+            </div>
+
+            <!-- Shipper Company Name -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_company_name">Company Name</label>
+                <input type="text" name="shipper_company_name" class="form-control" id="update_id_shipper_company_name"
+                  placeholder="Enter Company Name">
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Shipper Contant Person -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_contact_person_name">Contact Person Name</label>
+                <input type="text" name="shipper_contact_person" class="form-control"
+                  id="update_id_shipper_contact_person_name" placeholder="Enter Contact Person Name">
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Shipper Refrence -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_reference">Reference</label>
+                <input type="text" name="shipper_reference" class="form-control" id="update_id_shipper_reference"
+                  placeholder="Enter Reference">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person Address -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_address">Address</label>
+                <!-- <input type="text" name="shipper_address" class="form-control" id="update_id_shipper_address"
+                  placeholder="Enter Shipper Address"> -->
+                <textarea class="form-control" name="shipper_address" rows="1" id="update_id_shipper_address"
+                  placeholder="Enter Shipper Address"></textarea>
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person State -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_state">State</label>
+                <input type="text" name="shipper_state" class="form-control" id="update_id_shipper_state"
+                  placeholder="Enter Shipper State">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person City -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_city">City</label>
+                <input type="text" name="shipper_city" class="form-control" id="update_id_shipper_city"
+                  placeholder="Enter Shipper City">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person State Post Code -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_post_code">Postal Code</label>
+                <input type="text" name="shipper_post_code" class="form-control" id="update_id_shipper_post_code"
+                  placeholder="Enter Shipper State Postal Code">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person Mobile Number -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_mobile_number">Mobile Number</label>
+                <input type="number" name="shipper_mobile_number" class="form-control"
+                  id="update_id_shipper_mobile_number" placeholder="Enter Shipper Mobile Number">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person Contact Number -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_shipper_phone_number">Phone Number</label>
+                <input type="number" name="shipper_phone_number" class="form-control"
+                  id="update_id_shipper_phone_number" placeholder="Enter Shipper Phone Number">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person NTN/CNIC -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_ntn_cnic">NTN/CNIC</label>
+                <input type="text" name="shipper_ntn_cnic" class="form-control" id="update_id_shipper_ntn_cnic"
+                  placeholder="Enter Shipper NTN/CNIC">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Shipper Person Email Address -->
+            <!-- <div class="col-12">
+              <div class="form-group">
+                <label for="update_id_shipper_email_address">Email Address</label>
+                <input type="text" name="shipper_email_address" class="form-control"
+                  id="update_id_shipper_email_address" placeholder="Enter Email Address">
+                <div></div>
+              </div>
+            </div> -->
+
+
+          </div>
+
+          <!-- ====================================== RECIEVER DETAILS ================================================-->
+
+          <div class="row">
+
+            <div class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Reciever Details</h3>
+            </div>
+
+            <!--Reciever Email Address -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_company_name">Company</label>
+                <input type="text" name="reciever_company_name" class="form-control"
+                  id="update_id_reciever_company_name" placeholder="Enter Company Name">
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Reciever Contant Person -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_contact_person_name">Contact Person Name</label>
+                <input type="text" name="reciever_contact_person" class="form-control"
+                  id="update_id_reciever_contact_person_name" placeholder="Enter Contact Person Name">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Address -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_address">Address</label>
+                <!-- <input type="text" name="reciever_address" class="form-control" id="update_id_reciever_address"
+                  placeholder="Enter reciever Address"> -->
+                <textarea class="form-control" name="reciever_address" rows="1" id="update_id_reciever_address"
+                  placeholder="Enter Reciever Address"></textarea>
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Country -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_country">Country</label>
+                <input type="text" name="reciever_country" class="form-control" id="update_id_reciever_country"
+                  placeholder="Enter Reciever Country">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person State-->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_state">State</label>
+                <input type="text" name="reciever_state" class="form-control" id="update_id_reciever_state"
+                  placeholder="Enter Reciever State">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person City-->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_city">City</label>
+                <input type="text" name="reciever_city" class="form-control" id="update_id_reciever_city"
+                  placeholder="Enter Reciever City">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person State Post Code -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_post_code">Postal Code</label>
+                <input type="text" name="reciever_post_code" class="form-control" id="update_id_reciever_post_code"
+                  placeholder="Enter Reciever State Postal Code">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Mobile Number -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_mobile_number">Mobile Number</label>
+                <input type="number" name="reciever_mobile_number" class="form-control"
+                  id="update_id_reciever_mobile_number" placeholder="Enter Reciever Mobile Number">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Contact Number -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_phone_number">Phone Number</label>
+                <input type="number" name="reciever_phone_number" class="form-control"
+                  id="update_id_reciever_phone_number" placeholder="Enter Reciever Phone Number">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person Email -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_email">Email</label>
+                <input type="email" name="reciever_email" class="form-control" id="update_id_reciever_email"
+                  placeholder="Enter Reciever Email">
+                <div></div>
+              </div>
+            </div>
+
+            <!--Reciever Person EORI NUMBER -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="create_id_eori_number">EORI Number</label>
+                <input type="text" name="eori_number" class="form-control" id="create_id_eori_number"
+                  placeholder="Enter EORI Number">
+                <div></div>
+              </div>
+            </div>
+
+
+            <!--Reciever Person Fax -->
+            <!-- <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_reciever_fax">Fax</label>
+                <input type="fax" name="reciever_fax" class="form-control" id="update_id_reciever_fax"
+                  placeholder="Enter Reciever Fax">
+                <div></div>
+              </div>
+            </div> -->
+
+
+
+          </div>
+
+          <!-- Shipment Details -->
+
+          <div class="row">
+
+            <div class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Shipment Details</h3>
+            </div>
+
+            <!-- Payment Types -->
+            <div class="col-3">
+              <div class="form-group">
+                <label>Select Payment</label>
+                <select name="payment_id" class="form-control">
+                  <option>Select Payment</option>
+                  {% for payment in payments %}
+                  <option value={{payment.id}}>{{payment.name}}</option>
+                  {% endfor %}
+
+                </select>
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Shipment Type -->
+            <div class="col-3">
+              <div class="form-group">
+                <label>Select Shipment Type</label>
+                <select name="shipment_id" class="form-control">
+                  <option>Select Shipment Type</option>
+                  {% for shipment in shipments %}
+                  <option value={{shipment.id}}>{{shipment.name}}</option>
+                  {% endfor %}
+
+                </select>
+                <div></div>
+              </div>
+            </div>
+
+            <!-- FEDEX number -->
+            <!-- <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_fedex_number">FedEx No</label>
+                <input type="text" name="fedex_number" class="form-control" id="update_id_fedex_number"
+                  placeholder="Enter FedEx Number">
+                <div></div>
+              </div>
+            </div> -->
+
+            <!-- Weight -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_weight">Weight</label>
+                <input type="number" name="weight" class="form-control" id="update_id_weight"
+                  placeholder="Enter Weight">
+                <div></div>
+              </div>
+            </div>
+
+            <!-- Pieces -->
+            <div class="col-6">
+              <div class="form-group">
+                <label for="update_id_pieces">Peices</label>
+                <input type="number" name="pieces" class="form-control" id="update_id_pieces"
+                  placeholder="Enter Pieces Amount">
+                <div></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div id="dimensiondiv" class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Dimensions</h3>
+            </div>
+           
+
+
+
+
+
+
+          </div>
+
+          <div class="row" id="invoice_details">
+
+            <div id="invoiceDetailsdiv" class="col-12 mt-2 mb-2 skylift-button-color" style="text-align: center;">
+              <h3 style="margin-top: inherit;">Invoice Details</h3>
+            </div>
+          </div>
+
+          <div class="card-footer" style="text-align-last: end">
+            <button class="btn btn-primary skylift-button-color" style="font-size: large;">Update
+              Air Way bill</button>
+            <!-- <button class="btn btn-primary" id="reset_update_billing_form_id" type="reset"
+              style="background: #7a3a05; border-color:#7f3f0b;font-size: large;">Reset</button> -->
+          </div>
+
+
+
+
+
+
+        </div>
+        <!--  -->
+
+      </form>
+
+
+    </div>
+    <!-- End Div card body -->
+
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<!-- /.card-body -->
+<!-- <div class="card-footer" cont>
+  <button class="btn btn-primary" style="background: #fd7e14; border-color:#7f3f0b;font-size: large;">Create Air Way bill</button>
+  <button class="btn btn-primary" style="background: #7a3a05; border-color:#7f3f0b;font-size: large;">Reset</button>
+</div> -->
+
+</div>
+</div>
+
+</div>
+
+
+
+<!-- </div> -->
+{% endblock %}
+
+{% block "extra_scripts" %}
+<script>
+  let _payments = "{{ payments|get_value_list_in_qs:'id'|safe }}"
+    const _all_payments = JSON.parse(_payments.replaceAll("'", '"'));
+  
+  let _shipments = "{{ shipments|get_value_list_in_qs:'id'|safe }}"
+  const _all_shipments = JSON.parse(_shipments.replaceAll("'", '"'));
+  
+  let _services = "{{ services|get_value_list_in_qs:'id'|safe }}"
+  const _all_services = JSON.parse(_services.replaceAll("'", '"'));
+</script>
+
+<script src="{% static '/validators/billings.js' %}"></script>
+<script src="{% static '/custom-js/billings/billings.js' %}"></script>
+
+
+{% endblock %}
