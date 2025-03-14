@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 urlpatterns = [
-    # path("", include("bpm_webapp.views.default.urls")),
+        path("", include("web_app.views.frontend.urls")),
         path("menu/", include("web_app.views.menu.urls")),
         path("users/", include("web_app.views.users.urls")),
         path("role/", include("web_app.views.role.urls")), 

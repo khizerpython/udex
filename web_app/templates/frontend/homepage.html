@@ -1,0 +1,349 @@
+
+{% load static %}
+{% load query_filter %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Udex Courier - Reliable and Fast Courier Services"
+    />
+    <meta
+      name="keywords"
+      content="courier, delivery, shipping, logistics, Udex Courier"
+    />
+    <meta name="author" content="Udex Courier" />
+    <meta
+      property="og:title"
+      content="Udex Courier - Fast & Reliable Delivery"
+    />
+    <meta
+      property="og:description"
+      content="Experience the best courier service with Udex Courier. Fast, reliable, and secure deliveries at your fingertips."
+    />
+    <meta
+      property="og:image"
+      content="https://www.udexcourier.com/og-image.jpg"
+    />
+    <meta property="og:url" content="https://www.udexcourier.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Udex Courier - Fast & Reliable Delivery"
+    />
+    <meta
+      name="twitter:description"
+      content="Experience the best courier service with Udex Courier. Fast, reliable, and secure deliveries at your fingertips."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.udexcourier.com/twitter-image.jpg"
+    />
+
+    <title>Udex Courier - Fast & Reliable Delivery</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5.3 CDN -->
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+
+    <!-- Bootstrap Icons CDN -->
+    
+    <link rel="stylesheet" href="{% static '/bootstrap-icons/bootstrap-icons.css' %}">
+
+    <!-- Custom CSS (Must Be Loaded After Bootstrap) -->
+    <!-- <link rel="stylesheet" href="./style.css" /> -->
+    <link rel="stylesheet" href="{% static 'css/homepage.css'%}" />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+          <!-- <img src="./assets/logo.svg" alt="Udex Courier" height="40" /> -->
+          <img src="{% static 'image/assets/logo.svg' %}" alt="Udex Courier" height="40" />
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <!-- ms-auto pushes it to the right -->
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            
+            <li class="nav-item">
+              <!-- <a class="nav-link" href="dashboard.html">Dashboard</a> -->
+              <a class="nav-link" href="{% url 'dashboard_view' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login_url' %}">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <h1>
+            Redefining Logistics. Delivering the
+            <span class="primary">Future</span>
+          </h1>
+          <form class="tracking-form">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter Tracking Number"
+            />
+            <button type="submit" class="btn btn-primary">Track</button>
+          </form>
+        </div>
+      </div>
+    </header>
+
+    <!-- Experience Section -->
+    <section class="experience-section section-spacing text-center">
+      <div class="container section-flex mx-auto">
+        <h2 class="display-6 fw-medium">
+          We are an integrated logistics service company with a direct presence
+          in more than 130 countries with our own offices.
+        </h2>
+        <p class="text-muted fs-4">
+          UDEX (Pvt) Limited was established in 2008 and doing freight services,
+          involve the transportation of goods or cargo from one location to
+          another. These services are essential for facilitating trade and
+          commerce both domestically and internationally.
+        </p>
+
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <h3 class="display-1 fw-normal text-primary">16</h3>
+            <p class="text-muted fs-4">
+              Years of <br />
+              Experience
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h3 class="display-1 fw-normal text-primary">130</h3>
+            <p class="text-muted fs-4">
+              Countries of <br />
+              Operation
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Air land and Sea section -->
+    <section class="airland-section">
+      <!-- Text Section -->
+      <div class="container section-spacing airland-flex mx-auto">
+        <h2 class="display-6 fw-medium">
+          Air, Land & Sea – Freight Solutions That Move the World
+        </h2>
+        <p class="fs-4">
+          UDEX services are vital for businesses engaged in export activities
+          that enabling you to move goods efficiently and reliably across
+          different geographical regions. We are working in different modes and
+          specialized in the following services:
+        </p>
+      </div>
+
+      <!-- Image Section -->
+      <div class="airland-image">
+        <img
+          src="{% static 'image/assets/airland.jpg'%}"
+          alt="Air Land & Sea"
+          class="full-height-img"
+        />
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section section-spacing">
+      <div class="container section-flex">
+        <div>
+          <h2 class="display-6 fw-medium">What Our Customers Say</h2>
+          <p class="text-muted fs-4 mt-3">
+            Real experiences. Genuine feedback. See why businesses trust us for
+            their shipping needs!
+          </p>
+        </div>
+
+        <!-- Reviews Grid -->
+        <div class="reviews-grid">
+          <!-- Review 1 -->
+          <div class="card">
+            <p class="fw-light">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
+              iusto porro reiciendis molestias sequi ipsam ad tempora voluptatem
+              autem
+            </p>
+            <div>
+              <span class="fw-bold">John Doe</span><br />
+              <span class="text-muted">Executive Manager</span>
+            </div>
+          </div>
+
+          <!-- Review 2 -->
+          <div class="card">
+            <p class="fw-light">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
+              iusto porro reiciendis molestias sequi ipsam ad tempora voluptatem
+              autem
+            </p>
+            <div>
+              <span class="fw-bold">John Doe</span><br />
+              <span class="text-muted">Executive Manager</span>
+            </div>
+          </div>
+
+          <!-- Review 3 -->
+          <div class="card">
+            <p class="fw-light">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
+              iusto porro reiciendis molestias sequi ipsam ad tempora voluptatem
+              autem
+            </p>
+            <div>
+              <span class="fw-bold">John Doe</span><br />
+              <span class="text-muted">Executive Manager</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-white section-spacing">
+      <div class="container">
+        <div class="row mx-auto">
+          <!-- Column 1 -->
+          <div class="col-md-4">
+            <p class="fw-medium">Company</p>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#" class="text-muted text-decoration-none">About Us</a>
+              </li>
+              <li>
+                <a href="#" class="text-muted text-decoration-none">Careers</a>
+              </li>
+              <li>
+                <a href="#" class="text-muted text-decoration-none">Our Team</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="col-md-4">
+            <p class="fw-medium">Services</p>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#" class="text-muted text-decoration-none">Shipping</a>
+              </li>
+              <li>
+                <a href="#" class="text-muted text-decoration-none">Tracking</a>
+              </li>
+              <li>
+                <a href="#" class="text-muted text-decoration-none">Freight</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 3 -->
+          <div class="col-md-4">
+            <p class="fw-medium">Support</p>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#" class="text-muted text-decoration-none"
+                  >Help Center</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-muted text-decoration-none">FAQs</a>
+              </li>
+              <li>
+                <a href="#" class="text-muted text-decoration-none"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="my-4" />
+
+        <!-- Bottom Section -->
+        <div
+          class="d-flex flex-column flex-md-row justify-content-between align-items-center"
+        >
+          <!-- Logo -->
+          <a href="#">
+            <img src="{% static 'image/assets/logo.svg' %}" alt="Udex Courier" height="40" />
+          </a>
+
+          <!-- Social Media Icons -->
+          <div class="d-flex gap-3">
+            <a href="#" class="text-muted"
+              ><i class="bi bi-facebook fs-4"></i
+            ></a>
+            <a href="#" class="text-muted"
+              ><i class="bi bi-twitter fs-4"></i
+            ></a>
+            <a href="#" class="text-muted"
+              ><i class="bi bi-instagram fs-4"></i
+            ></a>
+            <a href="#" class="text-muted"
+              ><i class="bi bi-linkedin fs-4"></i
+            ></a>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="text-end">
+            <p class="text-muted mb-0">Email: support@udexcourier.com</p>
+            <p class="text-muted mb-0">
+              Address: 1234 Courier St, City, Country
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script> -->
+    <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+  </body>
+</html>
