@@ -1,0 +1,196 @@
+/* Color Variables */
+:root {
+  --primary-color: #f23f40;
+  --white-text: #e3e3e3;
+  --black-color: #232323;
+  --secondary-text: #4a4a4a; /* Lighter version of black */
+  --card-background: #f2f2f2;
+  --sidebar-background: #353a47;
+  --min-x-padding: 20px;
+  --muted-text-dark: rgba(255, 255, 255, 0.4);
+  --sidebar-width: 250px;
+}
+
+/* Apply Bootstrap Theme Overrides */
+body {
+  font-family: "Poppins", sans-serif;
+  color: var(--black-color);
+  background-color: var(--card-background);
+  overflow-x: hidden;
+}
+
+.primary {
+  color: var(--primary-color);
+}
+
+/* Primary Color for Bootstrap Components */
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--white-text) !important;
+  border-radius: 0 !important; /* Removes rounded corners */
+}
+
+/* Primary Button Hover */
+.btn-primary:hover {
+  background-color: #c73233 !important; /* Adjusted darker shade */
+  border-color: #c73233 !important;
+}
+
+/* Card Styling */
+.card {
+  background-color: var(--card-background);
+  color: var(--black-color);
+  border: none;
+}
+
+/* Primary Text */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-muted-dark {
+  color: var(--muted-text-dark) !important; /* Light gray text for dark mode */
+}
+
+/* Secondary Text */
+.text-secondary {
+  color: var(--secondary-text) !important;
+}
+
+/* Limit the max-width of Bootstrap's container */
+@media (min-width: 1700px) {
+  .container {
+    max-width: 1600px; /* Adjusted from Bootstrap's default 1320px */
+  }
+}
+
+/* SIDEBAR STYLING */
+.sidebar {
+  height: 100vh;
+  width: var(--sidebar-width);
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--sidebar-background);
+  color: var(--white-text);
+  transition: all 0.3s;
+  z-index: 1050;
+}
+
+/* Applying padding directly to sidebar will 
+interfere with opening and closing */
+
+.sidebar-container {
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebar-links a {
+  color: var(--muted-text-dark);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  padding: 10px 20px;
+  overflow-x: hidden;
+}
+
+.sidebar-links i {
+  font-size: larger;
+}
+
+.sidebar-links a.active {
+  border-left: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  /* background: rgba(242, 63, 64, 0.2); */
+  font-weight: bold;
+  transition: background 0.3s ease-in-out; /* Smooth transition */
+}
+
+.sidebar-links a:hover {
+  color: var(--primary-color);
+  transition: 0.2s ease-in-out; /* Smooth transition */
+}
+.content {
+  margin-left: var(--sidebar-width);
+  transition: all 0.3s;
+  padding: 10px 40px;
+}
+.content.full {
+  margin-left: 0;
+}
+.backdrop {
+  display: block; /* Ensure it stays in the DOM */
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1049;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1030;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.navbar .btn {
+  border: none;
+}
+
+nav a {
+  color: inherit;
+}
+
+.main-content {
+  margin-top: 60px; /* To prevent content from going under the fixed navbar */
+}
+@media (max-width: 768px) {
+  .sidebar {
+    width: var(--sidebar-width);
+    left: calc(-1 * var(--sidebar-width));
+  }
+  .sidebar.show {
+    left: 0;
+  }
+  .content {
+    margin-left: 0;
+  }
+}
+
+/* Dashboard */
+.dashboard-container {
+  padding: 20px 0;
+}
+
+/* Appbar styling */
+.icon-button {
+  cursor: pointer;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.icon-button:hover {
+  color: var(--primary-color);
+  transition: 0.3s;
+}

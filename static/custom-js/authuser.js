@@ -138,11 +138,18 @@ $(document).on("click", ".seperate-edit-click-class", function () {
         $("#" + edit_div_id).children().find("[name='email']").attr('data-div-id', data.id);
         $("#" + edit_div_id).children().find("[name='employee_id']").attr('data-div-id', data.id);
 
-        $(".section").children().children().addClass("d-none");
+        $(".create-user-parent-div").children().children().addClass("d-none");
         $("#" + edit_div_id).removeClass("d-none");
     }
 })
 
+
+$(document).on("click", ".hide-current-display-another-user-form", function () {
+    
+    const edit_div_id = $(this).data("div-id");
+    $(this).parent().closest(".create-user-parent-div").children().children().removeClass("d-none");
+    $("#" + edit_div_id).addClass("d-none");
+})
 
 $("#edit_authuser_form_id").on("submit",async function (e) {
     e.preventDefault();
@@ -165,7 +172,7 @@ $("#edit_authuser_form_id").on("submit",async function (e) {
             $(this).find("#department_label").removeAttr("style");
             $("#edit_authuser_form_id").trigger("reset");
             refresh_datatable("authuser_datatable_id", {});
-            $(".hide-current-display-another").click();
+            $(".hide-current-display-another-user-form").click();
         }
         showSubmitButton(button);
         return false;

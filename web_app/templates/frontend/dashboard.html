@@ -1,0 +1,172 @@
+{% load static %}
+{% load query_filter %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Udex Courier - Reliable and Fast Courier Services"
+    />
+    <meta
+      name="keywords"
+      content="courier, delivery, shipping, logistics, Udex Courier"
+    />
+    <meta name="author" content="Udex Courier" />
+    <meta
+      property="og:title"
+      content="Udex Courier - Fast & Reliable Delivery"
+    />
+    <meta
+      property="og:description"
+      content="Experience the best courier service with Udex Courier. Fast, reliable, and secure deliveries at your fingertips."
+    />
+    <meta
+      property="og:image"
+      content="https://www.udexcourier.com/og-image.jpg"
+    />
+    <meta property="og:url" content="https://www.udexcourier.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Udex Courier - Fast & Reliable Delivery"
+    />
+    <meta
+      name="twitter:description"
+      content="Experience the best courier service with Udex Courier. Fast, reliable, and secure deliveries at your fingertips."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.udexcourier.com/twitter-image.jpg"
+    />
+
+    <title>Udex Courier - Fast & Reliable Delivery</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5.3 CDN -->
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+
+    <!-- Bootstrap Icons CDN -->
+    
+    <link rel="stylesheet" href="{% static '/bootstrap-icons/bootstrap-icons.css' %}">
+
+    <!-- Custom CSS (Must Be Loaded After Bootstrap) -->
+    <!-- <link rel="stylesheet" href="./dashboard.css" /> -->
+    <link rel="stylesheet" href="{% static 'css/frontend/dashboard.css'%}" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-container">
+        <!-- <div class="text-center">
+          <i class="bi bi-toggle-off display-1"></i>
+        </div> -->
+        <div class="text-center fs-1 fw-lighter">UDEX</div>
+
+        <hr class="hr" />
+
+        <div class="sidebar-links">
+          <!-- <a href="dashboard.html"><i class="bi bi-house-door"></i> Home</a> -->
+          <a href="{% url 'homepage_view' %}"><i class="bi bi-house-door"></i> Home</a>
+          <a href="profile"><i class="bi bi-person"></i> Profile</a>
+          <a href="analytics"><i class="bi bi-bar-chart"></i> Analytics</a>
+          <a href="settings"><i class="bi bi-gear"></i> Settings</a>
+          <a href="{% url 'authuser_list' %}"><i class="bi bi-gear"></i> Users</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backdrop -->
+    <div id="backdrop" class="backdrop"></div>
+
+    <!-- Content -->
+    <div id="content" class="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <i id="toggleSidebar" class="bi bi-list icon-button"></i>
+        <div class="ms-auto d-flex gap-3 align-items-center">
+          <a href="index.html"
+            ><i class="bi bi-box-arrow-right icon-button"></i
+          ></a>
+        </div>
+      </nav>
+
+      <div class="dashboard-container">
+        <div class="pagetitle">
+            <h1>{{page_title}}</h1>
+        </div><!-- End Page Title -->
+        {% block main_body %}
+        {% endblock %}
+
+      </div>
+        {% include 'others/footer.html' %}
+        {% include 'others/modal.html' %}
+        {% include 'others/generic_modal.html' %}
+
+
+        {% include 'others/input_modal.html' %}
+        {% include "others/globals.html" %}
+    </div>
+
+    <script>
+      const sidebar = document.getElementById("sidebar");
+      const content = document.getElementById("content");
+      const backdrop = document.getElementById("backdrop");
+      const toggleSidebar = document.getElementById("toggleSidebar");
+
+      function toggle() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.toggle("show");
+          backdrop.classList.toggle("show");
+        } else {
+          sidebar.classList.toggle("collapsed");
+          content.classList.toggle("full");
+        }
+      }
+
+      toggleSidebar.addEventListener("click", toggle);
+      backdrop.addEventListener("click", () => {
+        sidebar.classList.remove("show");
+        backdrop.classList.remove("show");
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove("collapsed"); // Reset collapsed state in small screens
+          content.classList.remove("full"); // Reset content margin
+          sidebar.classList.remove("show"); // Ensure sidebar hides properly
+          backdrop.classList.remove("show"); // Hide backdrop when resizing
+        } else {
+          sidebar.classList.remove("show"); // Hide mobile sidebar
+          backdrop.classList.remove("show"); // Remove backdrop
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebarLinks = document.querySelectorAll(".sidebar-links a");
+        const currentPath = window.location.pathname; // Get the current route
+
+        sidebarLinks.forEach((link) => {
+          const linkPath = new URL(link.href, window.location.origin).pathname; // Get only the pathname
+
+          // Check if the link's path matches the current path exactly
+          if (currentPath === linkPath) {
+            link.classList.add("active");
+          }
+        });
+      });
+    </script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+    {% block "extra_scripts" %}
+    {% endblock %}
+  </body>
+</html>
