@@ -119,7 +119,7 @@ $("#edit_role_form_id").on("submit",async function(e){
 $(document).on("click", ".hide-current-display-another-role", function () {
     $('#edit_id_menu_ids').multiSelect('deselect_all')
     const edit_div_id = $(this).data("div-id");
-    $(this).parent().closest(".section").children().children().removeClass("d-none");
+    $(".create-role-form-parent-div").children().children().removeClass("d-none");
     $("#" + edit_div_id).addClass("d-none");
 })
 
@@ -207,7 +207,7 @@ $(document).on("click", ".separate-edit-click-class", function(){
         $("#"+edit_div_id).children().find("[name='hidden_id']").val(object_uuid);
        
 
-        $(".section").children().children().addClass("d-none");
+        $(".create-role-form-parent-div").children().children().addClass("d-none");
         $("#"+ edit_div_id).removeClass("d-none");
         
     }
