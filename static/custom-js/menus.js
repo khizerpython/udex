@@ -146,10 +146,19 @@ $(document).on("click", ".separate-edit-click-class", function () {
         }
         $("#" + edit_div_id).children().find("[name='hidden_id']").val(object_uuid);
         $("#" + edit_div_id).children().find("[name='name']").attr('data-div-id', data.id);
-        $(".section").children().children().addClass("d-none");
+        $(".create-menu-form-parent-div").children().children().addClass("d-none");
         $("#" + edit_div_id).removeClass("d-none");
 
     }
+})
+
+$(document).on("click", ".hide-current-display-another-menu-form", function () {
+    
+    const edit_div_id = $(this).data("div-id");
+    console.log($(this).parent());
+    
+    $(".create-menu-form-parent-div").children().children().removeClass("d-none");
+    $("#" + edit_div_id).addClass("d-none");
 })
 
 // Menu Update Js
@@ -188,7 +197,7 @@ $("#edit_menu_form_id").on("submit",async function (e) {
 
             $("#edit_menu_form_id").trigger("reset");
             refresh_datatable("menu_datatable_id", {});
-            $(".hide-current-display-another").click();
+            $(".hide-current-display-another-menu-form").click();
             $("#create_menu_form_id").trigger('reset')
             var label = $('label[class=form-label]')
             label.next('div').html('')

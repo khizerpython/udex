@@ -147,7 +147,9 @@ $(document).on("click", ".seperate-edit-click-class", function () {
 $(document).on("click", ".hide-current-display-another-user-form", function () {
     
     const edit_div_id = $(this).data("div-id");
-    $(this).parent().closest(".create-user-parent-div").children().children().removeClass("d-none");
+    console.log($(this).parent());
+    
+    $(".create-user-parent-div").children().children().removeClass("d-none");
     $("#" + edit_div_id).addClass("d-none");
 })
 
@@ -156,6 +158,7 @@ $("#edit_authuser_form_id").on("submit",async function (e) {
     e.stopPropagation();
     if ($("#edit_authuser_form_id").valid()) {
         const button = hideSubmitButton($(this).attr("id"));
+        
         const formData = $(this).serializeArray();
         const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ["department_id"]);
         const submit_url = $(this).data("url");
