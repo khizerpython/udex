@@ -36,7 +36,8 @@ class AirwayBillView(View):
         return render(request,template_name='billings/list.html', context=context)
     
     def post(self,request):
-        data=json.loads(request.body)
+        data=request.POST
+        print("the data isa :",data)
         dimension = data.get('dimensions')
         invoice_details = data.get('invoice_details')
         form_validation = BillingsForm(data)

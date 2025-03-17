@@ -1,4 +1,4 @@
-{% extends 'default/index.html' %}
+{% extends 'frontend/dashboard.html' %}
 {% load static %}
 {% load query_filter %}
 
@@ -993,6 +993,28 @@
   let _services = "{{ services|get_value_list_in_qs:'id'|safe }}"
   const _all_services = JSON.parse(_services.replaceAll("'", '"'));
 </script>
+
+<script src="{% static '/js/jquery--3.6.3.min.js' %}"></script>
+<script src="{% static '/JQuery-Validator/jquery.validate.min.js' %}"></script>
+<script src="{% static '/JQuery-Validator/additional-methods.min.js' %}"></script>
+<script src="{% static '/toastr/toastr.min.js' %}"></script>
+<script src="{% static '/js/loader-script.js' %}"></script>
+<script src="{% static '/js/mybootstrap-loader-script.js' %}"></script>
+<script src="{% static '/js/cryptojs-aes-format.js' %}"></script>
+<script src="{% static '/js/cryptojs-aes.min.js' %}"></script>
+<script src="{% static '/js/e-d.js' %}"></script>
+<script src="{% static '/js/send-request.js' %}"></script>
+<script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static '/js/datatables.min.js' %}"></script>
+<script src="{% static '/js/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static '/js/constants.js' %}"></script>
+<script src="{% static '/js/quill.js' %}"></script>
+<script src="{% static '/js/quill.min.js' %}"></script>
+<script src="{% static '/js/main.js' %}"></script>
+
+<script src="{% static '/tipsy_tooltip/popper.min.js'%}"></script>
+<script src="{% static '/tipsy_tooltip/tippy-bundle.umd.js'%}"></script>
+<script src="{% static '/js/notification_bell.js' %}"></script>
 
 <script src="{% static '/validators/billings.js' %}"></script>
 <script src="{% static '/custom-js/billings/billings.js' %}"></script>
