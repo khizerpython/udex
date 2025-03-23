@@ -108,15 +108,9 @@ function place_errors(errors, errors_div) {
         var errors_ = errors[element_name].join(", ");
         const element = $('#' + errors_div + 'id_' + element_name);
         element.parents("form").addClass("form-validated");
-        if (element_name == "reason") {
-            element.parents("form").find("div.quill-error").addClass("invalid-feedback").text(errors_);
-            element.parents("form").find(".quill-editor-default").addClass("invalid-feedback");
-            element.parents("form").find(".ql-toolbar").addClass("invalid-feedback");
-        }
-        else {
-            element.attr("type") == "radio" ? element.parents("fieldset").next("div").addClass("invalid-feedback").text(errors_) : element.siblings("div").addClass("invalid-feedback").text(errors_);
-            element.attr("type") == "radio" ? $("input[name='" + element.attr("name") + "']").addClass("invalid-radio") : element.addClass("invalid-feedback");
-        }
+        element.attr("type") == "radio" ? element.parents("fieldset").next("div").addClass("invalid-feedback").text(errors_) : element.siblings("div").addClass("invalid-feedback").text(errors_);
+        element.attr("type") == "radio" ? $("input[name='" + element.attr("name") + "']").addClass("invalid-radio") : element.addClass("invalid-feedback");
+    
     });
 }
 
@@ -137,7 +131,7 @@ function checkFileAttachment(data) {
 function handleSuccess(data) {
     const dec_data = CustomDecrypt(data.data);
     if (dec_data.detail) {
-        toastr.success(dec_data.detail);
+        // toastr.success(dec_data.detail);
         const heading = "Success"
         setGenericModal(heading, dec_data.detail)
     }
@@ -146,12 +140,12 @@ function handleSuccess(data) {
 
 function handleError(jqXhr) {
     const dec_data = CustomDecrypt(jqXhr.responseJSON.data);
-    if (jqXhr.status == 401 || jqXhr.status == 501) {
-        window.location.replace(dec_data.redirect_url);
-    }
+    // if (jqXhr.status == 401 || jqXhr.status == 501) {
+    //     window.location.replace(dec_data.redirect_url);
+    // }
     if (dec_data.detail) {
         const heading = "Error"
-        toastr.error(dec_data.detail);
+        // toastr.error(dec_data.detail);
         setGenericModal(heading, dec_data.detail)
     }
     if (dec_data.errors) {

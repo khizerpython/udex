@@ -48,12 +48,13 @@ class AirwayBillView(View):
             obj = AirwayBill.objects.create(**form_validation.cleaned_data)
             return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} has been initiated successfully"}, status=200)
         else:
-            return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} can not initiated","errors": dict(form_validation.errors.items()), "errors_div": "initiate_"}, status=401)
+            print("the errors are :",form_validation.errors.items())
+            return JsonResponse({"detail": f"Air way bill  can not initiated","errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=401)
 
 class UpdateAirwayBillView(View):
     
     def post(self,request):
-        data=json.loads(request.body)
+        data=request.POST
         dimension = data.get('dimensions')
         id = data.get('id')
         invoice_details = data.get('invoice_details')
@@ -121,7 +122,7 @@ class GetSpecificBillingDetails(View):
         return fields
 
     def _get(self, request, *args, **kwargs):
-        data=json.loads(request.body)
+        data=request.POST
         form_validation = BillingsDetail(data=data)
         if form_validation.is_valid():
             id: str = form_validation.cleaned_data.get("id")
@@ -141,7 +142,7 @@ class GetSpecificBillingDetails(View):
 class GetDataToUpdateSpecificBill(View):
 
     def _get(self, request, *args, **kwargs):
-        data=json.loads(request.body)
+        data=request.POST
         form_validation = BillingsDetail(data=data)
         if form_validation.is_valid():
             id: str = form_validation.cleaned_data.get("id")

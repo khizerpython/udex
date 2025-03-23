@@ -359,6 +359,8 @@ $(document).on('click', "#update_airway_bill_button", function(e){
     var UpdateAirWayBillId = $(this).attr("data-get-update-bill-id")
     var billingUpdateUrl = $(this).attr('data-url')
     var DISPLAY_FORM_ID = $(this).attr('data-update-form-id')
+    console.log(UpdateAirWayBillId);
+    
     var { status, data } = sendRequest("POST", billingUpdateUrl, { "id": UpdateAirWayBillId });
     
     
