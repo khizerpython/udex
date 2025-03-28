@@ -137,33 +137,6 @@ class AuthUser(AbstractBaseUser, ModelUUIDField, CreatedAndUpdatedModelFields,Is
             return constants.ADMIN_DEPART_UUID in [str(d.id) for d in self.deparment_id.all()]
         return False
     
-    @property
-    def is_user_hr_hod(self):
-        if(self.is_user_hod):
-            return constants.HR_DEPART_UUID in [str(d.id) for d in self.deparment_id.all()]
-        return False
-    
-    @property
-    def is_user_cto(self):
-        if(self.is_user_hod):
-            return constants.CTO_DEPART_UUID in [str(d.id) for d in self.deparment_id.all()]
-        return False
-    
-    @property
-    def is_user_ch(self):
-        if(self.is_user_hod):
-            return constants.CH_DEPART_UUID in [str(d.id) for d in self.deparment_id.all()]
-        return False
-    @property
-    def is_user_is(self):
-        if(self.is_user_hod):
-            return constants.INFOSEC_DEPART_UUID in [str(d.id) for d in self.deparment_id.all()]
-        return False
-    @property
-    def is_user_supply_hod(self):
-        if(self.is_user_hod):
-            return constants.SUPPLY_CHAIN_DEPART_UUID in [str(d.id) for d in self.deparment_id.all()]
-        return False
     
 
     
