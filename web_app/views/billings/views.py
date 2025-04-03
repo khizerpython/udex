@@ -35,9 +35,11 @@ class AirwayBillView(View):
         }
         return render(request,template_name='billings/list.html', context=context)
     
+class CreateAirwayBillView(View):
+
+    
     def post(self,request):
         data=request.POST
-        print("the data isa :",data)
         dimension = data.get('dimensions')
         invoice_details = data.get('invoice_details')
         form_validation = BillingsForm(data)
@@ -48,7 +50,6 @@ class AirwayBillView(View):
             obj = AirwayBill.objects.create(**form_validation.cleaned_data)
             return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} has been initiated successfully"}, status=200)
         else:
-            print("the errors are :",form_validation.errors.items())
             return JsonResponse({"detail": f"Air way bill  can not initiated","errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=401)
 
 class UpdateAirwayBillView(View):

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent #add .parent when you make settings a folder
@@ -43,6 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web_app',
 ]
+
+
+LOGIN_REDIRECT_URL = reverse_lazy("homepage_view")
+LOGOUT_REDIRECT_URL = reverse_lazy("login_url")
+LOGIN_URL = reverse_lazy("login_url")
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

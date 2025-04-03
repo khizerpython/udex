@@ -19,7 +19,7 @@ from web_app import constants
 import os
 
 UserModel = get_user_model()
-RESET_PASSWORD_ATTEMPTS_ALLOWED = int(os.getenv("RESET_PASSWORD_ATTEMPTS_ALLOWED", 0))
+RESET_PASSWORD_ATTEMPTS_ALLOWED = int(os.getenv("RESET_PASSWORD_ATTEMPTS_ALLOWED", 10))
 
 
 class CustomResetPasswordForm(PasswordResetForm):
@@ -60,7 +60,7 @@ class CustomResetPasswordForm(PasswordResetForm):
             raise forms.ValidationError("User with given email and username is inactive. Please contact Infosec Depart for further queries.")
         
         current_reset_password_attempts_of_user = FailedResetPasswordAttempt.objects.filter(user_id = user_obj).count()
-
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",current_reset_password_attempts_of_user,"###############",RESET_PASSWORD_ATTEMPTS_ALLOWED)
         if current_reset_password_attempts_of_user >= RESET_PASSWORD_ATTEMPTS_ALLOWED:
             raise forms.ValidationError("You've reached the limit of reset password. You cannot perform this operation further. For further assistance please contact Infosec Depart.")
         user_obj.last_login = timezone.now()
@@ -83,7 +83,7 @@ class CustomResetPasswordForm(PasswordResetForm):
           Dear <strong>{username}</strong>, 
           <br>
           <br>
-          This email was generated against reset password activity performed against your account in BPM Portal.
+          This email was generated against reset password activity performed against your account in UDEX Portal.
           <br>
           <center>
             <a href='{reset_password_url}' style="background-color:#c80000;
@@ -102,7 +102,7 @@ class CustomResetPasswordForm(PasswordResetForm):
             </a>
           </center>
           <br>
-          If you encounter any problems during Reset Account Password process, Please contact Information Security Team of RapidCompute.
+          If you encounter any problems during Reset Account Password process, Please contact Administration.
           <br>
           <br>
           <br>
@@ -110,19 +110,11 @@ class CustomResetPasswordForm(PasswordResetForm):
           <br>
           Information Security
         """
-        is_email_send = global_methods.send_generic_email("Reset Account Password - BPM", to_email, {"page_title": "Reset Account Password", "notification_title": "Reset Account Password", "msg": email_message,})
-        event_kwargs: dict = {
-            "description": f"Reset password link has been sent successfully on {to_email}" if is_email_send == 1 else f"Reset password link has not been sent successfully on {to_email}",
-            "page_name": os.path.basename(__file__),
-            "line_number": 0,
-            "user_ip": client_ip,
-            "status_id": constants.SUCCESS if is_email_send == 1 else constants.FAILURE, 
-            "event_type_id": constants.INSERT_EVENT if is_email_send == 1 else constants.FAILURE_EVENT,
-            "user_id": self._user_obj            
-        }
+        is_email_send = global_methods.send_generic_email("Reset Account Password - UDEX", to_email, {"page_title": "Reset Account Password", "notification_title": "Reset Account Password", "msg": email_message,})
+        
         if is_email_send == 1:
             FailedResetPasswordAttempt.objects.create(failed_login_ip_address=client_ip, generated_url=reset_password_url, user_id=self._user_obj)
-            global_methods.insert_event(**event_kwargs)
+        
 
     def save(
         self,
@@ -203,18 +195,9 @@ class CustomSetPasswordForm(SetPasswordForm):
     def save(self, commit=True):
         password = self.cleaned_data["new_password1"]
         self.user.set_password(password)
-        event_kwargs: dict = {
-            "description": f"Password of user `{self.user.username}` has been reset successfully" if commit else f"Password of user `{self.user.username}` has not been reset successfully",
-            "page_name": os.path.basename(__file__),
-            "line_number": 0,
-            "user_ip": "0.0.0.0",
-            "status_id": constants.SUCCESS if commit else constants.FAILURE, 
-            "event_type_id": constants.INSERT_EVENT if commit else constants.FAILURE_EVENT,
-            "user_id": self.user            
-        }
+        
         if commit:
             self.user.save()
             FailedResetPasswordAttempt.objects.filter(user_id=self.user).delete()
         
-        global_methods.insert_event(**event_kwargs)    
         return self.user

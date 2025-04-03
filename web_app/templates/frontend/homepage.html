@@ -93,18 +93,25 @@
             </li>
             
             <li class="nav-item">
-              <!-- <a class="nav-link" href="dashboard.html">Dashboard</a> -->
-              <a class="nav-link" href="{% url 'dashboard_view' %}">Dashboard</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="#">About</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Contact</a>
             </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <!-- <a class="nav-link" href="dashboard.html">Dashboard</a> -->
+              <a class="nav-link" href="{% url 'dashboard_view' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <!-- <a class="nav-link" href="dashboard.html">Dashboard</a> -->
+              <a class="nav-link" href="{% url 'logout_url' %}">Logout</a>
+            </li>
+            {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'login_url' %}">Login</a>
             </li>
+            {% endif %}
           </ul>
         </div>
       </div>

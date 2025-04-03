@@ -1,5 +1,6 @@
 {% load static %}
 {% load query_filter %}
+{% load get_url %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -79,12 +80,17 @@
           <!-- <a href="dashboard.html"><i class="bi bi-house-door"></i> Home</a> -->
           <a href="{% url 'homepage_view' %}"><i class="bi bi-house-door"></i> Home</a>
           <a href="profile"><i class="bi bi-person"></i> Profile</a>
-          <a href="analytics"><i class="bi bi-bar-chart"></i> Analytics</a>
+          <a href="analytics"><i class="bi bi-bar-chart"></i> Analytics</a> 
           <a href="settings"><i class="bi bi-gear"></i> Settings</a>
           <a href="{% url 'authuser_list' %}"><i class="bi bi-gear"></i> Users</a>
           <a href="{% url 'menu_list' %}"><i class="bi bi-gear"></i> Menus</a>
           <a href="{% url 'list_roles' %}"><i class="bi bi-gear"></i> Roles</a>
-          <a href="{% url 'airway_bill' %}"><i class="bi bi-gear"></i> AirWay Bill</a>
+          <a href="{% url 'airway_bill_list' %}"><i class="bi bi-gear"></i> AirWay Bill</a>
+          {% if side_menus %}
+            {% for menu in side_menus %}
+            <a href="{% url menu.url %}"><i class="bi bi-gear"></i>{{menu.name}}</a>
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
     </div>

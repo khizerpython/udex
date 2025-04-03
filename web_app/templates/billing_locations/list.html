@@ -12,7 +12,7 @@
       <button class="btn btn-primary skylift-button-color" id="display-form-id" data-display-form-id="create_billings_form_id" 
         data-hidden-table-id="bordered-pending" data-hidden-update-form-id="update_billings_form_id"
         style="font-size: large;">
-        <a id="back-link" style="color: #f9fbd7;" href="{% url 'airway_bill' %}">
+        <a id="back-link" style="color: #f9fbd7;" href="{% url 'airway_bill_list' %}">
           Back
         </a>
       </button>
@@ -64,7 +64,7 @@
                 </td>
                 <td>
                   <button class="btn btn-primary skylift-button-color " id="add_airway_bill_location_button" data-bill-id="{{bill.id}}"
-                    data-url="{% url 'airway_bill_locations' %}" data-tracking-number="{{bill.tracking_number}}"
+                    data-url="{% url 'create_airway_bill_locations' %}" data-tracking-number="{{bill.tracking_number}}"
                     style="font-size: large;">Add Location</button>
                 </td>
                 <td>
@@ -127,6 +127,28 @@
 {% endblock %}
 
 {% block "extra_scripts" %}
+
+<script src="{% static '/js/jquery--3.6.3.min.js' %}"></script>
+<script src="{% static '/JQuery-Validator/jquery.validate.min.js' %}"></script>
+<script src="{% static '/JQuery-Validator/additional-methods.min.js' %}"></script>
+<script src="{% static '/toastr/toastr.min.js' %}"></script>
+<script src="{% static '/js/loader-script.js' %}"></script>
+<script src="{% static '/js/mybootstrap-loader-script.js' %}"></script>
+<script src="{% static '/js/cryptojs-aes-format.js' %}"></script>
+<script src="{% static '/js/cryptojs-aes.min.js' %}"></script>
+<script src="{% static '/js/e-d.js' %}"></script>
+<script src="{% static '/js/send-request.js' %}"></script>
+<script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static '/js/datatables.min.js' %}"></script>
+<script src="{% static '/js/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static '/js/constants.js' %}"></script>
+<script src="{% static '/js/quill.js' %}"></script>
+<script src="{% static '/js/quill.min.js' %}"></script>
+<script src="{% static '/js/main.js' %}"></script>
+
+<script src="{% static '/tipsy_tooltip/popper.min.js'%}"></script>
+<script src="{% static '/tipsy_tooltip/tippy-bundle.umd.js'%}"></script>
+<script src="{% static '/js/notification_bell.js' %}"></script>
 
 <script>
   // Find the button and link elements

@@ -10,7 +10,7 @@ import json
 from django.template.loader import render_to_string , get_template
 
 
-class AirwayBillLocationView(View):
+class ListAirwayBillLocationView(View):
 
     def get(self, request):
         # <view logic>
@@ -21,8 +21,12 @@ class AirwayBillLocationView(View):
         }
         return render(request,template_name='billing_locations/list.html', context=context)
     
+    
+class AirwayBillLocationView(View):
+    
     def post(self,request):
-        data=json.loads(request.body)
+        print("the requested post is :",request.POST)
+        data=request.POST
         form_validation = BillingLocationForm(data)
         if form_validation.is_valid():
             location = form_validation.cleaned_data.get('name')
@@ -54,7 +58,7 @@ class AirwayBillLocationDetailsView(View):
             return return_data
     
         def _get(self, request, *args, **kwargs):
-            data=json.loads(request.body)
+            data=request.POST
             form_validation = GetBillingsLocationDetailsForm(data=data)
             if form_validation.is_valid():
                 airway_bill_id = form_validation.cleaned_data.get('airway_bill_id')
@@ -70,7 +74,7 @@ class AirwayBillLocationDetailsView(View):
 
 class AirwayBillLocationDeleteView(View):
         def _get(self, request, *args, **kwargs):
-            data=json.loads(request.body)
+            data=request.POST
             form_validation = GetBillingsLocationDetailsForm(data=data)
             if form_validation.is_valid():
                 try:
