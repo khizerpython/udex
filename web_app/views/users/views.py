@@ -24,7 +24,7 @@ from web_app.models import AuthUser ,Department, Designation, Role, City
 from web_app.forms import CreateAuthUserForm, UpdateAuthUserForm, GenerateUserActivationLinkAgainForm, CustomSetPasswordAndActivateForm
 from web_app.utils import global_methods
 from web_app.constants import *
-# from web_app.core.view_base import BaseViewForAuthenticatedClass, BaseViewForAuthenticatedClassForJsonResponse
+from web_app.core.view_base import BaseViewForAuthenticatedClass, BaseViewForAuthenticatedClassForJsonResponse
 
 
 import os
@@ -41,8 +41,8 @@ INTERNAL_RESET_SESSION_TOKEN = "_password_reset_token"
 frameinfo = getframeinfo(currentframe())
 User = get_user_model()
 
-# class ListAuthUserView(ListView,BaseViewForAuthenticatedClass):
-class ListAuthUserView(ListView):
+class ListAuthUserView(ListView,BaseViewForAuthenticatedClass):
+# class ListAuthUserView(ListView):
     template_name :str = 'users/list.html'
     model = AuthUser
     _page_title: str = "User"
@@ -52,21 +52,18 @@ class ListAuthUserView(ListView):
         departments = Department.objects.filter(is_active=True, is_deleted=False).order_by("name")
         designations = Designation.objects.all()
         roles = Role.objects.filter(is_active=True, is_hidden=False).order_by('-created_at')
-        # original_roles = OriginalRole.objects.filter(is_active=True,is_deleted=False).order_by('order')
         cities = City.objects.all()
         extra_context: dict = {
             "departments": departments,
             "designations": designations,
             "roles":roles,
             "cities":cities,
-            # "original_roles":original_roles
         }
         return extra_context
     def get_queryset(self):
         qs = super().get_queryset()
-        user= self.request.user
-        username = user.username
-        return qs.filter(is_admin=False,is_superuser=False).exclude(is_active=False,is_lock=False).exclude(username=username)
+        
+        return qs.filter(is_admin=False,is_superuser=False).exclude(is_active=False,is_lock=False)
 
     def render_to_response(self, context, **response_kwargs):
         """
@@ -80,8 +77,8 @@ class ListAuthUserView(ListView):
         context.update(extra_context)
         return super().render_to_response(context, **response_kwargs)
     
-# class CreateAuthUser(BaseViewForAuthenticatedClassForJsonResponse):
-class CreateAuthUser(View):
+class CreateAuthUser(BaseViewForAuthenticatedClassForJsonResponse):
+# class CreateAuthUser(View):
 
     token_generator = default_token_generator
 
@@ -127,10 +124,8 @@ class CreateAuthUser(View):
         
         return JsonResponse(data={"detail": "Unable to create AuthUser", "errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=400)   
 
-# class DeleteAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
-class DeleteAuthUserView(View):
-
-     
+class DeleteAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
+# class DeleteAuthUserView(View):
 
     def all_unexpired_sessions_for_user(self, user):
         user_sessions = []
@@ -174,8 +169,8 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         return render(self.request, self.template_name, {"reset_done": True, "title": "Account Activated"})
 
 
-# class CheckAuthUserNameView(BaseViewForAuthenticatedClassForJsonResponse):
-class CheckAuthUserNameView(View):
+class CheckAuthUserNameView(BaseViewForAuthenticatedClassForJsonResponse):
+# class CheckAuthUserNameView(View):
 
 
     def _get(self, request , *args, **kwargs):
@@ -191,8 +186,8 @@ class CheckAuthUserNameView(View):
     def post(self, request, *args, **kwargs):
         return self._get(request, *args, **kwargs)     
     
-# class CheckUpdatEmailView(BaseViewForAuthenticatedClassForJsonResponse):
-class CheckUpdatEmailView(View):
+class CheckUpdatEmailView(BaseViewForAuthenticatedClassForJsonResponse):
+# class CheckUpdatEmailView(View):
 
 
     def _get(self, request , *args, **kwargs):
@@ -208,8 +203,8 @@ class CheckUpdatEmailView(View):
         return self._get(request, *args, **kwargs)   
 
 
-# class CheckEmailAddress(BaseViewForAuthenticatedClassForJsonResponse):
-class CheckEmailAddress(View):
+class CheckEmailAddress(BaseViewForAuthenticatedClassForJsonResponse):
+# class CheckEmailAddress(View):
 
     def _get(self, request , *args, **kwargs):
         email = request.POST.get('email')
@@ -224,8 +219,8 @@ class CheckEmailAddress(View):
         return self._get(request, *args, **kwargs)  
 
 
-# class GetDesignationOfDepartment(BaseViewForAuthenticatedClassForJsonResponse):
-class GetDesignationOfDepartment(View):
+class GetDesignationOfDepartment(BaseViewForAuthenticatedClassForJsonResponse):
+# class GetDesignationOfDepartment(View):
 
 
     def _get(self, request , *args, **kwargs):
@@ -259,8 +254,8 @@ class GenerateUserActivationLinkAgainJsonView(CreateAuthUser):
         return JsonResponse(data={"detail": "Unable to generate link. Invalid object ID", "redirect_url": reverse("logout_url")}, status=401)
 
 
-# class ListAuthUserInJsonFormat(BaseViewForAuthenticatedClassForJsonResponse):
-class ListAuthUserInJsonFormat(View):
+class ListAuthUserInJsonFormat(BaseViewForAuthenticatedClassForJsonResponse):
+# class ListAuthUserInJsonFormat(View):
 
     def _merge_objects(self, data: list, authusers_querset) -> dict:
         return_data: dict = {}
@@ -269,7 +264,6 @@ class ListAuthUserInJsonFormat(View):
             queryset_inst = authusers_querset.get(id=obj_id)
             for key, value in return_data.get(obj_id, {}).items():
                 if key == "created_at":
-                    # return_data[obj_id][key] = timezone.localtime(queryset_inst.created_at, timezone.get_default_timezone()).strftime(DATE_TIME_FORMAT)
                     obj_date_time = queryset_inst.created_at
                     return_data[obj_id][key] = obj_date_time.strftime(DATE_TIME_FORMAT)
                 if key == "designation_id":
@@ -302,8 +296,8 @@ class ListAuthUserInJsonFormat(View):
         authusers_dict: dict = self._merge_objects(serialize_authusers, authusers)
         return JsonResponse(data=authusers_dict, status=200)   
 
-# class GetSpecificAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
-class GetSpecificAuthUserView(View):
+class GetSpecificAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
+# class GetSpecificAuthUserView(View):
 
     def _get(self, request, *args, **kwargs):
         authuser_id: str = request.POST.get("object_uuid")
@@ -332,8 +326,8 @@ class GetSpecificAuthUserView(View):
         return self._get(request, *args, **kwargs)  
 
 
-# class UpdateAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
-class UpdateAuthUserView(View):
+class UpdateAuthUserView(BaseViewForAuthenticatedClassForJsonResponse):
+# class UpdateAuthUserView(View):
 
     def all_unexpired_sessions_for_user(self, user):
         user_sessions = []
@@ -351,18 +345,18 @@ class UpdateAuthUserView(View):
         session_list.delete()
 
     def post(self, request, *args, **kwargs):
-        user_obj_here = self.request.user
+        
         try:
             inst = AuthUser.objects.get(id=request.POST.get("hidden_id", None))
         except AuthUser.DoesNotExist:
-            self._generate_event_data_and_insert(frameinfo.lineno, inst=inst, success=False, errors={"detail": "Invalid object ID"})
+            
             return JsonResponse({"detail": "Invalid object ID"}, status=400)
 
         validation_form = UpdateAuthUserForm(data=request.POST, instance=inst)
 
         if validation_form.is_valid(): 
             id = request.POST.get('hidden_id')
-            is_lock = validation_form.cleaned_data.get('is_lock')
+            
             inst = validation_form.save()
             user = AuthUser.objects.get(id=id)
             if user.is_lock == True:

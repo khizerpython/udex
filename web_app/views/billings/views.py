@@ -3,7 +3,8 @@ from django.views.generic import View
 from django.http.response import JsonResponse
 from django.core import serializers
 from django.urls import reverse
-from django.core.exceptions import ValidationError
+from django.views.generic import ListView
+from web_app.core.view_base import BaseViewForAuthenticatedClass, BaseViewForAuthenticatedClassForJsonResponse
 
 from web_app.models.billings import *
 from web_app.forms.billings import BillingsForm , BillingsDetail, BillingsUpdateForm
@@ -17,16 +18,20 @@ bill_id = uuid.uuid4()  # or use an existing UUID if you have one
 
 
 
-class AirwayBillView(View):
+class AirwayBillView(BaseViewForAuthenticatedClass):
+# class AirwayBillView(View):
+
+
 
     def get(self, request):
         # <view logic>
+        print("got here ",self.request.user)
         user = self.request.user
         services = Service.objects.all()
         payments = Payment.objects.all()
         shipments = ShipmentType.objects.all()
         airway_bills = AirwayBill.objects.filter(user_id=user)
-
+        print(airway_bills)
         context = {
             'services': services,
             'payments':payments,
@@ -35,9 +40,24 @@ class AirwayBillView(View):
         }
         return render(request,template_name='billings/list.html', context=context)
     
-class CreateAirwayBillView(View):
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
+class CreateAirwayBillView(BaseViewForAuthenticatedClassForJsonResponse):
+
     def post(self,request):
         data=request.POST
         dimension = data.get('dimensions')
@@ -52,7 +72,7 @@ class CreateAirwayBillView(View):
         else:
             return JsonResponse({"detail": f"Air way bill  can not initiated","errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=401)
 
-class UpdateAirwayBillView(View):
+class UpdateAirwayBillView(BaseViewForAuthenticatedClassForJsonResponse):
     
     def post(self,request):
         data=request.POST
@@ -106,7 +126,7 @@ class UpdateAirwayBillView(View):
             return JsonResponse({"detail": f"Air way bill with tracking ID {id} can not initiated","errors": dict(form_validation.errors.items()), "errors_div": "update_"}, status=401)
 
 
-class GetSpecificBillingDetails(View):
+class GetSpecificBillingDetails(BaseViewForAuthenticatedClassForJsonResponse):
 
     def custom_serializer(self, obj):
         serialized_obj = serializers.serialize("python", [obj])[0]
@@ -140,7 +160,7 @@ class GetSpecificBillingDetails(View):
         return self._get(request, *args, **kwargs)
 
 
-class GetDataToUpdateSpecificBill(View):
+class GetDataToUpdateSpecificBill(BaseViewForAuthenticatedClassForJsonResponse):
 
     def _get(self, request, *args, **kwargs):
         data=request.POST
@@ -159,7 +179,7 @@ class GetDataToUpdateSpecificBill(View):
     def post(self, request, *args, **kwargs):
         return self._get(request, *args, **kwargs)
     
-class ListOfAirwayBillsJsonFormat(View):
+class ListOfAirwayBillsJsonFormat(BaseViewForAuthenticatedClassForJsonResponse):
 
     def _merge_objects(self, data: list, airway_bills) -> dict:
         
@@ -199,10 +219,8 @@ class ListOfAirwayBillsJsonFormat(View):
         workflows_dict: dict = self._merge_objects(serialize_workflows, airway_bills)
         return JsonResponse(data=workflows_dict, status=200)    
     
-
-
 # Create and download airway bill label
-class CreateAirwayBillLabelView(View):
+class CreateAirwayBillLabelView(BaseViewForAuthenticatedClassForJsonResponse):
 
     def get(self, request, bill_id):
         bill = AirwayBill.objects.get(id=bill_id)

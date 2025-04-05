@@ -140,9 +140,9 @@ function handleSuccess(data) {
 
 function handleError(jqXhr) {
     const dec_data = CustomDecrypt(jqXhr.responseJSON.data);
-    // if (jqXhr.status == 401 || jqXhr.status == 501) {
-    //     window.location.replace(dec_data.redirect_url);
-    // }
+    if (jqXhr.status == 401 || jqXhr.status == 501) {
+        window.location.replace(dec_data.redirect_url);
+    }
     if (dec_data.detail) {
         const heading = "Error"
         // toastr.error(dec_data.detail);
@@ -268,6 +268,8 @@ function sendRequest(method, url, data) {
         },
         error: function (jqXhr, textStatus, errorMessage) {
             let dec_data = handleError(jqXhr);
+            console.log(dec_data);
+            
             return_data = { status: false, data: dec_data };
         },
     });

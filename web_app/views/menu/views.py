@@ -1,4 +1,4 @@
-from django.views.generic import ListView , CreateView
+from django.views.generic import ListView
 from django.views import View
 from django.http import JsonResponse
 from django.core import serializers
@@ -7,13 +7,10 @@ from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.core import mail
-from django.utils import timezone
-
 from web_app.models import Menus
 from web_app.forms import CreateMenusForm,UpdateMenusForm
-from web_app.utils import global_methods
 from web_app.constants import *
-# from web_app.core.view_base import BaseViewForAuthenticatedClass, BaseViewForAuthenticatedClassForJsonResponse
+from web_app.core.view_base import BaseViewForAuthenticatedClass, BaseViewForAuthenticatedClassForJsonResponse
 
 import os
 import json
@@ -52,8 +49,8 @@ def send_manually_exception_email(request, e):
 
 
 
-# class ListMenuView(ListView,BaseViewForAuthenticatedClass):
-class ListMenuView(ListView):
+class ListMenuView(ListView,BaseViewForAuthenticatedClass):
+# class ListMenuView(ListView):
     template_name :str = 'menu/list.html'
     model = Menus
     _page_title: str = "Menu"
@@ -83,8 +80,8 @@ class ListMenuView(ListView):
         return super().render_to_response(context, **response_kwargs)
 
 
-# class CreateMenu(BaseViewForAuthenticatedClassForJsonResponse):
-class CreateMenu(View):
+class CreateMenu(BaseViewForAuthenticatedClassForJsonResponse):
+# class CreateMenu(View):
     """
     This class has two method:
     GET : method took all the designation, from database and show them on template datatable.
@@ -139,8 +136,8 @@ class CreateMenu(View):
         return JsonResponse(data={"detail": "Unable to create menu", "errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=400)      
 
 
-# class ListMenuInJsonFormat(BaseViewForAuthenticatedClassForJsonResponse):
-class ListMenuInJsonFormat(View):
+class ListMenuInJsonFormat(BaseViewForAuthenticatedClassForJsonResponse):
+# class ListMenuInJsonFormat(View):
     
     def _merge_objects(self, data: QuerySet) -> dict:
         return_data: dict = {}
@@ -152,12 +149,10 @@ class ListMenuInJsonFormat(View):
                 stored_obj_value = stored_obj.get(key)
                 if isinstance(stored_obj_value, str):
                     if isinstance(value, datetime):
-                        # value = timezone.localtime(value, timezone.get_default_timezone()).strftime(DATE_TIME_FORMAT)
                         value = value.strftime(DATE_TIME_FORMAT)
                     if stored_obj_value != value:
                         return_data[obj_id][key] = [stored_obj_value, value]
                 elif isinstance(stored_obj_value, datetime):
-                    # return_data[obj_id][key] = timezone.localtime(stored_obj_value, timezone.get_default_timezone()).strftime(DATE_TIME_FORMAT)
                     return_data[obj_id][key] = stored_obj_value.strftime(DATE_TIME_FORMAT)
                 elif isinstance(stored_obj_value, list):
                     if value not in return_data[obj_id][key]:
@@ -189,8 +184,8 @@ class ListMenuInJsonFormat(View):
         return JsonResponse(data=menu_dict, status=200)    
 
 
-# class GetSpecificMenuView(BaseViewForAuthenticatedClassForJsonResponse):
-class GetSpecificMenuView(View):
+class GetSpecificMenuView(BaseViewForAuthenticatedClassForJsonResponse):
+# class GetSpecificMenuView(View):
 
     
     def _get(self, request, *args, **kwargs):
@@ -217,8 +212,8 @@ class GetSpecificMenuView(View):
         return self._get(request, *args, **kwargs)    
 
 
-# class UpdateMenuView(BaseViewForAuthenticatedClassForJsonResponse):
-class UpdateMenuView(View):
+class UpdateMenuView(BaseViewForAuthenticatedClassForJsonResponse):
+# class UpdateMenuView(View):
 
     def _merge_objects(self, data: list) -> dict:
         return_data: dict = {}
@@ -272,8 +267,8 @@ class UpdateMenuView(View):
         return JsonResponse({"detail": f"Unable to perform update operation on {inst.name}", "errors": dict(validation_form.errors.items()), "errors_div": "edit_"}, status=400)
 
 
-# class DeleteMenuView(BaseViewForAuthenticatedClassForJsonResponse):
-class DeleteMenuView(View): 
+class DeleteMenuView(BaseViewForAuthenticatedClassForJsonResponse):
+# class DeleteMenuView(View): 
 
     def post(self, request, *args, **kwargs):
         try:

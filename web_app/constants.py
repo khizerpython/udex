@@ -8,8 +8,7 @@ NEW_USER_WELCOME_EMAIL_SUBJECT = "Account Activation - UDEX"
 
 # MONGO_DB_CLIENT_PATH = os.environ.get('MONGO_DB_CLIENT_PATH')
 
-RAPID_CTO_EMAIL = 'malik.khizer@rapidcompute.com'
-
+ADMIN_EMAIL_ADDRESS = 'khizerkhan736@gmail.com'
 
 DATE_TIME_FORMAT = "%Y-%m-%d %H:%M"
 DATE_TIME_FORMAT_AM_PM = "%Y-%m-%d %I:%M %p"

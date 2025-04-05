@@ -4,19 +4,13 @@ from django.core import serializers
 from django.core.exceptions import ValidationError
 from django.db.models.query import QuerySet
 from django.urls import reverse
-from django.utils import timezone
-from django.db.models import Q, TextField, Case, When
-from django.db.models.functions import Cast
-
-from django.views import View
+from django.db.models import Q
 
 from web_app.models import Role, Department, Menus, AuthUser
 from web_app.forms import RoleForm, UpdateRoleForm, RIGHTS_CATEGORY_DICT, RIGHTS_AUTHENTICATION_FRONTEND
-# from web_app.core.view_base import BaseViewForAuthenticatedClass, BaseViewForAuthenticatedClassForJsonResponse
-from web_app.utils import global_methods
+from web_app.core.view_base import BaseViewForAuthenticatedClass, BaseViewForAuthenticatedClassForJsonResponse
 from web_app.constants import *
-
-import os
+from django.views import View
 import json
 from inspect import currentframe, getframeinfo
 from datetime import datetime
@@ -24,8 +18,8 @@ from datetime import datetime
 frameinfo = getframeinfo(currentframe())
 
 
-# class ListRolesView(ListView, BaseViewForAuthenticatedClass):
-class ListRolesView(ListView):
+class ListRolesView(ListView, BaseViewForAuthenticatedClass):
+# class ListRolesView(ListView):
     template_name: str = "role/list.html"
     model = Role
     _page_title = "Rights & Menu Assignment"
@@ -33,10 +27,7 @@ class ListRolesView(ListView):
 
     def _get_extra_context(self) -> dict:
         departments = Department.objects.filter(is_active=True, is_deleted=False).order_by("name")
-        # menus = Menus.objects.annotate(is_parent_active=Case(When(parent_id__isnull=False, then="parent_id__is_active"), default="is_active"), parent_id_casted=Cast("parent_id", output_field=TextField())).filter(is_active=True, inner_menu_of__isnull=True, is_parent_active=True).order_by("parent_id__name","name").values('id','name','parent_id_casted','parent_id__name','order', 'is_parent_active')
         menus = Menus.objects.filter(is_active=True).order_by("-created_at")
-        # excluded_query = Q(id__in=[obj.get("parent_id_casted") for obj in list(menus.filter(parent_id__isnull=False).values("parent_id_casted"))]) | Q(id__in = [ADMIN_DASHBOARD,SUPER_ADMIN_DASHBOARD,DASHBOARD,MENUS,DOCS])
-        # menus = menus.exclude(excluded_query)
 
         extra_context: dict = {
             "departments": departments,
@@ -63,18 +54,15 @@ class ListRolesView(ListView):
         return qs.filter(is_hidden=False)
 
 
-# class CreateRoleView(BaseViewForAuthenticatedClassForJsonResponse):
-class CreateRoleView(View):
+class CreateRoleView(BaseViewForAuthenticatedClassForJsonResponse):
+# class CreateRoleView(View):
 
-    
 
     def post(self, request, *args, **kwargs):
         form_validation = RoleForm(data=request.POST)
 
         if form_validation.is_valid():
             inst = form_validation.save()
-            # inst.menu_ids.add(DASHBOARD)
-            # inst.menu_ids.add(DOCS)
             inst.save()
             
             return JsonResponse({"detail": f"Role '{inst.name}' has been created successfully"}, status=200)
@@ -82,8 +70,8 @@ class CreateRoleView(View):
         return JsonResponse(data={"detail": "Unable to create role", "errors":dict(form_validation.errors.items()), "errors_div": "create_"}, status=400)
 
 
-# class ListRoleInJsonFormat(BaseViewForAuthenticatedClassForJsonResponse):
-class ListRoleInJsonFormat(View):
+class ListRoleInJsonFormat(BaseViewForAuthenticatedClassForJsonResponse):
+# class ListRoleInJsonFormat(View):
 
     def _merge_objects(self, data: QuerySet) -> dict:
         return_data: dict = {}
@@ -132,10 +120,11 @@ class ListRoleInJsonFormat(View):
         return JsonResponse(data=roles_dict, status=200)
 
 
-# class GetSpecificRoleView(BaseViewForAuthenticatedClassForJsonResponse):
-class GetSpecificRoleView(View):
+class GetSpecificRoleView(BaseViewForAuthenticatedClassForJsonResponse):
+
 
     def _get(self, request, *args, **kwargs):
+        print("geo ggggg")
         role_id: str = request.POST.get("object_uuid")
         try:
             role_obj = Role.objects.filter(id=role_id, is_hidden=False)
@@ -152,8 +141,8 @@ class GetSpecificRoleView(View):
         return self._get(request, *args, **kwargs)
     
 
-# class UpdateRoleView(BaseViewForAuthenticatedClassForJsonResponse):
-class UpdateRoleView(View):
+class UpdateRoleView(BaseViewForAuthenticatedClassForJsonResponse):
+# class UpdateRoleView(View):
 
     def post(self, request, *args, **kwargs):
         try:
@@ -181,8 +170,8 @@ class UpdateRoleView(View):
         return JsonResponse({"detail": f"Unable to perform update operation on {inst.name}", "errors": validation_form.errors, "errors_div": "edit_"}, status=400)
 
 
-# class DeleteRoleView(BaseViewForAuthenticatedClassForJsonResponse):
-class DeleteRoleView(View):
+class DeleteRoleView(BaseViewForAuthenticatedClassForJsonResponse):
+# class DeleteRoleView(View):
 
     def post(self, request, *args, **kwargs):
         try:
@@ -199,8 +188,8 @@ class DeleteRoleView(View):
         return JsonResponse({"detail": f"{inst.name} has been deleted successfully"}, status=200)
 
 
-# class CheckRoleNameView(BaseViewForAuthenticatedClassForJsonResponse):
-class CheckRoleNameView(View):
+class CheckRoleNameView(BaseViewForAuthenticatedClassForJsonResponse):
+# class CheckRoleNameView(View):
 
     def _get(self, request , *args, **kwargs):
         name = request.POST.get('name')
