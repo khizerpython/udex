@@ -22,32 +22,6 @@ import sys
 frameinfo = getframeinfo(currentframe())
 
 
-def send_manually_exception_email(request, e):
-    """
-    Send Error Mails When an Exception Occur
-    """
-    exc_type, _, exc_tb = sys.exc_info()
-    exc_type.__name__ == 'NameError'
-    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    error_details = traceback.format_exc()
-    user=request.user.id
-    path = request.path
-    now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    context= {
-        'user':user,
-        'path':path,
-        'filename':fname,
-        'errors':error_details,
-        'date':dt_string,
-        'type':exc_type.__name__
-
-    }
-    html_body = render_to_string("default/email_error.html", context,request=request)
-    
-    mail.mail_admins(subject = "bug report",message = "message body",fail_silently=True,html_message=html_body)
-
-
 
 class ListMenuView(ListView,BaseViewForAuthenticatedClass):
 # class ListMenuView(ListView):
@@ -195,7 +169,6 @@ class GetSpecificMenuView(BaseViewForAuthenticatedClassForJsonResponse):
             menu_obj = Menus.objects.filter(id=menu_id)
 
         except ValidationError:
-            send_manually_exception_email(request, ValidationError)
             return JsonResponse({"detail": "Invalid object ID"}, status=400)
 
         if not menu_obj.first():
@@ -245,7 +218,6 @@ class UpdateMenuView(BaseViewForAuthenticatedClassForJsonResponse):
         try:
             inst = Menus.objects.get(id=request.POST.get("hidden_id", None))
         except Menus.DoesNotExist:
-            send_manually_exception_email(request, Menus.DoesNotExist)
             
             return JsonResponse({"detail": "Invalid object ID"}, status=400)
          
@@ -274,7 +246,6 @@ class DeleteMenuView(BaseViewForAuthenticatedClassForJsonResponse):
         try:
             inst = Menus.objects.get(id=request.POST.get("id", None))
         except Menus.DoesNotExist:
-            send_manually_exception_email(request, Menus.DoesNotExist)
            
             return JsonResponse({"detail": "Invalid object ID"}, status=400)
         log_inst_name = inst.name # Saving instance name for event and logs
