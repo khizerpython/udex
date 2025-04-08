@@ -10,7 +10,6 @@ from django.contrib.auth.models import AnonymousUser
 
 def get_side_menus(request):
     if not request.user.is_anonymous:
-        print("no@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",request.user)
         # objs = request.user.role_id.menu_ids.annotate(merged_order=Case(When(parent_id__isnull=True, then="order"), default="parent_id__order")).filter(is_active=True, inner_menu_of__isnull=True).order_by("merged_order", "parent_id__name").values("name", "url", "parent_id__is_active", "parent_id__name", "order", "parent_id__order", "merged_order")
         # if request.user.is_user_is:
         #     my_objs = [d for d in objs if d['url'] != 'list_workflow_participated_report']
@@ -19,7 +18,7 @@ def get_side_menus(request):
         # return my_objs
         
         # menus = request.user.role_id.menu_ids.annotate(merged_order=Case(When(parent_id__isnull=True, then="order"), default="parent_id__order")).filter(is_active=True, inner_menu_of__isnull=True).order_by("merged_order", "parent_id__name").values("name", "url", "parent_id__is_active", "parent_id__name", "order", "parent_id__order", "merged_order")
-        menus = request.user.role_id.menu_ids.filter(is_active=True,inner_menu_of_id=None).values()
+        menus = request.user.role_id.menu_ids.filter(is_active=True,inner_menu_of_id=None).values().order_by("order")
         # Convert QuerySet to a list
         # menus_list = list(menus)
 
@@ -47,7 +46,6 @@ def side_menus_context_processor(request):
     Return a lazy 'side_menus' context variable for the allowed 
     """
     user = request.user
-    print("*****************",user)
     # if user.is_authenticated:
     if not isinstance(request.user, AnonymousUser):
         print("ÿes user is authenticated")

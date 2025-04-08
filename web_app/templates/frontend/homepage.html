@@ -54,6 +54,7 @@
 
     <!-- Bootstrap 5.3 CDN -->
     <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static '/image/assets/logo.svg' %}" />
 
     <!-- Bootstrap Icons CDN -->
     
@@ -69,7 +70,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container">
         <!-- Logo -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'homepage_view'%}">
           <!-- <img src="./assets/logo.svg" alt="Udex Courier" height="40" /> -->
           <img src="{% static 'image/assets/logo.svg' %}" alt="Udex Courier" height="40" />
         </a>

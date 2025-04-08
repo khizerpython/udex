@@ -13,6 +13,7 @@ ADMIN_EMAIL_ADDRESS = 'khizerkhan736@gmail.com'
 DATE_TIME_FORMAT = "%Y-%m-%d %H:%M"
 DATE_TIME_FORMAT_AM_PM = "%Y-%m-%d %I:%M %p"
 DATE_FORMAT = "%Y-%m-%d"
+DASHBOARD = "ea408d4b8c8840d6bb1c2d81ccac3b8c"
 
 # Regex
 

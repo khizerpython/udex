@@ -161,7 +161,7 @@ class UpdateRoleView(BaseViewForAuthenticatedClassForJsonResponse):
                     return JsonResponse({"detail": f"Can't inactive {inst.name}. Please unassigned {inst.name} from Users to inactive."}, status=400)
             form_inst.save()
             validation_form.save_m2m()
-            # form_inst.menu_ids.add(DASHBOARD)
+            form_inst.menu_ids.add(DASHBOARD)
             # form_inst.menu_ids.add(DOCS)
             form_inst.save()
                
