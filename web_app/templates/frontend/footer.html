@@ -1,0 +1,103 @@
+{% load static %}
+<!-- Footer Section -->
+<footer class="bg-white section-spacing shadow-lg">
+    <div class="container">
+      <div class="row mx-auto justify-content-between text-center">
+        <!-- Column 2 -->
+        <div class="col-md-3 mb-4">
+          <!-- <a href="#">
+            <img src="./assets/logo.svg" alt="Udex Courier" height="70" />
+            <img src="./assets/logo.svg" alt="Udex Courier" height="70" />
+          </a> -->
+          <!-- Logo -->
+      <a class="navbar-brand" href="{% url 'homepage_view'%}">
+          <!-- <img src="./assets/logo.svg" alt="Udex Courier" height="40" /> -->
+          <img src="{% static 'image/assets/logo.svg' %}" alt="Udex Courier" height="40" />
+        </a>
+        </div>
+
+        <div class="col-md-3">
+          <p class="fw-medium mb-0">Company</p>
+          <ul class="list-unstyled">
+            <li>
+              <a href="#" class="text-muted text-decoration-none">About Us</a>
+            </li>
+            <li>
+              <a href="#" class="text-muted text-decoration-none">Careers</a>
+            </li>
+            <li>
+              <a href="#" class="text-muted text-decoration-none">Our Team</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 3 -->
+        <div class="col-md-3">
+          <p class="fw-medium mb-0">Services</p>
+          <ul class="list-unstyled">
+            <li>
+              <a href="#" class="text-muted text-decoration-none">Shipping</a>
+            </li>
+            <li>
+              <a href="#" class="text-muted text-decoration-none">Tracking</a>
+            </li>
+            <li>
+              <a href="#" class="text-muted text-decoration-none">Freight</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 4 -->
+        <div class="col-md-3">
+          <p class="fw-medium mb-0">Support</p>
+          <ul class="list-unstyled">
+            <li>
+              <a href="#" class="text-muted text-decoration-none"
+                >Help Center</a
+              >
+            </li>
+            <li>
+              <a href="#" class="text-muted text-decoration-none">FAQs</a>
+            </li>
+            <li>
+              <a href="#" class="text-muted text-decoration-none"
+                >Contact Us</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="my-5" />
+
+      <!-- Bottom Section -->
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4"
+      >
+        <!-- Social Media Icons -->
+        <div class="d-flex gap-3">
+          <a href="#" class="text-muted"
+            ><i class="bi bi-facebook fs-4"></i
+          ></a>
+          <a href="#" class="text-muted"
+            ><i class="bi bi-twitter fs-4"></i
+          ></a>
+          <a href="#" class="text-muted"
+            ><i class="bi bi-instagram fs-4"></i
+          ></a>
+          <a href="#" class="text-muted"
+            ><i class="bi bi-linkedin fs-4"></i
+          ></a>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="text-center">
+          <p class="text-muted mb-0">Email: support@udexcourier.com</p>
+          <p class="text-muted mb-0">
+            Address: 1234 Courier St, City, Country
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>

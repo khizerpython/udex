@@ -52,28 +52,28 @@
   }
   
   /* Navbar Styling */
-.navbar {
-  font-family: "Poppins", sans-serif;
-  padding: 10px 0;
-}
-
-/* Navbar Links */
-.navbar-nav .nav-link {
-  color: var(--black-color) !important;
-  font-weight: 500;
-  margin-right: 15px;
-  transition: color 0.3s ease-in-out;
-}
-
-.navbar-nav .nav-link:hover {
-  color: var(--primary-color) !important;
-}
-
-/* Navbar Button */
-.navbar-nav .btn-primary {
-  padding: 8px 16px;
-  font-weight: 600;
-}
+  .navbar {
+    font-family: "Poppins", sans-serif;
+    padding: 10px 0;
+  }
+  
+  /* Navbar Links */
+  .navbar-nav .nav-link {
+    color: var(--black-color) !important;
+    font-weight: 500;
+    margin-right: 15px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: var(--primary-color) !important;
+  }
+  
+  /* Navbar Button */
+  .navbar-nav .btn-primary {
+    padding: 8px 16px;
+    font-weight: 600;
+  }
   
   /* Padding for each section */
   .section-spacing {
@@ -89,9 +89,8 @@
   
   /* Hero Section */
   .hero-section {
-    /* background: url("./assets/hero.jpg") no-repeat center center/cover; */
-    background: url("../image/assets/hero.jpg") no-repeat center center/cover;
-    height: 92.6vh;
+    background: url("../../image/assets/contact.jpg") no-repeat center center/cover;
+    height: 70vh;
     display: flex;
     align-items: center;
     color: white;
@@ -138,55 +137,14 @@
     }
   }
   
-  /* Tracking Form */
-  .tracking-form {
-    display: flex;
-    gap: 20px;
-    margin-top: 50px;
-    flex-direction: column;
-  }
-  
-  @media (min-width: 576px) {
-    /* sm */
-    .tracking-form {
-      flex-direction: row;
-    }
-  }
-  
-  .tracking-form .form-control {
-    flex: 1;
-    padding: 10px 20px;
-    border-radius: 0; /* Removed rounded corners */
-    font-size: 14px;
-    max-width: 400px;
-  }
-  
-  .tracking-form .btn-primary {
-    padding: 10px 40px;
-    border-radius: 0; /* Removed rounded corners */
-    font-size: 16px;
-  }
-  
-  /* Experience Section */
-  .experience-section {
-    background-color: white;
-  }
-  
   .section-flex {
     display: flex;
     flex-direction: column;
     gap: 40px;
   }
   
-  .experience-section .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
   /* Air land section */
   .airland-section {
-    background-color: var(--black-color);
     color: var(--white-text);
     display: flex;
     align-items: stretch; /* Makes both sections equal height */
@@ -201,15 +159,13 @@
     padding: 180px 100px;
   }
   
-  .airland-image {
-    width: 50%;
-    height: auto;
-  }
-  
-  .full-height-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers its space */
+  .form-container {
+    padding: 10px 40px;
+    background-color: white;
+    margin: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   /* Mobile View */
@@ -231,82 +187,51 @@
     .full-height-img {
       height: 250px; /* Adjust height for mobile */
     }
-  }
   
-  /* Reviews Section */
-  .reviews-section {
-    text-align: left;
-  }
-  .reviews-grid {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .reviews-grid .card {
-    width: 30%;
-    border-radius: 8px;
-    padding: 40px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: space-between;
-  }
-  
-  /* Mobile Responsive */
-  @media (max-width: 768px) {
-    .reviews-grid {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .reviews-grid .card {
-      width: 100%;
+    .form-container {
+      padding: 40px;
+      background-color: white;
+      margin: 30px;
     }
   }
-
-
-
-
-/* For animations */
-/* Default (Before animated) */
-.animate-heading {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
-}
-
-.animate-subheading {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease 0.3s; /* Slight delay for subheadings */
-}
-
-/* Animated state */
-.animate-heading.animated,
-.animate-subheading.animated {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Optional: Add a delay for each heading */
-.animate-heading:nth-child(1) {
-  transition-delay: 0.1s;
-}
-.animate-heading:nth-child(2) {
-  transition-delay: 0.2s;
-}
-.animate-heading:nth-child(3) {
-  transition-delay: 0.3s;
-}
-
-/* Optional: Add delays for each subheading */
-.animate-subheading:nth-child(1) {
-  transition-delay: 0.4s;
-}
-.animate-subheading:nth-child(2) {
-  transition-delay: 0.5s;
-}
-
-
+  
+  /* For animations */
+  /* Default (Before animated) */
+  .animate-heading {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+  
+  .animate-subheading {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.3s; /* Slight delay for subheadings */
+  }
+  
+  /* Animated state */
+  .animate-heading.animated,
+  .animate-subheading.animated {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Optional: Add a delay for each heading */
+  .animate-heading:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  .animate-heading:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+  .animate-heading:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+  
+  /* Optional: Add delays for each subheading */
+  .animate-subheading:nth-child(1) {
+    transition-delay: 0.4s;
+  }
+  .animate-subheading:nth-child(2) {
+    transition-delay: 0.5s;
+  }
   

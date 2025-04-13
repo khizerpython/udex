@@ -1,5 +1,7 @@
 {% extends 'frontend/dashboard.html' %}
 {% load static %}
+
+{% load user_menus %}
 {% load query_filter %}
 
 {% block main_body %}
@@ -10,18 +12,21 @@
 
   <div class="card m-4 skylift-background-color" style="font-family: serif;">
     <div class="card-body mt-4">
+      {% if user.role_id.menu_ids.all|has_menu_url:"airway_bill" %}
       <button class="btn btn-primary skylift-button-color" id="display-form-id" data-display-form-id="create_billings_form_id"
         data-hidden-table-id="bordered-pending" data-hidden-update-form-id="update_billings_form_id"
         style="font-size: large;">Create AirWay Bill</button>
+      {% endif %}  
 
       <button class="btn btn-primary skylift-button-color" id="display-table-id" data-display-table-id="bordered-pending"
         data-hidden-form-id="create_billings_form_id" data-hidden-update-form-id="update_billings_form_id"
         style="font-size: large;">Show Data Table</button>
-      
+        {% if user.role_id.menu_ids.all|has_menu_url:"list_airway_bill_locations" %}
         <button class="btn btn-primary skylift-button-color" id="location-page"
         style="font-size: large;"><a style="color: #FFFFFF;" href="{% url 'list_airway_bill_locations' %}">Air Way Bill Locations</a></button>
+        {% endif %}  
 
-
+      {% if user.role_id.menu_ids.all|has_menu_url:"airway_bill" %}
       <!-- Create AirWay Bill -->
       <form class="row mb-3 needs-validation d-none" id="create_billings_form_id" data-method="POST" data-url="{% url 'airway_bill' %}">
         <div class="card-body">
@@ -494,6 +499,7 @@
 
       </form>
       <!-- End create Airway Bill -->
+       {% endif %}
 
 
 
@@ -526,25 +532,37 @@
                 <td>{{bill.reciever_contact_person}}</td>
                 <td>{{bill.payment_id}}</td>
                 <td>{{bill.shipment_id}}</td>
+                {% if user.role_id.menu_ids.all|has_menu_url:"airway_bill_detail" %}
                 <td>
                   <button class="btn btn-primary skylift-button-color" id="get_billing_details_button" data-get-detail-id="{{bill.id}}"
                     data-url="{% url 'airway_bill_detail' %}"
                     style="font-size: large;">Details</button>
                 </td>
+                {% else %}
+                <td>--</td>
+                {% endif %}
+                {% if user.role_id.menu_ids.all|has_menu_url:"get_specific_bill_to_update" %}
                 <td>
                   <button class="btn btn-primary" id="update_airway_bill_button" data-get-update-bill-id="{{bill.id}}"
                     data-url="{% url 'get_specific_bill_to_update' %}" data-update-form-id="update_billings_form_id"
                     style="background: #7a3a05; border-color:#7f3f0b;font-size: large;">Update</button>
                 </td>
+                {% else %}
+                <td>--</td>
+                {% endif %}
                 <!-- <td>
                   <button class="btn btn-primary skylift-button-color" id="update_airway_bill_button" data-get-update-bill-id="{{bill.id}}"
                     data-url="{% url 'get_specific_bill_to_update' %}" data-update-form-id="update_billings_form_id"
                     style="font-size: large;">Create Label</button>
                 </td> -->
+                {% if user.role_id.menu_ids.all|has_menu_url:"create_airway_bill_label" %}
                 <td>
                   <button class="btn btn-primary skylift-button-color" 
                     style="font-size: large;"><a href="{% url 'create_airway_bill_label' bill.id %}" target="_blank" style="color: white;">Create Invoice</a></button>
                 </td>
+                {% else %}
+                <td>--</td>
+                {% endif %}
               </tr>
 
               {% endfor %}
@@ -992,6 +1010,10 @@
   
   let _services = "{{ services|get_value_list_in_qs:'id'|safe }}"
   const _all_services = JSON.parse(_services.replaceAll("'", '"'));
+</script>
+<script>
+  let page_menus = "{{ page_menus | get_value_list_in_qs_and_resolve:'url'|safe }}"
+    const _page_menus = JSON.parse(page_menus.replaceAll("'", '"'));
 </script>
 
 <script src="{% static '/js/jquery--3.6.3.min.js' %}"></script>

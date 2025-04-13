@@ -8,6 +8,7 @@ from web_app.models.billings import AirwayBillLocation,AirwayBill
 from web_app.forms.billings import BillingsForm , BillingsDetail, BillingsUpdateForm, BillingLocationForm,GetBillingsLocationDetailsForm
 import json
 from django.template.loader import render_to_string , get_template
+from web_app.constants import RIDER_DEPARTMENT_NAME
 
 
 class ListAirwayBillLocationView(View):
@@ -15,7 +16,10 @@ class ListAirwayBillLocationView(View):
     def get(self, request):
         # <view logic>
         user = self.request.user
-        airway_bills = AirwayBill.objects.filter(user_id=user)
+        if user.department_id.all().first().name == RIDER_DEPARTMENT_NAME:
+            airway_bills = AirwayBill.objects.all().order_by("-updated_at")
+        else:
+            airway_bills = AirwayBill.objects.filter(user_id=user)
         context = {
             'airway_bills':airway_bills
         }
@@ -25,7 +29,6 @@ class ListAirwayBillLocationView(View):
 class AirwayBillLocationView(View):
     
     def post(self,request):
-        print("the requested post is :",request.POST)
         data=request.POST
         form_validation = BillingLocationForm(data)
         if form_validation.is_valid():

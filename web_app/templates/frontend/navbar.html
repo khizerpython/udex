@@ -1,0 +1,53 @@
+{% load static %}
+<nav
+      class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top"
+    >
+      <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="{% url 'homepage_view'%}">
+            <!-- <img src="./assets/logo.svg" alt="Udex Courier" height="40" /> -->
+            <img src="{% static 'image/assets/logo.svg' %}" alt="Udex Courier" height="40" />
+          </a>
+
+        <!-- Mobile Menu Button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <!-- ms-auto pushes it to the right -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'homepage_view'%}">Home</a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'about_us_view' %}">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'contact_us_view' %}">Contact</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <!-- <a class="nav-link" href="dashboard.html">Dashboard</a> -->
+                <a class="nav-link" href="{% url 'dashboard_view' %}">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <!-- <a class="nav-link" href="dashboard.html">Dashboard</a> -->
+                <a class="nav-link" href="{% url 'logout_url' %}">Logout</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login_url' %}">Login</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+      </div>
+    </nav>

@@ -7,6 +7,7 @@ from web_app.constants import *
 import json
 
 from django.contrib.auth.models import AnonymousUser
+from django.core.serializers.json import DjangoJSONEncoder
 
 def get_side_menus(request):
     if not request.user.is_anonymous:
@@ -19,13 +20,23 @@ def get_side_menus(request):
         
         # menus = request.user.role_id.menu_ids.annotate(merged_order=Case(When(parent_id__isnull=True, then="order"), default="parent_id__order")).filter(is_active=True, inner_menu_of__isnull=True).order_by("merged_order", "parent_id__name").values("name", "url", "parent_id__is_active", "parent_id__name", "order", "parent_id__order", "merged_order")
         menus = request.user.role_id.menu_ids.filter(is_active=True,inner_menu_of_id=None).values().order_by("order")
-        # Convert QuerySet to a list
-        # menus_list = list(menus)
-
-        # # Serialize it
-        # print("The menus are:", json.dumps(menus_list))
+        
         return menus
-    print("got into else")
+    
+    return []
+
+
+def get_page_menus(request):
+    if not request.user.is_anonymous:
+        
+        assigned_page_menus = (
+            request.user.role_id.menu_ids
+            .filter(is_active=True, inner_menu_of_id__isnull=False)
+            .values('url')
+            .order_by('order')
+        )
+        return assigned_page_menus
+    
     return []
 
 def get_selected_side_menu(request):
@@ -45,22 +56,19 @@ def side_menus_context_processor(request):
     """
     Return a lazy 'side_menus' context variable for the allowed 
     """
-    user = request.user
-    # if user.is_authenticated:
     if not isinstance(request.user, AnonymousUser):
-        print("ÿes user is authenticated")
-
         selected_menu_url_name:str = get_selected_side_menu(request)
         return {
             "side_menus": get_side_menus(request),
+            "page_menus": get_page_menus(request),
             "parent_menu": get_selected_side_menu_parent_name(selected_menu_url_name),
             "ENCRYPTION_DECRYPTION_PASSWORD":ENCRYPTION_DECRYPTION_PASSWORD
         }
     else:
-        print("into else")
         return {
             "side_menus": [],
-            "parent_menu": []
+            "parent_menu": [],
+            "page_menus":[]
         }
         
 

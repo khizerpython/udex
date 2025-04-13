@@ -455,9 +455,27 @@ function reconstruct_pending_workflow_table(datatable_id, obj) {
         temp_tr.append(temp_td.clone().append(value.reciever_contact_person))
         temp_tr.append(temp_td.clone().append(value.payment_id))
         temp_tr.append(temp_td.clone().append(value.shipment_id))
-        temp_tr.append(temp_td.clone().append(create_detail_button(key, value, datatable_id)))
-        temp_tr.append(temp_td.clone().append(create_update_button(key, value, datatable_id)))
+        // Checks to check if user is assigned that menu or not
+        if (_page_menus.includes(value.detail_url)){
+            
+            temp_tr.append(temp_td.clone().append(create_detail_button(key, value, datatable_id)))
+        } else {
+            temp_tr.append(temp_td.clone().append("--"))
+            
+        }
+        if (_page_menus.includes(value.update_url)){
+            temp_tr.append(temp_td.clone().append(create_update_button(key, value, datatable_id)))
+        } else {
+            temp_tr.append(temp_td.clone().append("--"))
+            
+        }
+        
+        if (_page_menus.includes(value.label_url)){
         temp_tr.append(temp_td.clone().append(create_invoice_button(key, value, datatable_id)))
+        } else {
+            temp_tr.append(temp_td.clone().append("--"))
+            
+        }
         
         $("#"+datatable_id).DataTable().row.add(temp_tr).draw();
         

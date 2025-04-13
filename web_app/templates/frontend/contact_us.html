@@ -1,4 +1,3 @@
-
 {% load static %}
 {% load query_filter %}
 <!DOCTYPE html>
@@ -42,7 +41,7 @@
       content="https://www.udexcourier.com/twitter-image.jpg"
     />
 
-    <title>Udex Courier - Fast & Reliable Delivery</title>
+    <title>Contact Us - Udex Courier - Fast & Reliable Delivery</title>
 
     <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -61,163 +60,114 @@
     <link rel="stylesheet" href="{% static '/bootstrap-icons/bootstrap-icons.css' %}">
 
     <!-- Custom CSS (Must Be Loaded After Bootstrap) -->
-    <!-- <link rel="stylesheet" href="./style.css" /> -->
-    <link rel="stylesheet" href="{% static 'css/homepage.css'%}" />
+    <!-- <link rel="stylesheet" href="{% static 'css/frontend/about_us.css'%}" /> -->
+    <link rel="stylesheet" href="{% static 'css/frontend/contactus.css'%}" />
+
   </head>
 
   <body>
     <!-- Navbar -->
     {% include 'frontend/navbar.html' %}
-    
-    
 
     <!-- Hero Section -->
     <header class="hero-section">
       <div class="container">
         <div class="hero-content">
-          <h1 class="animate-heading">
-            Redefining Logistics. Delivering the
-            <span class="primary">Future</span>
-          </h1>
-          <form class="tracking-form" data-method="POST" method = "post" action="{% url 'location_page' %}">
-            {% csrf_token %}
-            <input
-              type="text"
-              name="tracking_number"
-              class="form-control"
-              placeholder="Enter Tracking Number"
-            />
-            <button type="submit" class="btn btn-primary">Track</button>
-          </form>
+          <h1 class="animate-heading">Contact Us</h1>
+          <p class="fs-4 animate-subheading">
+            Have questions or need assistance? We're here to help with all your
+            inquiries and support needs
+          </p>
         </div>
       </div>
     </header>
 
-    <!-- Experience Section -->
-    <section class="experience-section section-spacing text-center">
-      <div class="container section-flex mx-auto">
-        <h2 class="display-6 fw-medium animate-heading">
-          We are an integrated logistics service company with a direct presence
-          in more than 130 countries with our own offices.
-        </h2>
-        <p class="text-muted fs-4 animate-subheading">
-          UDEX (Pvt) Limited was established in 2008 and doing freight services,
-          involve the transportation of goods or cargo from one location to
-          another. These services are essential for facilitating trade and
-          commerce both domestically and internationally.
-        </p>
-
-        <div class="row mt-4">
-          <div class="col-md-6">
-            <h3 class="display-1 fw-normal text-primary animate-number" 
-            data-target="16"
-            data-duration="2000">16</h3>
-            <p class="text-muted fs-4">
-              Years of <br />
-              Experience
-            </p>
-          </div>
-          <div class="col-md-6">
-            <h3 class="display-1 fw-normal text-primary animate-number" 
-            data-target="130"
-            data-duration="2000">130</h3>
-            <p class="text-muted fs-4">
-              Countries of <br />
-              Operation
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Air land and Sea section -->
     <section class="airland-section">
       <!-- Text Section -->
       <div class="container section-spacing airland-flex mx-auto">
-        <h2 class="display-6 fw-medium animate-heading">
-          Air, Land & Sea – Freight Solutions That Move the World
+        <h2 class="display-6 fw-medium animate-heading text-muted">
+          Get in Touch
         </h2>
-        <p class="fs-4 animate-subheading">
-          UDEX services are vital for businesses engaged in export activities
-          that enabling you to move goods efficiently and reliably across
-          different geographical regions. We are working in different modes and
-          specialized in the following services:
+        <p class="fs-4 animate-subheading text-muted">
+          Please fill out the form below with your details, and our team will
+          get back to you as soon as possible. Whether you have a question,
+          suggestion, or need assistance, we are here to help. We aim to respond
+          promptly, so feel free to share any information that will help us
+          assist you better. Thank you for reaching out!
         </p>
       </div>
 
       <!-- Image Section -->
-      <div class="airland-image">
-        <img
-          src="{% static 'image/assets/airland.jpg'%}"
-          alt="Air Land & Sea"
-          class="full-height-img"
-        />
+      <div class="form-container">
+        
+        <form
+          action="{% url 'contact_us_view' %}"
+          method="POST"
+          class="w-100 d-flex justify-content-center"
+        >
+        {% csrf_token %}
+          <div class="row justify-content-center mt-4">
+            <!-- Name Field -->
+            <div class="col-12 mb-5">
+              <label for="name" class="form-label text-start text-muted"
+                >Full Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <!-- Contact Number Field -->
+            <div class="col-12 mb-5">
+              <label for="contact" class="form-label text-start text-muted"
+                >Contact Number</label
+              >
+              <input
+                type="tel"
+                class="form-control"
+                id="contact"
+                name="contact"
+                placeholder="Enter your contact number"
+                required
+              />
+            </div>
+
+            <!-- Reason Field -->
+            <div class="col-12 mb-5">
+              <label for="reason" class="form-label text-start text-muted"
+                >Reason for Contact</label
+              >
+              <textarea
+                class="form-control"
+                id="reason"
+                name="reason"
+                rows="4"
+                placeholder="Let us know the reason for your inquiry"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-12 mb-5">
+              <button type="submit" class="btn btn-primary w-100">
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section class="reviews-section section-spacing">
-      <div class="container section-flex">
-        <div>
-          <h2 class="display-6 fw-medium animate-heading">What Our Customers Say</h2>
-          <p class="text-muted fs-4 mt-3 animate-subheading">
-            Real experiences. Genuine feedback. See why businesses trust us for
-            their shipping needs!
-          </p>
-        </div>
-
-        <!-- Reviews Grid -->
-        <div class="reviews-grid">
-          <!-- Review 1 -->
-          <div class="card">
-            <p class="fw-light">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
-              iusto porro reiciendis molestias sequi ipsam ad tempora voluptatem
-              autem
-            </p>
-            <div>
-              <span class="fw-bold">John Doe</span><br />
-              <span class="text-muted">Executive Manager</span>
-            </div>
-          </div>
-
-          <!-- Review 2 -->
-          <div class="card">
-            <p class="fw-light">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
-              iusto porro reiciendis molestias sequi ipsam ad tempora voluptatem
-              autem
-            </p>
-            <div>
-              <span class="fw-bold">John Doe</span><br />
-              <span class="text-muted">Executive Manager</span>
-            </div>
-          </div>
-
-          <!-- Review 3 -->
-          <div class="card">
-            <p class="fw-light">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
-              iusto porro reiciendis molestias sequi ipsam ad tempora voluptatem
-              autem
-            </p>
-            <div>
-              <span class="fw-bold">John Doe</span><br />
-              <span class="text-muted">Executive Manager</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Footer Section -->
     {% include 'frontend/footer.html' %}
-    
 
-    <!-- <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script> -->
     <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+
     <!-- Animating numbers on the page -->
 
     <script>

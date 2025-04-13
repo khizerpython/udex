@@ -1,5 +1,7 @@
 {% extends 'frontend/dashboard.html' %}
 {% load static %}
+{% load user_menus %}
+{% load query_filter %}
 
 {% block main_body %}
 
@@ -17,9 +19,6 @@
         </a>
       </button>
       
-
-      
-
       <!-- Data table -->
 
       <div class="tab-pane fade show active" id="bordered-pending" role="tabpanel" aria-labelledby="pending-tab" data-url="{% url 'list_airway_bills_json' %}">
@@ -52,29 +51,43 @@
                 <td>{{bill.reciever_contact_person}}</td>
                 <td>{{bill.payment_id}}</td>
                 <!-- <td>{{bill.shipment_id}}</td> -->
+                {% if user.role_id.menu_ids.all|has_menu_url:"airway_bill_detail" %}
                 <td>
                   <button class="btn btn-primary skylift-button-color" id="get_billing_details_button" data-get-detail-id="{{bill.id}}"
                     data-url="{% url 'airway_bill_detail' %}"
                     style="font-size: large;">Details</button>
                 </td>
+                {% else %}
+                    <td>--</td>
+                {% endif %}
+
+                {% if user.role_id.menu_ids.all|has_menu_url:"airway_bill_locations_details" %}
                 <td>
                   <button class="btn btn-primary skylift-button-color" id="airway_bill_location_details_button" data-bill-id="{{bill.id}}" data-method="POST"
                     data-url="{% url 'airway_bill_locations_details' %}" data-tracking-number="{{bill.tracking_number}}"
                     style="background: #7a3a05; border-color:#7f3f0b;font-size: large;">Locations</button>
                 </td>
+                {% else %}
+                    <td>--</td>
+                {% endif %}
+
+                {% if user.role_id.menu_ids.all|has_menu_url:"create_airway_bill_locations" %}
                 <td>
                   <button class="btn btn-primary skylift-button-color " id="add_airway_bill_location_button" data-bill-id="{{bill.id}}"
                     data-url="{% url 'create_airway_bill_locations' %}" data-tracking-number="{{bill.tracking_number}}"
                     style="font-size: large;">Add Location</button>
                 </td>
+                {% else %}
+                    <td>--</td>
+                {% endif %}
+                {% if user.role_id.menu_ids.all|has_menu_url:"download_airway_bill" %}
                 <td>
-                  <!-- <li><a href="{% url 'download_airway_bill' bill.id %}">Download</a></li> -->
-                  <!-- <button class="btn btn-primary" id="download_billing_details_button" data-get-detail-id="{{bill.id}}" data-tracking-id="{{bill.tracking_number}}"
-                    data-url="{% url 'download_airway_bill' bill.id %}"
-                    style="background: #fd7e14; border-color:#fd790e;font-size: large;">Download</button> -->
                   <button class="btn btn-primary skylift-button-color" 
                     style="background: #7a3a05; border-color:#7f3f0b;font-size: large;"><a href="{% url 'download_airway_bill' bill.id %}" target="_blank" style="color: white;">Download</a></button>
                 </td>
+                {% else %}
+                    <td>--</td>
+                {% endif %}
                 
               </tr>
 
@@ -172,6 +185,10 @@
 
 <script src="{% static '/custom-js/billingslocations/billingslocation.js' %}"></script>
 <script src="{% static '/custom-js/billings/billings.js' %}"></script>
+<script>
+  let page_menus = "{{ page_menus | get_value_list_in_qs_and_resolve:'url'|safe }}"
+    const _page_menus = JSON.parse(page_menus.replaceAll("'", '"'));
+</script>
 
 
 {% endblock %}

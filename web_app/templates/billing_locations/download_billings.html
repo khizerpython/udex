@@ -50,7 +50,7 @@
         <br>
         <div class="row">
             <div class="col-8">
-                <img src="{% static '/image/assets/logo.svg' %}" alt="Universal Delivery Express"
+                <img src="{% static '/image/assets/logo1.png' %}" alt="Universal Delivery Express"
                     class="brand-image img-circle  elevation-3" style="height: 49px;margin-top: 9%;">
             </div>
             <div class="col-4" style="text-align:center;margin-top: 87px; background-color: black; color: white;">
@@ -378,12 +378,13 @@
         totalstr += carouselItemsArray[i].innerHTML ;
         // totalstr += "<br><br><br>" + carouselItemsArray[i].innerHTML + "<br><br><br>";
     }
+    
     doc.html(totalstr, {
         callback: () => {
             doc.save("Air way bill" + '.pdf');
         },
         
-        margin: [5, 0, 5, 10],
+        margin: [5, 0, 5, 17],
         padding:[10,0,10,10],
         width: 180,
         // autoPaging: 'text',

@@ -1,0 +1,195 @@
+/* Color Variables */
+:root {
+    --primary-color: #f23f40;
+    --white-text: #e3e3e3;
+    --black-color: #232323;
+    --secondary-text: #4a4a4a; /* Lighter version of black */
+    --card-background: #f2f2f2;
+    --body-background: #e3e3e3;
+    --min-x-padding: 20px;
+  }
+  
+  /* Apply Bootstrap Theme Overrides */
+  body {
+    font-family: "Poppins", sans-serif;
+    color: var(--black-color);
+    background-color: var(--body-background);
+  }
+  
+  .primary {
+    color: var(--primary-color);
+  }
+  
+  /* Primary Color for Bootstrap Components */
+  .btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--white-text) !important;
+    border-radius: 0 !important; /* Removes rounded corners */
+  }
+  
+  /* Primary Button Hover */
+  .btn-primary:hover {
+    background-color: #c73233 !important; /* Adjusted darker shade */
+    border-color: #c73233 !important;
+  }
+  
+  /* Card Styling */
+  .card {
+    background-color: var(--card-background);
+    color: var(--black-color);
+    border: none;
+  }
+  
+  /* Primary Text */
+  .text-primary {
+    color: var(--primary-color) !important;
+  }
+  
+  /* Secondary Text */
+  .text-secondary {
+    color: var(--secondary-text) !important;
+  }
+  
+  /* Navbar Styling */
+  .navbar {
+    font-family: "Poppins", sans-serif;
+    padding: 10px 0;
+  }
+  
+  /* Navbar Links */
+  .navbar-nav .nav-link {
+    color: var(--black-color) !important;
+    font-weight: 500;
+    margin-right: 15px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: var(--primary-color) !important;
+  }
+  
+  /* Navbar Button */
+  .navbar-nav .btn-primary {
+    padding: 8px 16px;
+    font-weight: 600;
+  }
+  
+  /* Padding for each section */
+  .section-spacing {
+    padding: 80px var(--min-x-padding); /* Adjust as needed */
+  }
+  
+  /* Limit the max-width of Bootstrap's container */
+  @media (min-width: 1700px) {
+    .container {
+      max-width: 1600px; /* Adjusted from Bootstrap's default 1320px */
+    }
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    background: url("../../image/assets/about.jpg") no-repeat center center/cover;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    color: white;
+    padding-left: var(--min-x-padding);
+    padding-right: var(--min-x-padding);
+  }
+  
+  /* Hero Content */
+  .hero-content {
+    max-width: 750px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem; /* Default size for extra small screens */
+    font-weight: 700;
+  }
+  
+  /* Bootstrap Breakpoints */
+  @media (min-width: 576px) {
+    /* sm */
+    .hero-content h1 {
+      font-size: 3rem;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    /* md */
+    .hero-content h1 {
+      font-size: 3.5rem;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    /* lg */
+    .hero-content h1 {
+      font-size: 4rem;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    /* xl */
+    .hero-content h1 {
+      font-size: 4.5rem; /* Max size */
+    }
+  }
+  
+  /* The New Logistic Revolutions Section */
+  .experience-section {
+  }
+  
+  .section-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .experience-section .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  /* For animations */
+  /* Default (Before animated) */
+  .animate-heading {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+  
+  .animate-subheading {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.3s; /* Slight delay for subheadings */
+  }
+  
+  /* Animated state */
+  .animate-heading.animated,
+  .animate-subheading.animated {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Optional: Add a delay for each heading */
+  .animate-heading:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  .animate-heading:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+  .animate-heading:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+  
+  /* Optional: Add delays for each subheading */
+  .animate-subheading:nth-child(1) {
+    transition-delay: 0.4s;
+  }
+  .animate-subheading:nth-child(2) {
+    transition-delay: 0.5s;
+  }
+  
