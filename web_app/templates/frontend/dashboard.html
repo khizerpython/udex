@@ -1,187 +1,263 @@
+{% extends 'frontend/parent_template.html' %}
 {% load static %}
 {% load query_filter %}
-{% load get_url %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Udex Courier - Reliable and Fast Courier Services"
-    />
-    <meta
-      name="keywords"
-      content="courier, delivery, shipping, logistics, Udex Courier"
-    />
-    <meta name="author" content="Udex Courier" />
-    <meta
-      property="og:title"
-      content="Udex Courier - Fast & Reliable Delivery"
-    />
-    <meta
-      property="og:description"
-      content="Experience the best courier service with Udex Courier. Fast, reliable, and secure deliveries at your fingertips."
-    />
-    <meta
-      property="og:image"
-      content="https://www.udexcourier.com/og-image.jpg"
-    />
-    <meta property="og:url" content="https://www.udexcourier.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Udex Courier - Fast & Reliable Delivery"
-    />
-    <meta
-      name="twitter:description"
-      content="Experience the best courier service with Udex Courier. Fast, reliable, and secure deliveries at your fingertips."
-    />
-    <meta
-      name="twitter:image"
-      content="https://www.udexcourier.com/twitter-image.jpg"
-    />
-    <link rel="shortcut icon" href="{% static '/image/assets/logo.svg' %}" />
 
-    <title>Udex Courier - Fast & Reliable Delivery</title>
 
-    <!-- Google Fonts: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap"
-      rel="stylesheet"
-    />
+{% block "extra_css" %} 
+  <!-- Vendor CSS Files -->
+  <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+  <link rel="shortcut icon" href="{% static '/image/assets/logo.svg' %}" />
 
-    <!-- Bootstrap 5.3 CDN -->
-    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
-
-    <!-- Bootstrap Icons CDN -->
+  <!-- Bootstrap Icons CDN -->
     
-    <link rel="stylesheet" href="{% static '/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{% static '/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{% static '/css/graphs/boxicons.min.css' %}">
+  <link rel="stylesheet" href="{% static '/css/graphs/quill.snow.css' %}">
+  <link rel="stylesheet" href="{% static '/css/graphs/quill.bubble.css' %}">
+  <link rel="stylesheet" href="{% static '/css/graphs/remixicon.css' %}">
+  <link rel="stylesheet" href="{% static '/css/graphs/style.css' %}">
+  <!-- <link rel="stylesheet" href="{% static '/css/graphs/graph_main/style.css' %}"> -->
 
-    <!-- Custom CSS (Must Be Loaded After Bootstrap) -->
-    <!-- <link rel="stylesheet" href="./dashboard.css" /> -->
-    <link rel="stylesheet" href="{% static 'css/frontend/dashboard.css'%}" />
-    {% block "extra_css" %}
-    {% endblock %}
-  </head>
-  <body>
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-container">
-        <!-- <div class="text-center">
-          <i class="bi bi-toggle-off display-1"></i>
-        </div> -->
-        <div class="text-center fs-1 fw-lighter">UDEX</div>
 
-        <hr class="hr" />
+  <!-- <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"> -->
+  <!-- <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet"> -->
+  <!-- <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet"> -->
+  <!-- <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet"> -->
+  <!-- <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet"> -->
 
-        <div class="sidebar-links">
-          <!-- <a href="{% url 'homepage_view' %}"><i class="bi bi-house-door"></i> Home</a> -->
-          <!-- <a href="dashboard.html"><i class="bi bi-house-door"></i> Home</a> -->
-          <!-- <a href="{% url 'homepage_view' %}"><i class="bi bi-house-door"></i> Home</a>
-          <a href="profile"><i class="bi bi-person"></i> Profile</a>
-          <a href="analytics"><i class="bi bi-bar-chart"></i> Analytics</a> 
-          <a href="settings"><i class="bi bi-gear"></i> Settings</a>
-          <a href="{% url 'authuser_list' %}"><i class="bi bi-gear"></i> Users</a>
-          <a href="{% url 'menu_list' %}"><i class="bi bi-gear"></i> Menus</a>
-          <a href="{% url 'list_roles' %}"><i class="bi bi-gear"></i> Roles</a>
-          <a href="{% url 'airway_bill_list' %}"><i class="bi bi-gear"></i> AirWay Bill</a> -->
-          {% if side_menus %}
-            {% for menu in side_menus %}
-            <a href="{% url menu.url %}"><i class="bi bi-gear"></i>{{menu.name}}</a>
-            {% endfor %}
-          {% endif %}
+  <!-- Template Main CSS File -->
+  <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.5.0
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  {% endblock %}
+
+  {% block main_body %}
+<body>
+
+  
+
+  
+  <section class="section">
+    <div class="row">
+
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Line Chart</h5>
+
+            <!-- Line Chart -->
+            <div id="lineChart"></div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                new ApexCharts(document.querySelector("#lineChart"), {
+                  series: [{
+                    name: "Desktops",
+                    data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+                  }],
+                  chart: {
+                    height: 350,
+                    type: 'line',
+                    zoom: {
+                      enabled: false
+                    }
+                  },
+                  dataLabels: {
+                    enabled: false
+                  },
+                  stroke: {
+                    curve: 'straight'
+                  },
+                  grid: {
+                    row: {
+                      colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                      opacity: 0.5
+                    },
+                  },
+                  xaxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                  }
+                }).render();
+              });
+            </script>
+            <!-- End Line Chart -->
+
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Backdrop -->
-    <div id="backdrop" class="backdrop"></div>
+      
 
-    <!-- Content -->
-    <div id="content" class="content">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <i id="toggleSidebar" class="bi bi-list icon-button"></i>
-        <div class="ms-auto d-flex gap-3 align-items-center">
-          <a href="{% url 'homepage_view' %}"
-            ><i class="bi bi-box-arrow-right icon-button"></i
-          ></a>
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Column Chart</h5>
+
+            <!-- Column Chart -->
+            <div id="columnChart"></div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                new ApexCharts(document.querySelector("#columnChart"), {
+                  series: [{
+                    name: 'Net Profit',
+                    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                  }, {
+                    name: 'Revenue',
+                    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+                  }, {
+                    name: 'Free Cash Flow',
+                    data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                  }],
+                  chart: {
+                    type: 'bar',
+                    height: 350
+                  },
+                  plotOptions: {
+                    bar: {
+                      horizontal: false,
+                      columnWidth: '55%',
+                      endingShape: 'rounded'
+                    },
+                  },
+                  dataLabels: {
+                    enabled: false
+                  },
+                  stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                  },
+                  xaxis: {
+                    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                  },
+                  yaxis: {
+                    title: {
+                      text: '$ (thousands)'
+                    }
+                  },
+                  fill: {
+                    opacity: 1
+                  },
+                  tooltip: {
+                    y: {
+                      formatter: function(val) {
+                        return "$ " + val + " thousands"
+                      }
+                    }
+                  }
+                }).render();
+              });
+            </script>
+            <!-- End Column Chart -->
+
+          </div>
         </div>
-      </nav>
-
-      <div class="dashboard-container">
-        <div class="pagetitle">
-            <h1>{{page_title}}</h1>
-        </div><!-- End Page Title -->
-        {% block main_body %}
-        {% endblock %}
-
       </div>
-        {% include 'others/footer.html' %}
-        {% include 'others/modal.html' %}
-        {% include 'others/generic_modal.html' %}
 
+      
 
-        {% include 'others/input_modal.html' %}
-        {% include "others/globals.html" %}
-        {% include "others/bootstrap_loader.html" %}
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Pie Chart</h5>
+
+            <!-- Pie Chart -->
+            <div id="pieChart"></div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                new ApexCharts(document.querySelector("#pieChart"), {
+                  series: [44, 55, 13, 43, 22, 22, 22],
+                  chart: {
+                    height: 350,
+                    type: 'pie',
+                    toolbar: {
+                      show: true
+                    }
+                  },
+                  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E', 'khizer','sefie']
+                }).render();
+              });
+            </script>
+            <!-- End Pie Chart -->
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Donut Chart</h5>
+
+            <!-- Donut Chart -->
+            <div id="donutChart"></div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                new ApexCharts(document.querySelector("#donutChart"), {
+                  series: [44, 55, 13, 43, 22],
+                  chart: {
+                    height: 350,
+                    type: 'donut',
+                    toolbar: {
+                      show: true
+                    }
+                  },
+                  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                }).render();
+              });
+            </script>
+            <!-- End Donut Chart -->
+
+          </div>
+        </div>
+      </div>
+
+      
+
     </div>
+  </section>
+  
 
-    <script>
-      const sidebar = document.getElementById("sidebar");
-      const content = document.getElementById("content");
-      const backdrop = document.getElementById("backdrop");
-      const toggleSidebar = document.getElementById("toggleSidebar");
+  
 
-      function toggle() {
-        if (window.innerWidth <= 768) {
-          sidebar.classList.toggle("show");
-          backdrop.classList.toggle("show");
-        } else {
-          sidebar.classList.toggle("collapsed");
-          content.classList.toggle("full");
-        }
-      }
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  {% endblock %}
 
-      toggleSidebar.addEventListener("click", toggle);
-      backdrop.addEventListener("click", () => {
-        sidebar.classList.remove("show");
-        backdrop.classList.remove("show");
-      });
+  {% block "extra_scripts" %}
+  <!-- Vendor JS Files -->
+  <script src="{% static '/js/graphs/apexcharts/apexcharts.min.js' %}"></script>
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static '/js/graphs/chart.js/chart.umd.js' %}"></script>
+  <script src="{% static '/js/graphs/echarts/echarts.min.js' %}"></script>
+  <script src="{% static '/js/quill.min.js' %}"></script>
+  <script src="{% static '/js/graphs/simple-datatables/simple-datatables.js' %}"></script>
+  <script src="{% static '/js/graphs/tinymce/tinymce.min.js' %}"></script>
+  <script src="{% static '/js/graphs/php-email-form/validate.js' %}"></script>
+  <script src="{% static '/js/graphs/js/main.js' %}"></script>
+  
+  
+  <!-- <script src="assets/vendor/apexcharts/apexcharts.min.js"></script> -->
+  <!-- <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+  <!-- <script src="assets/vendor/chart.js/chart.umd.js"></script> -->
+  <!-- <script src="assets/vendor/echarts/echarts.min.js"></script> -->
+  <!-- <script src="assets/vendor/quill/quill.min.js"></script> -->
+  <!-- <script src="assets/vendor/simple-datatables/simple-datatables.js"></script> -->
+  <!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
+  <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
 
-      window.addEventListener("resize", () => {
-        if (window.innerWidth <= 768) {
-          sidebar.classList.remove("collapsed"); // Reset collapsed state in small screens
-          content.classList.remove("full"); // Reset content margin
-          sidebar.classList.remove("show"); // Ensure sidebar hides properly
-          backdrop.classList.remove("show"); // Hide backdrop when resizing
-        } else {
-          sidebar.classList.remove("show"); // Hide mobile sidebar
-          backdrop.classList.remove("show"); // Remove backdrop
-        }
-      });
+  <!-- Template Main JS File -->
+  <!-- <script src="assets/js/main.js"></script> -->
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const sidebarLinks = document.querySelectorAll(".sidebar-links a");
-        const currentPath = window.location.pathname; // Get the current route
+</body>
 
-        sidebarLinks.forEach((link) => {
-          const linkPath = new URL(link.href, window.location.origin).pathname; // Get only the pathname
-
-          // Check if the link's path matches the current path exactly
-          if (currentPath === linkPath) {
-            link.classList.add("active");
-          }
-        });
-      });
-    </script>
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
-    <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static '/js/login.js' %}"></script>
-    {% block "extra_scripts" %}
-    {% endblock %}
-  </body>
 </html>
+
+{% endblock %}

@@ -1,15 +1,18 @@
 from django.views import View
 from django.shortcuts import render
 from django.http import JsonResponse
-
+from django.db.models import Count, F, Value
+from django.db.models.functions import Concat
+from django.utils import timezone
+from datetime import timedelta
 
 from django.core.exceptions import ObjectDoesNotExist
-from web_app.models.billings import AirwayBill
-from web_app.forms.contact_us import ContactUsForm
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
 
+from web_app.models.billings import AirwayBill
+from web_app.forms.contact_us import ContactUsForm
 # App level Import
 
 
@@ -22,6 +25,20 @@ class HomePageView(View):
 class DashboardPageView(View):
 
     def get(self, request, *args, **kwargs):
+        # Get date 30 days ago from now
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        # Group by user and count airway bills
+
+        result = (
+            AirwayBill.objects
+            .filter(created_at__gte=thirty_days_ago)
+            .values(full_name=Concat(F('user_id__first_name'), Value(' '), F('user_id__last_name')))
+            .annotate(count=Count('id'))
+        )
+
+
+        result_dict = {item['full_name']: item['count'] for item in result}
+        print(result_dict)
         return render(request, "frontend/dashboard.html", {})
 
 class AboutUsPageView(View):

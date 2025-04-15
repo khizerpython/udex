@@ -60,7 +60,6 @@ class CustomResetPasswordForm(PasswordResetForm):
             raise forms.ValidationError("User with given email and username is inactive. Please contact Infosec Depart for further queries.")
         
         current_reset_password_attempts_of_user = FailedResetPasswordAttempt.objects.filter(user_id = user_obj).count()
-        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",current_reset_password_attempts_of_user,"###############",RESET_PASSWORD_ATTEMPTS_ALLOWED)
         if current_reset_password_attempts_of_user >= RESET_PASSWORD_ATTEMPTS_ALLOWED:
             raise forms.ValidationError("You've reached the limit of reset password. You cannot perform this operation further. For further assistance please contact Infosec Depart.")
         user_obj.last_login = timezone.now()
