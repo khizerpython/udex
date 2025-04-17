@@ -48,72 +48,29 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Line Chart</h5>
-
-            <!-- Line Chart -->
-            <div id="lineChart"></div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                new ApexCharts(document.querySelector("#lineChart"), {
-                  series: [{
-                    name: "Desktops",
-                    data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-                  }],
-                  chart: {
-                    height: 350,
-                    type: 'line',
-                    zoom: {
-                      enabled: false
-                    }
-                  },
-                  dataLabels: {
-                    enabled: false
-                  },
-                  stroke: {
-                    curve: 'straight'
-                  },
-                  grid: {
-                    row: {
-                      colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                      opacity: 0.5
-                    },
-                  },
-                  xaxis: {
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-                  }
-                }).render();
-              });
-            </script>
-            <!-- End Line Chart -->
-
-          </div>
-        </div>
-      </div>
-
-      
-
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Column Chart</h5>
+            <h5 class="card-title">Users Last 5 Months Comparison</h5>
 
             <!-- Column Chart -->
+            {{ column_month_labels|json_script:"column-month-labels" }}
+            {{ column_chart_series|json_script:"column-chart-series" }}
             <div id="columnChart"></div>
 
             <script>
               document.addEventListener("DOMContentLoaded", () => {
+                const ColumnSeriesLabels = JSON.parse(document.getElementById("column-month-labels").textContent);
+                const ColumnSeriesData = JSON.parse(document.getElementById("column-chart-series").textContent);
                 new ApexCharts(document.querySelector("#columnChart"), {
-                  series: [{
-                    name: 'Net Profit',
-                    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-                  }, {
-                    name: 'Revenue',
-                    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-                  }, {
-                    name: 'Free Cash Flow',
-                    data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-                  }],
+                  series: ColumnSeriesData,
+                  // series: [{
+                  //   name: 'Net Profit',
+                  //   data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                  // }, {
+                  //   name: 'Revenue',
+                  //   data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+                  // }, {
+                  //   name: 'Free Cash Flow',
+                  //   data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                  // }],
                   chart: {
                     type: 'bar',
                     height: 350
@@ -134,11 +91,11 @@
                     colors: ['transparent']
                   },
                   xaxis: {
-                    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    categories: ColumnSeriesLabels,
                   },
                   yaxis: {
                     title: {
-                      text: '$ (thousands)'
+                      text: 'Airway Bills'
                     }
                   },
                   fill: {
@@ -147,7 +104,7 @@
                   tooltip: {
                     y: {
                       formatter: function(val) {
-                        return "$ " + val + " thousands"
+                        return "$ " + val + " airway bills"
                       }
                     }
                   }
@@ -159,21 +116,88 @@
           </div>
         </div>
       </div>
-
-      
+      <p></p>
 
       <div class="col-lg-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Pie Chart</h5>
+            <h5 class="card-title">UDEX Last 8 Months Graph</h5>
+
+            <!-- Line Chart -->
+
+            {{ line_chart_month_labels|json_script:"line-chart-month-labels" }}
+            {{ line_chart_month_series|json_script:"line-chart-month-series" }}
+            <div id="lineChart"></div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                const lineChartLabels = JSON.parse(document.getElementById("line-chart-month-labels").textContent);
+                const lineChartSeries = JSON.parse(document.getElementById("line-chart-month-series").textContent);
+                new ApexCharts(document.querySelector("#lineChart"), {
+                  series: [{
+                    name: "Aiway Bills",
+                    data: lineChartSeries
+                  }],
+                  chart: {
+                    height: 350,
+                    type: 'line',
+                    zoom: {
+                      enabled: false
+                    }
+                  },
+                  dataLabels: {
+                    enabled: false
+                  },
+                  stroke: {
+                    curve: 'straight'
+                  },
+                  grid: {
+                    row: {
+                      colors: ['#f3f3f3', '#c1cfafba'], // takes an array which will be repeated on columns
+                      opacity: 0.5
+                    },
+                  },
+                  xaxis: {
+                    categories: lineChartLabels,
+                  }
+                }).render();
+              });
+            </script>
+            <!-- End Line Chart -->
+
+          </div>
+        </div>
+      </div>
+
+      
+
+      
+      
+
+      <!-- Pie Chart Start -->
+      {{ pie_chart_labels|json_script:"pie-chart-labels" }}
+      {{ pie_chart_series|json_script:"pie-chart-series" }}
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Users [Last 30 Days]</h5>
 
             <!-- Pie Chart -->
             <div id="pieChart"></div>
 
             <script>
+              const customColors = [
+                "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF",
+                "#FF9F40", "#66D9EF", "#F67280", "#C06C84", "#6C5B7B",
+                "#355C7D", "#99B898", "#FECEAB", "#FF847C", "#E84A5F",
+                "#2A363B", "#FF6F61", "#6B4226", "#88D8B0", "#F8B195"
+              ];
               document.addEventListener("DOMContentLoaded", () => {
+                const labels = JSON.parse(document.getElementById("pie-chart-labels").textContent);
+                const series = JSON.parse(document.getElementById("pie-chart-series").textContent);
+            
                 new ApexCharts(document.querySelector("#pieChart"), {
-                  series: [44, 55, 13, 43, 22, 22, 22],
+                  series: series,
                   chart: {
                     height: 350,
                     type: 'pie',
@@ -181,7 +205,8 @@
                       show: true
                     }
                   },
-                  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E', 'khizer','sefie']
+                  labels: labels,
+                  colors: customColors
                 }).render();
               });
             </script>
@@ -190,6 +215,7 @@
           </div>
         </div>
       </div>
+      <!-- Pie Chart End -->
 
       <div class="col-lg-6">
         <div class="card">
@@ -197,7 +223,7 @@
             <h5 class="card-title">Donut Chart</h5>
 
             <!-- Donut Chart -->
-            <div id="donutChart"></div>
+            <!-- <div id="donutChart"></div>
 
             <script>
               document.addEventListener("DOMContentLoaded", () => {
@@ -213,7 +239,7 @@
                   labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
                 }).render();
               });
-            </script>
+            </script> -->
             <!-- End Donut Chart -->
 
           </div>

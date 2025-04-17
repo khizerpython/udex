@@ -4,12 +4,22 @@ from django.http import JsonResponse
 from django.db.models import Count, F, Value
 from django.db.models.functions import Concat
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
+
+from django.db.models.functions import TruncMonth
+from collections import OrderedDict
+from dateutil.relativedelta import relativedelta
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+from calendar import month_abbr
+
+
+import calendar
+from collections import defaultdict
+
 
 from web_app.models.billings import AirwayBill
 from web_app.forms.contact_us import ContactUsForm
@@ -25,21 +35,115 @@ class HomePageView(View):
 class DashboardPageView(View):
 
     def get(self, request, *args, **kwargs):
+
+        # Get current date and 8 months ago
+        now = timezone.now()
+        start_date = now - relativedelta(months=7)
+        start_date = start_date.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        # List of last 5 months (datetime objects)
+        # Create list of last 5 months with month abbreviations and datetime ranges
+        months = []
+        now = timezone.now()
+
+        for i in range(4, -1, -1):
+            month_date = now - relativedelta(months=i)
+            months.append(month_date.replace(day=1))
+
+
+
+        # ============================================= pie chart query ==============================================
         # Get date 30 days ago from now
         thirty_days_ago = timezone.now() - timedelta(days=30)
         # Group by user and count airway bills
-
         result = (
             AirwayBill.objects
             .filter(created_at__gte=thirty_days_ago)
             .values(full_name=Concat(F('user_id__first_name'), Value(' '), F('user_id__last_name')))
             .annotate(count=Count('id'))
         )
+        pie_chart_labels = []
+        pie_chart_series = []
+        if result:
+            pie_chart_labels = [item['full_name'] for item in result]
+            pie_chart_series = [item['count'] for item in result]
+        else:
+            # Fallback for no data
+            pie_chart_labels = ["No data"]
+            pie_chart_series = [1]
+        # ============================================================= line chart query ==============================================
+        # Get all airway bills from the last 8 months
+        bills = AirwayBill.objects.filter(created_at__gte=start_date)
+        # Prepare month names and counts
+        month_counts = OrderedDict()
 
+        # Loop through each of the last 8 months
+        for i in range(8):
+            month_start = (start_date + relativedelta(months=i))
+            month_end = (month_start + relativedelta(months=1))
 
-        result_dict = {item['full_name']: item['count'] for item in result}
-        print(result_dict)
-        return render(request, "frontend/dashboard.html", {})
+            month_name = month_abbr[month_start.month]  # Jan, Feb, Mar...
+
+            count = bills.filter(created_at__gte=month_start, created_at__lt=month_end).count()
+            month_counts[month_name] = count
+
+        # print(month_counts)
+        # Split into two separate lists
+        line_chart_month_labels = list(month_counts.keys())
+        line_chart_month_series = list(month_counts.values())
+
+        # ==================================== Columns chart query ================
+        # Prepare month labels
+        column_month_labels = [calendar.month_abbr[m.month] for m in months]
+
+        # Prepare month range pairs: [(start1, end1), (start2, end2), ...]
+        month_ranges = []
+        for i in range(5):
+            start = months[i]
+            if i < 4:
+                end = months[i + 1]
+            else:
+                end = (start + timedelta(days=32)).replace(day=1)
+            month_ranges.append((start, end))
+
+        # Fetch all airway bills in last 5 months
+        earliest_date = months[0]
+        airway_bills = AirwayBill.objects.filter(created_at__gte=earliest_date).annotate(
+            full_name=Concat(F('user_id__first_name'), Value(' '), F('user_id__last_name'))
+        )
+
+        # Organize counts per user per month
+        user_month_count = defaultdict(lambda: [0] * 5)
+
+        for ab in airway_bills:
+            full_name = ab.full_name
+            created = ab.created_at
+
+            # Find month index
+            for idx, (start, end) in enumerate(month_ranges):
+                if start <= created < end:
+                    user_month_count[full_name][idx] += 1
+                    break
+
+        # Prepare series for chart
+        column_chart_series = [
+            {'name': user, 'data': counts} for user, counts in user_month_count.items()
+        ]
+
+        print(column_month_labels)
+
+        
+
+        context={
+            'line_chart_month_labels':line_chart_month_labels,
+            'line_chart_month_series':line_chart_month_series,
+            'pie_chart_labels':pie_chart_labels,
+            'pie_chart_series':pie_chart_series,
+            'column_month_labels':column_month_labels,
+            'column_chart_series':column_chart_series
+
+        }
+        return render(request, "frontend/dashboard.html", context=context)
 
 class AboutUsPageView(View):
 
