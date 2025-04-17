@@ -15,7 +15,8 @@ DATE_TIME_FORMAT_AM_PM = "%Y-%m-%d %I:%M %p"
 DATE_FORMAT = "%Y-%m-%d"
 DASHBOARD = "ea408d4b8c8840d6bb1c2d81ccac3b8c"
 
-RIDER_DEPARTMENT_NAME="Operations"
+RIDER_DEPARTMENT_ID="fab42789-66ab-436c-a49a-14a7b7e323d0"
+
 
 # Regex
 

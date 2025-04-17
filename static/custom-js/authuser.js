@@ -147,7 +147,6 @@ $(document).on("click", ".seperate-edit-click-class", function () {
 $(document).on("click", ".hide-current-display-another-user-form", function () {
     
     const edit_div_id = $(this).data("div-id");
-    console.log($(this).parent());
     
     $(".create-user-parent-div").children().children().removeClass("d-none");
     $("#" + edit_div_id).addClass("d-none");
@@ -271,7 +270,6 @@ $(document).on('change', 'select[name=department_id]', function (e) {
 })
 
 function designationOfDepartment(mythis){
-    console.log("geo g");
     
     let csr = $("input[name=csrfmiddlewaretoken]").val();
     const submit_method = "POST"

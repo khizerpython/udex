@@ -132,10 +132,10 @@ class AuthUser(AbstractBaseUser, ModelUUIDField, CreatedAndUpdatedModelFields,Is
         return self.role_id.is_hod_right
     
     @property
-    def is_user_admin_hod(self):
-        if(self.is_user_hod):
-            return constants.ADMIN_DEPART_UUID in [str(d.id) for d in self.deparment_id.all()]
-        return False
+    def is_user_admin(self):
+        return self.is_admin
+    
+    
     
     
 

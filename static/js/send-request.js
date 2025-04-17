@@ -268,7 +268,6 @@ function sendRequest(method, url, data) {
         },
         error: function (jqXhr, textStatus, errorMessage) {
             let dec_data = handleError(jqXhr);
-            console.log(dec_data);
             
             return_data = { status: false, data: dec_data };
         },

@@ -124,7 +124,6 @@ class GetSpecificRoleView(BaseViewForAuthenticatedClassForJsonResponse):
 
 
     def _get(self, request, *args, **kwargs):
-        print("geo ggggg")
         role_id: str = request.POST.get("object_uuid")
         try:
             role_obj = Role.objects.filter(id=role_id, is_hidden=False)

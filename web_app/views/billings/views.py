@@ -25,13 +25,11 @@ class AirwayBillView(BaseViewForAuthenticatedClass):
 
     def get(self, request):
         # <view logic>
-        print("got here ",self.request.user)
         user = self.request.user
         services = Service.objects.all()
         payments = Payment.objects.all()
         shipments = ShipmentType.objects.all()
         airway_bills = AirwayBill.objects.filter(user_id=user)
-        print(airway_bills)
         context = {
             'services': services,
             'payments':payments,

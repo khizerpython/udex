@@ -44,7 +44,7 @@
   
   <section class="section">
     <div class="row">
-
+      {% if column_month_labels %}
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
@@ -61,16 +61,6 @@
                 const ColumnSeriesData = JSON.parse(document.getElementById("column-chart-series").textContent);
                 new ApexCharts(document.querySelector("#columnChart"), {
                   series: ColumnSeriesData,
-                  // series: [{
-                  //   name: 'Net Profit',
-                  //   data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-                  // }, {
-                  //   name: 'Revenue',
-                  //   data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-                  // }, {
-                  //   name: 'Free Cash Flow',
-                  //   data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-                  // }],
                   chart: {
                     type: 'bar',
                     height: 350
@@ -116,8 +106,11 @@
           </div>
         </div>
       </div>
-      <p></p>
+      {% endif %}
 
+
+      <p></p>
+      {% if line_chart_month_labels %}
       <div class="col-lg-6">
         <div class="card">
           <div class="card-body">
@@ -168,12 +161,13 @@
           </div>
         </div>
       </div>
+      {% endif %}
 
       
 
       
       
-
+      {% if pie_chart_labels %}
       <!-- Pie Chart Start -->
       {{ pie_chart_labels|json_script:"pie-chart-labels" }}
       {{ pie_chart_series|json_script:"pie-chart-series" }}
@@ -215,20 +209,27 @@
           </div>
         </div>
       </div>
-      <!-- Pie Chart End -->
+      {% endif %}
 
-      <div class="col-lg-6">
+      {% if donut_chart_labels %}
+      <!-- Pie Chart End -->
+      {{ donut_chart_labels|json_script:"donut-chart-labels" }}
+      {{ donut_chart_series|json_script:"donut-chart-series" }}
+      <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Donut Chart</h5>
+            <h5 class="card-title">Last 5 Months Business Comparison</h5>
+
 
             <!-- Donut Chart -->
-            <!-- <div id="donutChart"></div>
+            <div id="donutChart"></div>
 
             <script>
               document.addEventListener("DOMContentLoaded", () => {
+                const donut_labels = JSON.parse(document.getElementById("donut-chart-labels").textContent);
+                const donut_series = JSON.parse(document.getElementById("donut-chart-series").textContent);
                 new ApexCharts(document.querySelector("#donutChart"), {
-                  series: [44, 55, 13, 43, 22],
+                  series: donut_series,
                   chart: {
                     height: 350,
                     type: 'donut',
@@ -236,15 +237,16 @@
                       show: true
                     }
                   },
-                  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                  labels: donut_labels,
                 }).render();
               });
-            </script> -->
+            </script>
             <!-- End Donut Chart -->
 
           </div>
         </div>
       </div>
+      {% endif %}
 
       
 

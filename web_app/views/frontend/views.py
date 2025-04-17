@@ -34,8 +34,7 @@ class HomePageView(View):
 
 class DashboardPageView(View):
 
-    def get(self, request, *args, **kwargs):
-
+    def get_records_for_admin_user(self,request,*args,**kwargs):
         # Get current date and 8 months ago
         now = timezone.now()
         start_date = now - relativedelta(months=7)
@@ -49,8 +48,6 @@ class DashboardPageView(View):
         for i in range(4, -1, -1):
             month_date = now - relativedelta(months=i)
             months.append(month_date.replace(day=1))
-
-
 
         # ============================================= pie chart query ==============================================
         # Get date 30 days ago from now
@@ -87,7 +84,6 @@ class DashboardPageView(View):
             count = bills.filter(created_at__gte=month_start, created_at__lt=month_end).count()
             month_counts[month_name] = count
 
-        # print(month_counts)
         # Split into two separate lists
         line_chart_month_labels = list(month_counts.keys())
         line_chart_month_series = list(month_counts.values())
@@ -130,9 +126,7 @@ class DashboardPageView(View):
             {'name': user, 'data': counts} for user, counts in user_month_count.items()
         ]
 
-        print(column_month_labels)
 
-        
 
         context={
             'line_chart_month_labels':line_chart_month_labels,
@@ -143,6 +137,45 @@ class DashboardPageView(View):
             'column_chart_series':column_chart_series
 
         }
+        return context
+
+
+    def get_airwaybill_counts(self,request):
+        # Get the current logged-in user
+        user=request.user
+        now = timezone.now()
+        months = []
+        counts = []
+
+        for i in range(4, -1, -1):  # Last 5 months, oldest to latest
+            month_start = (now.replace(day=1) - relativedelta(months=i))
+            next_month = month_start + relativedelta(months=1)
+
+            count = AirwayBill.objects.filter(
+                user_id=user,
+                created_at__gte=month_start,
+                created_at__lt=next_month
+            ).count()
+
+            months.append(month_start.strftime('%b'))
+            counts.append(count)
+        
+        # Now, 'months' will have the month names and 'counts' will have the corresponding counts
+        context={
+            'donut_chart_labels':months,
+            'donut_chart_series':counts
+
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        
+        if request.user.is_user_admin:
+            context = self.get_records_for_admin_user(request)
+        else:
+            context = self.get_airwaybill_counts(request)
+
+        
         return render(request, "frontend/dashboard.html", context=context)
 
 class AboutUsPageView(View):

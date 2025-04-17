@@ -82,7 +82,6 @@ $("#create_menu_form_id").on("submit",async function (e) {
     e.preventDefault();
     e.stopPropagation()
     if ($("#create_menu_form_id").valid()) {
-        console.log("yes valid");
         
         const button =  hideSubmitButton($(this).attr("id"));
         var formData = $(this).serializeArray();
@@ -155,7 +154,6 @@ $(document).on("click", ".separate-edit-click-class", function () {
 $(document).on("click", ".hide-current-display-another-menu-form", function () {
     
     const edit_div_id = $(this).data("div-id");
-    console.log($(this).parent());
     
     $(".create-menu-form-parent-div").children().children().removeClass("d-none");
     $("#" + edit_div_id).addClass("d-none");

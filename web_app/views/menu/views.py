@@ -92,7 +92,7 @@ class CreateMenu(BaseViewForAuthenticatedClassForJsonResponse):
         return inner_menus      
 
     def post(self, request, *args, **kwargs):
-        print("got here******************")
+
         form_validation =  CreateMenusForm(data=request.POST)
 
         if form_validation.is_valid():
