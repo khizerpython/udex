@@ -29,6 +29,7 @@ from web_app.forms.contact_us import ContactUsForm
 class HomePageView(View):
 
     def get(self, request, *args, **kwargs):
+        
         return render(request, "frontend/homepage.html", {})
 
 

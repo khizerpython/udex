@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #ddd;
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            color: #007bff;
+        }
+        .section {
+            margin-top: 20px;
+        }
+        .label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Parcel Pickup Notification</h2>
+        <p>Dear Transport Team,</p>
+
+        <p>You are requested to collect a parcel from the shipper. Please find the shipper's details below:</p>
+
+        <div class="section">
+            <p><span class="label">Shipper Name:</span> {{ shipper_contact_person }}</p>
+            <p><span class="label">Company:</span> {{ shipper_company_name }}</p>
+            <p><span class="label">Phone Number:</span> {{ shipper_phone_number }}</p>
+            <p><span class="label">Mobile Number:</span> {{ shipper_mobile_number }}</p>
+            <p><span class="label">Address:</span> {{ shipper_address }}</p>
+            <p><span class="label">City:</span> {{ shipper_city }}</p>
+            <p><span class="label">State:</span> {{ shipper_state }}</p>
+            <p><span class="label">Post Code:</span> {{ shipper_post_code }}</p>
+        </div>
+
+        <p>Please proceed to the address as soon as possible to collect the parcel.</p>
+
+        <p>Regards,<br>Your Logistics System</p>
+    </div>
+</body>
+</html>

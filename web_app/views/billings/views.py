@@ -10,7 +10,7 @@ from web_app.models.billings import *
 from web_app.forms.billings import BillingsForm , BillingsDetail, BillingsUpdateForm
 import json
 import datetime
-
+from web_app.utils.global_methods import send_airway_bill_creation_email_to_transport_department
 import uuid
 
 # Example bill_id
@@ -19,9 +19,6 @@ bill_id = uuid.uuid4()  # or use an existing UUID if you have one
 
 
 class AirwayBillView(BaseViewForAuthenticatedClass):
-# class AirwayBillView(View):
-
-
 
     def get(self, request):
         # <view logic>
@@ -40,20 +37,6 @@ class AirwayBillView(BaseViewForAuthenticatedClass):
     
     
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 class CreateAirwayBillView(BaseViewForAuthenticatedClassForJsonResponse):
 
     def post(self,request):
@@ -66,7 +49,13 @@ class CreateAirwayBillView(BaseViewForAuthenticatedClassForJsonResponse):
             form_validation.cleaned_data['user_id'] = self.request.user
             tracking_number = form_validation.cleaned_data.get('tracking_number')
             obj = AirwayBill.objects.create(**form_validation.cleaned_data)
-            return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} has been initiated successfully"}, status=200)
+
+            sent_email = send_airway_bill_creation_email_to_transport_department(airway_way_data = form_validation.cleaned_data, request=request)
+            if sent_email ==1:
+                
+                return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} has been initiated successfully"}, status=200)
+            else:
+                 return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} has been initiated successfully, but email didnt sent. Kindly contact transport department and tell them manually."}, status=200)
         else:
             return JsonResponse({"detail": f"Air way bill  can not initiated","errors": dict(form_validation.errors.items()), "errors_div": "create_"}, status=401)
 
@@ -117,7 +106,10 @@ class UpdateAirwayBillView(BaseViewForAuthenticatedClassForJsonResponse):
                 obj.pieces = form_validation.cleaned_data.get('pieces')
                 obj.save()
                 
+
+                
                 return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} has been updated successfully"}, status=200)
+                
             else:
                 return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} not found"}, status=401)
         else:

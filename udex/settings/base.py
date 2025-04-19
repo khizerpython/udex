@@ -12,23 +12,28 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from django.urls import reverse_lazy
+import os
+import json
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent #add .parent when you make settings a folder
+BASE_DIR = Path(__file__).resolve().parent.parent.parent #add .parent when you make settings a folder
 TEMPLATE_DIR = BASE_DIR / 'web_app' / 'templates'
 
 
+load_dotenv()
+load_dotenv(dotenv_path=BASE_DIR / "secrets.env") # Load env variables to be used in entire application
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jz3q^%(1dv975b=hj)k0y317b^gttww*021mmlg2o=19*b&)-t'
+# SECRET_KEY = 'django-insecure-jz3q^%(1dv975b=hj)k0y317b^gttww*021mmlg2o=19*b&)-t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ["127.0.0.1"]
 
 STATIC_CUSTOM_DIR = BASE_DIR / "static"
 
@@ -99,16 +104,16 @@ WSGI_APPLICATION = 'udex.wsgi.application'
 # export ALLOWED_HOSTS='["http://127.0.0.1:8000/","127.0.0.1"]'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'udex',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST':'localhost',
-        'PORT':'3306',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'udex',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST':'localhost',
+#         'PORT':'3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -157,8 +162,47 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
 EMAIL_PORT = 587  # Port for TLS (starttls)
 EMAIL_USE_TLS = True  # Use TLS (Transport Layer Security)
-EMAIL_HOST_USER = 'khizerkhan0326@gmail.com'  # Your Gmail address
-EMAIL_HOST_PASSWORD = 'xbub lxhe bvjt esnh'  # Your Gmail app password (or regular password if less secure apps are allowed)
-DEFAULT_FROM_EMAIL = 'khizerkhan0326@gmail.com'  # The "from" email address for sent emails
+# EMAIL_HOST_USER = 'khizerkhan0326@gmail.com'  # Your Gmail address
+# EMAIL_HOST_PASSWORD = 'xbub lxhe bvjt esnh'  # Your Gmail app password (or regular password if less secure apps are allowed)
+# DEFAULT_FROM_EMAIL = 'khizerkhan0326@gmail.com'  # The "from" email address for sent emails
+# ADMIN_EMAIL= 'khizerkhan736@gmail.com'
 
-ADMIN_EMAIL_GET_CONTACT_US_EMAIL = "khizerkhan736@gmail.com" #To get contact us email
+
+EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_HOST_USER", "test-Key")
+EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD", "test-Key")
+DEFAULT_FROM_EMAIL =  os.environ.get("DJANGO_DEFAULT_FROM_EMAIL", "test-Key")
+ADMIN_EMAIL= os.environ.get("DJANGO_ADMIN_EMAIL", "test-Key")
+
+# ADMINS = (
+#   (os.getenv("ADMIN_NAME", "No Name Found"), os.getenv("ADMIN_EMAIL", "developers@rapidcompute.com")),
+# ) 
+
+ADMINS = (
+    ("Admin", "khizerkhan736@gmail.com"),
+)
+
+ADMIN_EMAIL_GET_CONTACT_US_EMAIL = os.environ.get("DJANGO_ADMIN_EMAIL_GET_CONTACT_US_EMAIL", "khizerkhan736@gmail.com") #To get contact us email
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    
+    'handlers': {
+        
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'udex.reporter.CustomAdminEmailHandler',
+            
+        },
+        
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    }
+}
