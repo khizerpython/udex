@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model
 
 from web_app.constants import USERNAME_REGEX, PASSWORD_REGEX
-from web_app.models import FailedLogin
+# from web_app.models import FailedLogin
 from web_app.models import AuthUser
 from web_app.models import regex
 
