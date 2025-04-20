@@ -24,3 +24,5 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "test-Key")
 
 DEBUG = True
 
+STATIC_ROOT = STATIC_CUSTOM_DIR
+
