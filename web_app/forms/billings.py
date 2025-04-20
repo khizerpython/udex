@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from web_app.constants import USERNAME_REGEX
 from web_app.models import regex
 from django.contrib.auth import get_user_model
-from web_app.models import Service,ShipmentType,AirwayBill,Payment,AirwayBillLocation
+# from web_app.models import Service,ShipmentType,AirwayBill,Payment,AirwayBillLocation
 
 class BillingsForm(forms.Form):
     service_id = forms.ChoiceField(choices=[])
