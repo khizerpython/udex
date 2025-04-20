@@ -1,7 +1,7 @@
 from django import forms
 from django.core import validators
 
-# from web_app.models import Role
+from web_app.models import Role
 from web_app import constants
 
 

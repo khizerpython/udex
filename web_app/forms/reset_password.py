@@ -13,7 +13,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
 from web_app.utils import global_methods 
-# from web_app.models import FailedResetPasswordAttempt
+from web_app.models import FailedResetPasswordAttempt
 from web_app import constants
 
 import os

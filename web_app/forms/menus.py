@@ -1,7 +1,7 @@
 from django import forms
 
 # App Level Imports
-# from web_app.models import Menus
+from web_app.models import Menus
 from web_app.models import regex
 
 class CreateMenusForm(forms.ModelForm):

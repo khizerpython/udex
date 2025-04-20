@@ -42,7 +42,7 @@ class BillingsForm(forms.Form):
     # reciever_fax = forms.CharField(max_length=255, required=True)
 
     # Shipment Details
-    payment_id = forms.ChoiceField(choices=[])
+    # payment_id = forms.ChoiceField(choices=[])
     shipment_id = forms.ChoiceField(choices = [])
 
     # fedex_number = forms.CharField(max_length=255, required=True)
