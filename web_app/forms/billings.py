@@ -53,12 +53,12 @@ class BillingsForm(forms.Form):
         super(BillingsForm, self).__init__(*args, **kwargs)
         
         # Populate the choices dynamically from the Service model
-        self.services = Service.objects.all()
-        self.payments = Payment.objects.all()
-        self.shipments = ShipmentType.objects.all()
-        self.fields['service_id'].choices = [(str(service.id), str(service)) for service in self.services]
-        self.fields['payment_id'].choices = [(str(payment.id), str(payment)) for payment in self.payments]
-        self.fields['shipment_id'].choices = [(str(shipment.id), str(shipment)) for shipment in self.shipments]
+        # self.services = Service.objects.all()
+        # self.payments = Payment.objects.all()
+        # self.shipments = ShipmentType.objects.all()
+        # self.fields['service_id'].choices = [(str(service.id), str(service)) for service in self.services]
+        # self.fields['payment_id'].choices = [(str(payment.id), str(payment)) for payment in self.payments]
+        # self.fields['shipment_id'].choices = [(str(shipment.id), str(shipment)) for shipment in self.shipments]
 
     def clean(self):
         
