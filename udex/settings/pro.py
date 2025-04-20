@@ -21,6 +21,7 @@ ALLOWED_HOSTS = json.loads(os.environ.get("DJANGO_ALLOWED_HOSTS", []))
 
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "test-Key")
+STATIC_URL = 'static/'
 STATIC_ROOT = STATIC_CUSTOM_DIR
 
 DEBUG = False
