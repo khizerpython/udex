@@ -25,7 +25,10 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "test-Key")
 DEBUG = True
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [STATIC_CUSTOM_DIR]
+# STATICFILES_DIRS = [STATIC_CUSTOM_DIR]
 
 
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # or your preferred path
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
