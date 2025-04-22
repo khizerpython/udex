@@ -50,7 +50,7 @@
         button {
             cursor: pointer;
             font-family: 'Libre Barcode 39 Text', cursive;
-            font-size: 40px;
+            font-size: 60px;
             background: none;
             border: none;
         }
@@ -65,13 +65,13 @@
             transition: 500ms;
         }
 
-        button:hover:before {
+        /* button:hover:before {
             animation: line 500ms forwards;
-        }
+        } */
 
-        button:hover {
+        /* button:hover {
             animation: blink 500ms 300ms;
-        }
+        } */
 
         @keyframes line {
             from {
@@ -104,7 +104,7 @@
 
 <body>
     <br><br>
-    <div id="download_invoice">
+    <div class="container" id="download_invoice">
         <br><br>
         <div style="border: 2px solid black; margin: 2%;">
             <h4><b>&nbsp;Invoice</b></h4>
@@ -125,7 +125,14 @@
             </div>
             <!-- Right col -->
             <div class="col-6">
-                <button class="noselect">{{bill.tracking_number}}</button>
+                <div class="row">
+                    <div class="col-6">
+                    </div>
+                    <div class="col-6">
+                        <button class="noselect">{{bill.tracking_number}}</button>
+
+                    </div>
+                </div>
             </div>
         </div>
         <!-- SHIPPER AND CONSINEE DETAILS -->
