@@ -194,7 +194,7 @@
       </div>
       <div class="col-12 col-sm-auto">
         <p>
-          Tracking ID <b>{{ obj.tracking_number }}</b>
+          Tracking ID <b><u>{{ obj.tracking_number }}</u></b>
         </p>
       </div>
     </div>
@@ -310,7 +310,7 @@
         <!-- Description Row -->
       <div class="row mb-4" >
         <div class="col-1"></div>
-        <div class="col-sm-6 col-sm-8 pl-4">
+        <div class="col-sm-6 col-sm-8 pl-4" style="margin-left: 1rem;">
           {{ c.description|upper }}
           <hr>
         </div>
