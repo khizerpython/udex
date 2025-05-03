@@ -13,6 +13,7 @@
     <link href='https://fonts.googleapis.com/css?family=Libre Barcode 39' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+EAN13+Text&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static '/image/assets/logo.svg' %}" />
 
     <style>
         ol {
@@ -99,11 +100,15 @@
         }
     </style>
 
-    <title>skylift courier</title>
+    <title>UDEX</title>
 </head>
 
 <body>
     <br><br>
+    <div class="row" style="margin-top: 1.5rem;"> 
+        <div class="col-6"><button class="btn btn-secondary"  style="margin-left:9%;width: inherit;" name="download-button">Print</button></div>
+        <div class="col-3"></div></div>
+        <br><br>
     <div class="container" id="download_invoice">
         <br><br>
         <div style="border: 2px solid black; margin: 2%;">
@@ -362,7 +367,7 @@
             <br><br><br>
             <div class="col-3">
                 <hr>
-                <p>Signature/Stamp</p>
+                <p>Signature/Stamp/Thumb Impression</p>
             </div>
 
 
@@ -379,8 +384,17 @@
     <script src="{% static '/js/file-downloads/html2canvas.min.js' %}"></script>
     <script src="{% static '/js/file-downloads/purify.min.js' %}"></script>
 
-
     <script>
+        $(document).on('click', 'button[name=download-button]', function(){
+            console.log("clicked");
+            $(this).hide()
+            window.print();
+            
+        })
+    </script>
+
+
+    <!-- <script>
         function downloadPDF() {
             window.jsPDF = window.jspdf.jsPDF;
             var pdf = new jsPDF();
@@ -402,7 +416,7 @@
                 downloadPDF();
             }, 1000);
         });
-    </script>
+    </script> -->
 
 </body>
 

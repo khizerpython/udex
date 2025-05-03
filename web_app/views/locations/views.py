@@ -7,7 +7,6 @@ from django.urls import reverse
 from web_app.models.billings import AirwayBillLocation,AirwayBill
 from web_app.forms.billings import BillingsForm , BillingsDetail, BillingsUpdateForm, BillingLocationForm,GetBillingsLocationDetailsForm
 import json
-from django.template.loader import render_to_string , get_template
 from web_app.constants import RIDER_DEPARTMENT_ID
 
 
@@ -99,7 +98,6 @@ class DownloadAirwayBillView(View):
 
     def get(self, request, bill_id):
         bill = AirwayBill.objects.get(id=bill_id)
-        # total_price = sum(int(detail.get('price')) for detail in bill.data.get('invoice_details').values())
         total_price = sum(float(detail.get('total')) for detail in bill.data.get('invoice_details').values())
 
         context_dict = {
@@ -107,6 +105,3 @@ class DownloadAirwayBillView(View):
             'total_price':total_price
         }        
         return render(request,template_name='billing_locations/download_billings.html',context=context_dict)
-
-        
-    
