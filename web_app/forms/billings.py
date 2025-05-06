@@ -37,7 +37,7 @@ class BillingsForm(forms.Form):
     reciever_post_code = forms.CharField(required=False,max_length=255)
     reciever_mobile_number = forms.CharField(max_length=20,required=True)
     reciever_phone_number = forms.CharField(max_length=20,required=True)
-    reciever_email = forms.EmailField(max_length=255, required=True)
+    reciever_email = forms.EmailField(max_length=255, required=False)
     eori_number = forms.CharField(max_length=255, required=False)
     # reciever_fax = forms.CharField(max_length=255, required=True)
 
@@ -143,7 +143,7 @@ class BillingsUpdateForm(forms.Form):
     reciever_post_code = forms.CharField(required=False,max_length=255)
     reciever_mobile_number = forms.CharField(max_length=20,required=True)
     reciever_phone_number = forms.CharField(max_length=20,required=True)
-    reciever_email = forms.EmailField(max_length=255, required=True)
+    reciever_email = forms.EmailField(max_length=255, required=False)
     eori_number = forms.CharField(max_length=255, required=False)
     # reciever_fax = forms.CharField(max_length=255, required=True)
 

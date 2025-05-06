@@ -13,9 +13,9 @@ function createMinusIcon(_class, _delete) {
 }
 
 
-function createPlusIcon(_data_invoice_details) {
+function createPlusIcon(_data_invoice_details, col_size="col-1") {
     var col_div = $('<div>').attr('data-delete-id','nothing')
-    var col1 = col_div.clone().addClass("col-1")
+    var col1 = col_div.clone().addClass(col_size)
     var innerDiv = col_div.clone().addClass('mt-4 text-center')
     var ITag = $("<i>").addClass('bi bi-plus-circle-fill').attr('data-include-id',"false").attr('data-invoice-details',_data_invoice_details).css('font-size', '35px')
     finalDiv = col1.append(innerDiv.append(ITag))
@@ -54,10 +54,11 @@ $(document).on('click', '.bi-plus-circle-fill', function () {
     } else if (dataInvoiceDetails == 'false') {
         var dimentionLength = $(this).closest('form').find("input#create_id_length").length
         if (dimentionLength < 5) {
-            var row1 = createInputRow(_id = 'create_id_length', _name = 'length', _type = 'number', _placeholder = 'Enter length', _class = 'col-3', _title = 'Length', _delete = 'dimension' + dimentionLength+1)
-            var row2 = createInputRow(_id = 'create_id_width', _name = 'width', _type = 'number', _placeholder = 'Enter width', _class = 'col-3', _title = 'Width', _delete = 'dimension' + dimentionLength+1)
-            var row3 = createInputRow(_id = 'create_id_height', _name = 'height', _type = 'number', _placeholder = 'Enter height', _class = 'col-3', _title = 'Height', _delete = 'dimension' + dimentionLength+1)
-            var MinusIcon = createMinusIcon(_class = 'col-1', _delete = 'dimension' + dimentionLength+1)
+            var row1 = createInputRow(_id = 'create_id_length', _name = 'length', _type = 'number', _placeholder = 'Enter length', _class = 'col-2', _title = 'Length', _delete = 'dimension' + dimentionLength+1, _required="true")
+            var row2 = createInputRow(_id = 'create_id_width', _name = 'width', _type = 'number', _placeholder = 'Enter width', _class = 'col-2', _title = 'Width', _delete = 'dimension' + dimentionLength+1)
+            var row3 = createInputRow(_id = 'create_id_height', _name = 'height', _type = 'number', _placeholder = 'Enter height', _class = 'col-2', _title = 'Height', _delete = 'dimension' + dimentionLength+1)
+            var row4 = createInputRow(_id = 'create_id_volumetric_weight', _name = 'volumetric_weight', _type = 'number', _placeholder = 'Enter Volumetric Weight', _class = 'col-3', _title = 'Volumetric Weight', _delete = 'dimension' + dimentionLength+1)
+            var MinusIcon = createMinusIcon(_class = 'col-2', _delete = 'dimension' + dimentionLength+1)
             $(this).closest('.row').append(row1, row2, row3, row4, MinusIcon)
         }
     } else {
@@ -78,8 +79,8 @@ function transformObj(json_obj) {
     var dimension_length = json_obj.length
     var width = json_obj.width
     var height = json_obj.height
-
-    if (dimension_length.length != 0 && dimension_length.length === width.length && dimension_length.length === height.length) {
+    var volumetric_weight = json_obj.volumetric_weight
+    if (dimension_length.length != 0 && dimension_length.length === width.length && dimension_length.length === height.length && dimension_length.length === volumetric_weight.length ) {
         // Creating Dimensions dict
         dimensions = {}
         var arrayLength = dimension_length.length
@@ -87,7 +88,8 @@ function transformObj(json_obj) {
             dimensions[i + 1] = {
                 "length": json_obj.length[i],
                 "width": json_obj.width[i],
-                "height": json_obj.height[i]
+                "height": json_obj.height[i],
+                "volumetric_weight": json_obj.volumetric_weight[i],
             };
         }
     }
@@ -146,7 +148,9 @@ $("#create_billings_form_id").on('submit', function (e) {
     if ($("#create_billings_form_id").valid()) {
 
     var formData = $(this).serializeArray();
-    const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ['hs_title','hs_code','quantity','price','total','width','length','height']);
+    
+    const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ['hs_title','hs_code','quantity','price','total','width','length','height','volumetric_weight']);
+    
     var _data = transformObj(json_obj)
     const submit_url = $(this).data("url");
     const submit_method = $(this).data("method");
@@ -292,7 +296,7 @@ $(document).on('click', "#get_billing_details_button", function () {
     setGenericModal("Airway Bill Details", data_in_html, true);
 })
 
-function placeDataintoForm(form_id, data, quillbot_fields = [], hidden_fields = [], multiple_asset_ids = false) {
+function placeDataintoForm(form_id, data) {
     const filtered_data = data[0].fields
     $("#" + form_id).children().find("[name='" + 'id' + "']").val(data[0].pk);
     for (const [key, value] of Object.entries(filtered_data)) {
@@ -306,18 +310,20 @@ function placeDataintoForm(form_id, data, quillbot_fields = [], hidden_fields = 
             for(const[innerKey,innerValue] of Object.entries(value)){
                 
                 if(innerKey==='dimensions'){
+                   
                     for(const[dimensionKey, dimensionValue] of Object.entries(innerValue)){
-                        var row1 = createInputRow(_id = 'create_id_length', _name = 'length', _type = 'number', _placeholder = 'Enter length', _class = 'col-3', _title = 'Length', _delete = 'dimension' + dimensionKey, _value=dimensionValue.length)
-                        var row2 = createInputRow(_id = 'create_id_width', _name = 'width', _type = 'number', _placeholder = 'Enter width', _class = 'col-3', _title = 'Width', _delete = 'dimension' + dimensionKey, _value=dimensionValue.width)
-                        var row3 = createInputRow(_id = 'create_id_height', _name = 'height', _type = 'number', _placeholder = 'Enter height', _class = 'col-3', _title = 'Height', _delete = 'dimension' + dimensionKey, _value=dimensionValue.height)
+                        var row1 = createInputRow(_id = 'create_id_length', _name = 'length', _type = 'number', _placeholder = 'Enter length', _class = 'col-2', _title = 'Length', _delete = 'dimension' + dimensionKey, _value=dimensionValue.length)
+                        var row2 = createInputRow(_id = 'create_id_width', _name = 'width', _type = 'number', _placeholder = 'Enter width', _class = 'col-2', _title = 'Width', _delete = 'dimension' + dimensionKey, _value=dimensionValue.width)
+                        var row3 = createInputRow(_id = 'create_id_height', _name = 'height', _type = 'number', _placeholder = 'Enter height', _class = 'col-2', _title = 'Height', _delete = 'dimension' + dimensionKey, _value=dimensionValue.height)
+                        var row4 = createInputRow(_id = 'create_id_volumetric_weight', _name = 'volumetric_weight', _type = 'number', _placeholder = 'Enter Volumetric Weight', _class = 'col-3', _title = 'Volumetric Weight', _delete = 'dimension' + dimensionKey, _value=dimensionValue.volumetric_weight)
                         
                         if(dimensionKey == 1){
-                            var MinusIcon = createPlusIcon(_data_invoice_details=false)
+                            var MinusIcon = createPlusIcon(_data_invoice_details=false,col_size='col-2')
                         } else{
-                            var MinusIcon = createMinusIcon(_class = 'col-1', _delete = 'dimension' + dimensionKey)
+                            var MinusIcon = createMinusIcon(_class = 'col-2', _delete = 'dimension' + dimensionKey)
                         }
                         
-                        $("#dimensiondiv").closest('.row').append(row1, row2, row3, MinusIcon)
+                        $("#dimensiondiv").closest('.row').append(row1, row2, row3,row4, MinusIcon)
                     }
                     
                 }else if(innerKey=='invoice_details'){
@@ -348,9 +354,7 @@ function placeDataintoForm(form_id, data, quillbot_fields = [], hidden_fields = 
             obj_inst.val(value);
         }
     }
-    if (multiple_asset_ids == true) {
-        addmultipleassetids(form_id, data)
-    }
+    
 }
 
 // Update Airway bill
@@ -366,7 +370,7 @@ $(document).on('click', "#update_airway_bill_button", function(e){
     $(this).closest('table').parents('.tab-pane').addClass('d-none')
     $("#" + DISPLAY_FORM_ID).removeClass('d-none')
 
-    placeDataintoForm(DISPLAY_FORM_ID, data.data, quillbot_fields=["reason"], hidden_fields=["other_to_location"], multiple_asset_ids=false)
+    placeDataintoForm(DISPLAY_FORM_ID, data.data)
 
 
 })
@@ -378,7 +382,7 @@ $("#update_billings_form_id").on('submit', function (e) {
     if ($("#update_billings_form_id").valid()) {
 
     var formData = $(this).serializeArray();
-    const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ['hs_title','hs_code','quantity','price','total','width','length','height']);
+    const json_obj = convertSerializerArrToJson(formData, list_fiels_names = ['hs_title','hs_code','quantity','price','total','width','length','height', 'volumetric_weight']);
     var _data = transformObj(json_obj)
     const submit_url = $(this).data("url");
     const submit_method = $(this).data("method");
@@ -444,7 +448,7 @@ function create_invoice_button(key, value, datatable_id) {
 
 
 function reconstruct_pending_workflow_table(datatable_id, obj) {
-    
+ 
     for (const [key, value] of Object.entries(obj)) { 
         var temp_tr = $('<tr>'); 
         var temp_td = $('<td>');
@@ -469,7 +473,7 @@ function reconstruct_pending_workflow_table(datatable_id, obj) {
             
         }
         
-        if (_page_menus.includes(value.label_url)){
+        if (_page_menus.includes('create_airway_bill_label')){
         temp_tr.append(temp_td.clone().append(create_invoice_button(key, value, datatable_id)))
         } else {
             temp_tr.append(temp_td.clone().append("--"))
@@ -495,3 +499,33 @@ $("#reset_create_billing_form_id").on('click',function(e){
     $(this).closest('form')[0].reset();
     $('[data-delete-id]').remove();
 })
+
+
+
+$(document).on('input', 'input[name="length"], input[name="width"], input[name="height"]', function () {
+    const $input = $(this);
+    const $col = $input.closest('.col-2, .col-3'); // Get the column parent
+    const groupId = $col.data('delete-id'); // May be undefined
+
+    // Find all inputs in the same group (with the same data-delete-id)
+    let $groupInputs;
+    if (groupId) {
+      $groupInputs = $(`div[data-delete-id="${groupId}"]`);
+    } else {
+      // Fallback: get the first group (inputs without data-delete-id)
+      $groupInputs = $('.row > div').filter(function () {
+        return !$(this).data('delete-id');
+      });
+    }
+
+    const length = parseFloat($groupInputs.find('input[name="length"]').val()) || 0;
+    const width = parseFloat($groupInputs.find('input[name="width"]').val()) || 0;
+    const height = parseFloat($groupInputs.find('input[name="height"]').val()) || 0;
+
+    if (length > 0 && width > 0 && height > 0) {
+      const vol = (length * width * height) / 5000;
+      $groupInputs.find('input[name="volumetric_weight"]').val(vol.toFixed(2));
+    } else {
+      $groupInputs.find('input[name="volumetric_weight"]').val('');
+    }
+  });

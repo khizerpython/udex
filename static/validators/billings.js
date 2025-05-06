@@ -66,7 +66,7 @@ var vaildationrules = {
             required: true,
         },
         reciever_post_code: {
-            required: false,
+            required: true,
         },
         reciever_mobile_number: {
             required: true,
@@ -75,7 +75,7 @@ var vaildationrules = {
             required: true,
         },
         reciever_email: {
-            required: true,
+            required: false,
         },
         reciever_fax: {
             required: true,

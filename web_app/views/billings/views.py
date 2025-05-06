@@ -26,7 +26,11 @@ class AirwayBillView(BaseViewForAuthenticatedClass):
         services = Service.objects.all()
         payments = Payment.objects.all()
         shipments = ShipmentType.objects.all()
-        airway_bills = AirwayBill.objects.filter(user_id=user)
+        if user.is_admin:
+
+            airway_bills = AirwayBill.objects.all()
+        else:
+            airway_bills = AirwayBill.objects.filter(user_id=user)
         context = {
             'services': services,
             'payments':payments,
