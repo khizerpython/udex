@@ -133,7 +133,7 @@
                     <div class="col-1"><b>3</b></div>
                     <div class="col-11"><b>SENDER'S AUTHORIZATION AND SIGNATURES</b></div>
                 </div>
-                <div class="row" style="letter-spacing:1.27px">
+                <div class="row" style="letter-spacing:1.27px; font-size: x-small;">
                     <p>I/WE AGREE THAT THE CARRIER STANDARD TERMS AND CONDITIONS APPLY TO THIS SHIPMENT AND LIMITS THE
                         CARRIER LIABILITY.
                         THE WARSAW CONVENTION MAY ALSO APPLY . TERMS AND CONDITIONS AVAILABLE ON REQUEST
@@ -213,9 +213,9 @@
                 </div>
                 <div class="row" style="margin: 5px; text-align: center;">
                     <div class="row" style="font-size: 35px; margin-top: 50px;">
-                        <b>Tracking Number</b>
+                        <!-- <b>Tracking Number</b> -->
                     </div>
-                    <div class="col-6" style="margin-top: 10px; margin-left: 19%;">
+                    <div class="col-6" style="margin-top: 10px; margin-left: 15%;">
                         <button class="noselect">{{bill.tracking_number}}</button>
 
                     </div>
@@ -240,7 +240,8 @@
                 <div class="row">
                     <b>{{bill.service_id}}</b>
                 </div>
-                <div class="row"><b>Full Description of Contents</b></div>
+                
+                <div class="row" style="border-top: 2px solid darkgray;"><b>Full Description of Contents</b></div>
                 <div class="row" style="margin-bottom:30px;">
                     {% for key, invoice_detail in bill.data.invoice_details.items %}
                     <p>{{ invoice_detail.hs_title }}</p><br>
@@ -257,11 +258,14 @@
                     <div class="col-11" style="background-color: darkgray; text-align: center;"><b>SIZE & WEIGHT</b>
                     </div>
                 </div>
-                <div class="row" style="border-bottom: 2px solid darkgray;">
+                <div class="row" style="border-bottom: 2px solid darkgray; font-weight: 700;">
                     <div class="col-8">NO. OF PIECES : <b>{{bill.pieces}}</b></div>
                 </div>
-                <div class="row" style="border-bottom: 2px solid darkgray; margin-bottom: 100px;">
+                <div class="row" style="border-bottom: 2px solid darkgray;font-weight: 700;">
                     <div class="col-8">WEIGHT : <b>{{bill.weight}}</b></div>
+                </div>
+                <div class="row" style="border-bottom: 2px solid darkgray; margin-bottom: 100px;font-weight: 700;">
+                    <div class="col-8">Volumetric Weight : <b>{{volumetric_Weight|floatformat:4}}</b></div>
                 </div>
 
                 <div class="row" style="border-bottom: 2px solid darkgray;">
@@ -279,7 +283,7 @@
             <p>By tendering goods for transport by <b>Universal Delivery Express</b> the consignor agrees to the following
                 conditions :</p>
         </div>
-        <div class="row" style="letter-spacing: 2px;">
+        <div class="row" style="letter-spacing: 2px; font-size: x-small;">
             <div class="col-6">
                 <ol>
                     <li>

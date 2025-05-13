@@ -101,7 +101,7 @@ class BillingsForm(forms.Form):
         if airway_bill is not None:            
             cleaned_data['tracking_number'] = int(airway_bill.tracking_number + 1)
         else:    
-            cleaned_data['tracking_number'] = int('2192300000')
+            cleaned_data['tracking_number'] = int('21923000')
         return cleaned_data
 
 

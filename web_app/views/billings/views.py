@@ -220,17 +220,18 @@ class CreateAirwayBillLabelView(BaseViewForAuthenticatedClassForJsonResponse):
         bill = AirwayBill.objects.get(id=bill_id)
         # total_price = sum(int(detail.get('price')) for detail in bill.data.get('invoice_details').values())
         total_price = sum(float(detail.get('total')) for detail in bill.data.get('invoice_details').values())
+        volumetric_Weight = sum(float(detail.get('volumetric_weight')) for detail in bill.data.get('dimensions').values())
 
-        dimensions = bill.data.get('dimensions')
-        volumetric_dimension = 0 
-        for key,value in dimensions.items():
-            multiplicated_obj = float(value.get('length')) * float(value.get('width')) * float(value.get('height'))
-            dimension =  multiplicated_obj / 5000
-            volumetric_dimension = volumetric_dimension + dimension
+        # dimensions = bill.data.get('dimensions')
+        # volumetric_dimension = 0 
+        # for key,value in dimensions.items():
+        #     multiplicated_obj = float(value.get('length')) * float(value.get('width')) * float(value.get('height'))
+        #     dimension =  multiplicated_obj / 5000
+        #     volumetric_dimension = volumetric_dimension + dimension
 
         context_dict = {
             'bill':bill,
             'total_price':total_price,
-            'volumetric_dimension':volumetric_dimension
+            'volumetric_dimension':volumetric_Weight
         }     
         return render(request,template_name='billings/download_label.html',context=context_dict) 
