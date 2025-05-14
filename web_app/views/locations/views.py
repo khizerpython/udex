@@ -98,9 +98,7 @@ class DownloadAirwayBillView(View):
 
     def get(self, request, bill_id):
         bill = AirwayBill.objects.get(id=bill_id)
-        print(bill.data)
         volumetric_Weight = sum(float(detail.get('volumetric_weight')) for detail in bill.data.get('dimensions').values())
-        print(volumetric_Weight)
         total_price = sum(float(detail.get('total')) for detail in bill.data.get('invoice_details').values())
 
         context_dict = {

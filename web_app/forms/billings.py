@@ -98,9 +98,9 @@ class BillingsForm(forms.Form):
             airway_bill = AirwayBill.objects.latest('created_at')
         except ObjectDoesNotExist:
             airway_bill = None
-        if airway_bill is not None:            
+        if airway_bill is not None:         
             cleaned_data['tracking_number'] = int(airway_bill.tracking_number + 1)
-        else:    
+        else:
             cleaned_data['tracking_number'] = int('21923000')
         return cleaned_data
 
