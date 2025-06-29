@@ -12,7 +12,6 @@ $("#create_manifest_form_id").on("submit", async function (e) {
 
         if (status) {
             $('#example1')
-            console.log("data", data);
             var table = $('#example1').DataTable();
 
             // Clear all rows once, **before** the loop
@@ -72,16 +71,10 @@ $("#create_manifest_form_id").on("submit", async function (e) {
 $(document).on('keydown', '.notes-input', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault(); // Prevent form submission or other default behavior
-
             const $input = $(this);
-            console.log($input);
-            
             const value = $input.val().trim();
-            console.log(value);
-
             // Replace input with plain text inside the cell
             const $cell = $input.closest('.dtr-data');
-            console.log("the closest cell is:", $cell);
             
             $cell.text(value);
         }
@@ -100,7 +93,6 @@ $(document).on('click', '.remove-from-manifest', function () {
 
 
 $(document).on('click', '.add-to-manifest', function () {
-    console.log("clicked",$(this).val());
     var submit_method = "POST"
     var submit_url = $(this).attr("data-url")
     var value = $(this).val()
