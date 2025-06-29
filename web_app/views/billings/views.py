@@ -49,7 +49,7 @@ class CreateAirwayBillView(BaseViewForAuthenticatedClassForJsonResponse):
         invoice_details = data.get('invoice_details')
         form_validation = BillingsForm(data)
         if form_validation.is_valid():
-            form_validation.cleaned_data['data'] = {'dimensions': dimension, 'invoice_details': invoice_details}
+            form_validation.cleaned_data['data'] = {'dimensions': dimension, 'invoice_details': invoice_details,'is_manifest':False}
             form_validation.cleaned_data['user_id'] = self.request.user
             tracking_number = form_validation.cleaned_data.get('tracking_number')
             obj = AirwayBill.objects.create(**form_validation.cleaned_data)
@@ -77,7 +77,7 @@ class UpdateAirwayBillView(BaseViewForAuthenticatedClassForJsonResponse):
             tracking_number = obj.tracking_number
             if obj:
                 obj.user_id = self.request.user
-                obj.data = {'dimensions': dimension, 'invoice_details': invoice_details}
+                obj.data = {'dimensions': dimension, 'invoice_details': invoice_details,'is_manifest':False}
                 obj.service_id = form_validation.cleaned_data.get('service_id')
                 obj.shipper_company_name = form_validation.cleaned_data.get('shipper_company_name')
                 obj.shipper_contact_person = form_validation.cleaned_data.get('shipper_contact_person')

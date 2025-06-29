@@ -3,6 +3,7 @@ from django.urls import path, include
 urlpatterns = [
         path("", include("web_app.views.frontend.urls")),
         path("menu/", include("web_app.views.menu.urls")),
+        path("menifest/", include("web_app.views.manifest.urls")),
         path("users/", include("web_app.views.users.urls")),
         path("role/", include("web_app.views.role.urls")), 
         path("password/", include("web_app.views.reset_password.urls")),
