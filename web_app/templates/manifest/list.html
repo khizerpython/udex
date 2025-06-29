@@ -1,0 +1,217 @@
+{% extends 'frontend/parent_template.html' %}
+{% load static %}
+{% load query_filter %}
+
+<!-- DataTables -->
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+{% block "extra_css" %}
+<link rel="stylesheet" href="{% static '/css/manifest/dataTables.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static '/css/manifest/responsive.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static '/css/manifest/buttons.bootstrap4.css' %}">
+
+{% endblock %}
+
+{% block main_body %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title-sm">Search Manifest</h5>
+        <form class="row mb-3" id="create_manifest_form_id" data-method="POST" data-url="{% url 'get_menifest_data' %}">
+            {% csrf_token %}
+            <div class="col-sm-6">
+                <div class="form-floating mb-3">
+                    <input type="date" name="from_date" class="form-control" id="create_from_date"
+                        placeholder="From Date" required>
+                    <label for="create_from_date" class="form-label"> From Date</label>
+                    <div></div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-floating mb-3">
+                    <input type="date" name="to_date" class="form-control" id="create_to_date" placeholder="To Date"
+                        required>
+                    <label for="url" class="form-label">To Date</label>
+                    <div></div>
+                </div>
+            </div>
+
+
+
+
+            <div class="col-sm-12">
+                <div class="float-end">
+                    <button type="submit" id="searhMenifestButton" class="btn btn-primary">Search
+                        Manifest</button>
+                    <button type="reset" id="createMenuResetButton" class="btn btn-secondary">Reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div class="card">
+
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <!-- <table id="example1" class="table table-striped datatable display"> -->
+            <thead>
+                <tr>
+                    <th>AWB</th>
+                    <th>Add</th>
+                    <th>Remove</th>
+                    <th>SHIPPER NAME</th>
+                    <th>SHIPPER ADDRESS </th>
+                    <th>Shipper City</th>
+                    <th>Shipper ZIP / POST CODE</th>
+                    <!-- <th>TELEPHONE</th> -->
+                    <th>COUNTRY</th>
+                    <th>CONSIGNEE NAME</th>
+                    <th>CONSIGNEE ADDRESS</th>
+                    <th>CONSIGNEE CITY</th>
+                    <th>CONSIGNEE ZIP / POST CODE</th>
+                    <th>CONSIGNEE TELEPHONE</th>
+                    <th>CONSIGNEE COUNTRY</th>
+
+
+                    <th>CONSIGNEE COUNTRY CODE</th>
+                    <th>PIECES</th>
+                    <th>TOTAL WEIGHT</th>
+                    <th>QUANTITY</th>
+                    <th> VALUE ($)</th>
+                    <th>ITEM DESCRIPTION</th>
+                    <th>COMMODITY CODE</th>
+                    <th>BAG NUMBER</th>
+                    <th>TRACKING</th>
+                    <th>SERVICE</th>
+                    <th>REF</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Awb</td>
+                    <td><input type="checkbox" name="Add" id="chk1" /></td>
+                    <td><input type="checkbox" name="Remove" id="chk2" /></td>
+                    <td>John Doe</td>
+                    <td>1234 Shipper St</td>
+                    <td>New York</td>
+                    <td>10001</td>
+                    <td>123-456-7890</td>
+                    <td>USA</td>
+                    <td>US</td>
+                    <td>2</td>
+                    <td>5.5</td>
+                    <td>1</td>
+                    <td>150</td>
+                    <td>Electronics</td>
+                    <td>847130</td>
+                    <td>BAG789</td>
+                    <td>TRACK123</td>
+                    <td>Urgent delivery</td>
+                    <td>Express</td>
+                    <td>REF987</td>
+                    <td>REF987</td>
+                    <td>REF987</td>
+                   
+                    <td>REF987</td>
+                    <td>REF987</td>
+                </tr>
+
+                <!-- <tr>
+                    <td>Tasman</td>
+                    <td>Internet Explorer 5.2</td>
+                    <td>Mac OS 8-X</td>
+                    <td>1</td>
+                    <td>C</td>
+                </tr> -->
+
+
+            </tbody>
+
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
+
+
+{% endblock %}
+
+{% block "extra_scripts" %}
+
+<script>
+
+
+
+</script>
+
+<script src="{% static '/js/jquery--3.6.3.min.js' %}"></script>
+<script src="{% static '/JQuery-Validator/jquery.validate.min.js' %}"></script>
+<script src="{% static '/JQuery-Validator/additional-methods.min.js' %}"></script>
+<script src="{% static '/toastr/toastr.min.js' %}"></script>
+<script src="{% static '/js/loader-script.js' %}"></script>
+<script src="{% static '/js/mybootstrap-loader-script.js' %}"></script>
+<script src="{% static '/js/cryptojs-aes-format.js' %}"></script>
+<script src="{% static '/js/cryptojs-aes.min.js' %}"></script>
+<script src="{% static '/js/e-d.js' %}"></script>
+<script src="{% static '/js/send-request.js' %}"></script>
+<script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static '/js/datatables.min.js' %}"></script>
+<script src="{% static '/js/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static '/js/constants.js' %}"></script>
+<script src="{% static '/js/quill.js' %}"></script>
+<script src="{% static '/js/quill.min.js' %}"></script>
+<script src="{% static '/js/main.js' %}"></script>
+
+<script src="{% static '/tipsy_tooltip/popper.min.js'%}"></script>
+<script src="{% static '/tipsy_tooltip/tippy-bundle.umd.js'%}"></script>
+<script src="{% static '/js/notification_bell.js' %}"></script>
+
+<script src="{% static '/validators/manifest.js' %}"></script>
+
+
+
+
+<script src="{% static '/js/manifest/dataTables.responsive.min.js' %}"></script>
+<script src="{% static '/js/manifest/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static '/js/manifest/dataTables.buttons.min.js' %}"></script>
+<script src="{% static '/js/manifest/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static '/js/manifest/jszip.min.js' %}"></script>
+<script src="{% static '/js/manifest/pdfmake.min.js' %}"></script>
+<script src="{% static '/js/manifest/vfs_fonts.js' %}"></script>
+<script src="{% static '/js/manifest/buttons.html5.min.js' %}"></script>
+<script src="{% static '/js/manifest/buttons.print.min.js' %}"></script>
+<script src="{% static '/js/manifest/buttons.colVis.min.js' %}"></script>
+
+
+
+<script>
+    const today = new Date().toISOString().split('T')[0];
+    $('#create_to_date').attr('max', today);
+</script>
+
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": true, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "print", "colvis"]
+            //   "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
+<script src="{% static '/custom-js/manifests/manifest.js' %}"></script>
+{% endblock %}
