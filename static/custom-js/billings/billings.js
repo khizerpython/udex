@@ -529,3 +529,32 @@ $(document).on('input', 'input[name="length"], input[name="width"], input[name="
       $groupInputs.find('input[name="volumetric_weight"]').val('');
     }
   });
+
+ 
+$(document).on('input', 'input[name="quantity"], input[name="price"]', function () {
+    const $input = $(this);
+    const $col = $input.closest('.col-2 '); // Get the column parent
+    const groupId = $col.data('delete-id'); // May be undefined
+
+    // Find all inputs in the same group (with the same data-delete-id)
+    let $groupInputs;
+    if (groupId) {
+      $groupInputs = $(`div[data-delete-id="${groupId}"]`);
+    } else {
+      // Fallback: get the first group (inputs without data-delete-id)
+      $groupInputs = $('.row > div').filter(function () {
+        return !$(this).data('delete-id');
+      });
+    }
+
+    const quantity = parseFloat($groupInputs.find('input[name="quantity"]').val()) || 0;
+    const price = parseFloat($groupInputs.find('input[name="price"]').val()) || 0;
+    const height = parseFloat($groupInputs.find('input[name="height"]').val()) || 0;
+
+    if (quantity > 0 && price > 0) {
+      const vol = (quantity * price ) ;
+      $groupInputs.find('input[name="total"]').val(vol.toFixed(2));
+    } else {
+      $groupInputs.find('input[name="total"]').val('');
+    }
+  });    
