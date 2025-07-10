@@ -84,7 +84,9 @@ class GetManifestView(BaseViewForAuthenticatedClassForJsonResponse):
                     if quantity:
                         quantities = quantities + int(quantity)    
                     if total:
-                        bill_total = bill_total + int(total)    
+                        # bill_total = bill_total + int(total)  
+                        bill_total = bill_total + float(total)
+  
 
                 bill_dict['hs_code'] = hs_codes
                 bill_dict['hs_title'] = hs_titles
