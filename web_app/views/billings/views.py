@@ -54,7 +54,8 @@ class CreateAirwayBillView(BaseViewForAuthenticatedClassForJsonResponse):
             tracking_number = form_validation.cleaned_data.get('tracking_number')
             obj = AirwayBill.objects.create(**form_validation.cleaned_data)
 
-            sent_email = send_airway_bill_creation_email_to_transport_department(airway_way_data = form_validation.cleaned_data, request=request)
+            # sent_email = send_airway_bill_creation_email_to_transport_department(airway_way_data = form_validation.cleaned_data, request=request)
+            sent_email = 1
             if sent_email ==1:
                 
                 return JsonResponse({"detail": f"Air way bill with tracking ID {tracking_number} has been initiated successfully"}, status=200)

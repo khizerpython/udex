@@ -109,14 +109,14 @@
         <div class="col-6"><button class="btn btn-secondary"  style="margin-left:9%;width: inherit;" name="download-button">Print</button></div>
         <div class="col-3"></div></div>
         <br><br>
-    <div class="container" id="download_invoice">
+    <div  id="download_invoice">
         <br><br>
-        <div style="border: 2px solid black; margin: 2%;">
+        <div style="border: 2px solid black; ">
             <h4><b>&nbsp;Invoice</b></h4>
         </div>
 
         <!-- DATE AND BARCODE -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <!-- Left col -->
             <div class="col-6">
                 <div class="row">
@@ -141,12 +141,12 @@
             </div>
         </div>
         <!-- SHIPPER AND CONSINEE DETAILS -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6"><b>SHIPPER</b></div>
             <div class="col-6"><b>CONSIGNEE</b></div>
         </div>
         <!-- COMPANY NAME -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6">
                 <div class="row">
                     <div class="col-4"><b>Company Name</b></div>
@@ -166,7 +166,7 @@
             </div>
         </div>
         <!-- Address -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6">
                 <div class="row">
                     <div class="col-4"><b>Address</b></div>
@@ -185,7 +185,7 @@
             </div>
         </div>
         <!-- Town/Area Code -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6">
                 <div class="row">
                     <div class="col-4"><b>Town/Area Code</b></div>
@@ -204,7 +204,7 @@
             </div>
         </div>
         <!-- State/Country -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6">
                 <div class="row">
                     <div class="col-4"><b>State/Country</b></div>
@@ -223,7 +223,7 @@
             </div>
         </div>
         <!-- Contact Name -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6">
                 <div class="row">
                     <div class="col-4"><b>Contact Name</b></div>
@@ -242,7 +242,7 @@
             </div>
         </div>
         <!-- Phone/Mobile No -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6">
                 <div class="row">
                     <div class="col-4"><b>Phone/Mobile No</b></div>
@@ -261,7 +261,7 @@
             </div>
         </div>
         <!-- Email -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6">
                 <!-- <div class="row">
                 <div class="col-4"><b>Email</b></div>
@@ -279,7 +279,7 @@
         </div>
         <hr>
         <!-- No of Items -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <div class="col-6">
                 <div class="row">
                     <div class="col-4"><b>No of Items</b></div>
@@ -301,7 +301,7 @@
         </div>
         
         <!-- dimensions -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
 
 
 
@@ -320,9 +320,9 @@
 
 
         <!-- Dimensions -->
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <h4><b>Dimensions</b></h4>
-            <table class="table table-striped">
+            <table class="table table-striped" style="margin: 1%;">
                 <thead>
                     <tr>
                         <th scope="col">Serial #</th>
@@ -352,9 +352,9 @@
                 </tbody>
             </table>
         </div>
-        <hr style="margin: 2%;">
+        <hr style="">
 
-        <div class="row" style="margin: 2%;">
+        <div class="row" style="">
             <p>I declare that the information is true and the best of my knowledge and the goods are of <b>Pakistan</b>
                 origin.</p>
             <p>We <b>{{bill.shipper_company_name}}</b> certify the particulars and quantity of the goods specified in
@@ -386,7 +386,7 @@
 
     <script>
         $(document).on('click', 'button[name=download-button]', function(){
-            $(this).hide()
+            $(this).closest("div[class=row]").hide()
             window.print();
             
         })
