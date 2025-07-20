@@ -50,7 +50,8 @@ $("#create_manifest_form_id").on("submit", async function (e) {
                     obj.tracking_number || "",
                     
                     obj.service_id || "",
-                    obj.reciever_contact_person || ""
+                    obj.reciever_contact_person || "",
+                    obj.notes || ""
                 ];
 
                 table.row.add(row); // Add plain array, not HTML

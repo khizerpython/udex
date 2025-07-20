@@ -84,16 +84,20 @@
         <div class="row">
             <div class="col-8">
                 <img src="{% static '/image/assets/logo.svg' %}" alt="Universal Delivery Express"
-                    class="brand-image img-circle  elevation-3" style="height: 75px;margin-top: 9%;">
+                    class="brand-image img-circle  elevation-3" style="height: 134px;margin-top: 9%;">
                     <p><b style="font-size: large;">Fast,Reliable,Secure</b></p>
             </div>
-            <div class="col-4" style="text-align:center;margin-top: 87px; background-color: black; color: white;">
-                <h4 style="margin-top: 27px; font-size: xxx-large;"><b>
-                        {% if bill.shipment_id.name == 'Document'%} DOX {% else %} WPX{% endif%}</b></h4>
+            <div class="col-4" style="text-align:center;margin-top: 87px;">
+                <div class="row"></div>
+                <div class="row" style="margin-top:6%">
+                    
+                    <h4 style="margin-top: 84px; font-size: xxx-large; background-color: black; color: white;"><b>
+                            {% if bill.shipment_id.name == 'Document'%} DOX {% else %} WPX{% endif%}</b></h4>
+                </div>
             </div>
         </div>
 
-        <div class="row" style="border: 2px solid black;">
+        <div class="row" style="border: 2px solid black; margin-top: -1%;">
             <!-- First col -->
 
             <div class="col-4" style="border: 2px solid black;">
