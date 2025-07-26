@@ -533,28 +533,46 @@ $(document).on('input', 'input[name="length"], input[name="width"], input[name="
  
 $(document).on('input', 'input[name="quantity"], input[name="price"]', function () {
     const $input = $(this);
-    const $col = $input.closest('.col-2 '); // Get the column parent
-    const groupId = $col.data('delete-id'); // May be undefined
+    const $col = $input.closest('.col-2, .col-3, .col-1'); // Handles any .col-* div
+    const groupId = $col.data('delete-id'); // Can be undefined
 
-    // Find all inputs in the same group (with the same data-delete-id)
-    let $groupInputs;
-    if (groupId) {
-      $groupInputs = $(`div[data-delete-id="${groupId}"]`);
+    let $groupCols;
+
+    if (groupId !== undefined) {
+        // Case: grouped block with data-delete-id
+        $groupCols = $(`[data-delete-id="${groupId}"]`);
     } else {
-      // Fallback: get the first group (inputs without data-delete-id)
-      $groupInputs = $('.row > div').filter(function () {
-        return !$(this).data('delete-id');
-      });
+        // Case: first/default block without data-delete-id
+        // Select ONLY the col-2/col-3/col-1 elements that also don't have a data-delete-id
+        $groupCols = $('.col-2, .col-3, .col-1').filter(function () {
+            return $(this).data('delete-id') === undefined;
+        });
     }
 
-    const quantity = parseFloat($groupInputs.find('input[name="quantity"]').val()) || 0;
-    const price = parseFloat($groupInputs.find('input[name="price"]').val()) || 0;
-    const height = parseFloat($groupInputs.find('input[name="height"]').val()) || 0;
+    const quantity = parseFloat($groupCols.find('input[name="quantity"]').val()) || 0;
+    const price = parseFloat($groupCols.find('input[name="price"]').val()) || 0;
 
     if (quantity > 0 && price > 0) {
-      const vol = (quantity * price ) ;
-      $groupInputs.find('input[name="total"]').val(vol.toFixed(2));
+        const total = quantity * price;
+        $groupCols.find('input[name="total"]').val(total.toFixed(2));
     } else {
-      $groupInputs.find('input[name="total"]').val('');
+        $groupCols.find('input[name="total"]').val('');
     }
-  });    
+});
+
+  
+
+$(document).on('change blur keyup', 'input[name="quantity"]', function () {
+    var total = 0;
+
+    // Loop through all quantity input fields
+    $('input[name="quantity"]').each(function () {
+        var val = Number($(this).val());
+        if (!isNaN(val)) {
+            total += val;
+        }
+    });
+
+    // Set the sum into total_quantity field
+    $(this).closest("form").find("#create_id_total_quantity").val(total);
+});
